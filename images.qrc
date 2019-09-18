@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="imgs">
+    <file>standard_edge.png</file>
+    <file>standard_node.png</file>
+    <file>eraser.png</file>
+  </qresource>
+</RCC>

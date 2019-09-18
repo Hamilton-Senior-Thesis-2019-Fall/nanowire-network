@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1126</width>
+    <height>682</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#MainWindow {
+background: #2c3539
+}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTabWidget" name="tabWidget_info_layers">
+    <property name="geometry">
+     <rect>
+      <x>986</x>
+      <y>20</y>
+      <width>141</width>
+      <height>621</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">tabWidget_info_layers {
+background: #d8d8d8
+}</string>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="tab_info_tab">
+     <attribute name="title">
+      <string>Info</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="tab_layers_tab">
+     <attribute name="title">
+      <string>Layers</string>
+     </attribute>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="frame_photo_frame">
+    <property name="geometry">
+     <rect>
+      <x>69</x>
+      <y>39</y>
+      <width>921</width>
+      <height>601</height>
+     </rect>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#frame_photo_frame {
+background: #ffffff
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
+   <widget class="QTabWidget" name="tabWidget_toolbar">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>20</y>
+      <width>71</width>
+      <height>621</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">tabWidget_toolbar {
+background: #d8d8d8
+}</string>
+    </property>
+    <widget class="QWidget" name="tabWidget_toolbarPage1" native="true">
+     <attribute name="title">
+      <string>Tools</string>
+     </attribute>
+     <widget class="QPushButton" name="pushButton_standard_node">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#pushButton_standard_node {
+background-color: transparent;
+border-image: url(:imgs/standard_node.png);
+background: none;
+border: none;
+background-repeat: none;
+}
+#pushButton_standard_node:pressed{
+border: 2px solid #000000
+}
+	</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_standard_edge">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>90</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#pushButton_standard_edge {
+background-color: transparent;
+border-image: url(:imgs/standard_edge.png);
+background: none;
+border: none;
+background-repeat: none;
+}
+#pushButton_standard_edge:pressed{
+border: 2px solid #000000
+}
+	</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1126</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuImport">
+    <property name="title">
+     <string>Import</string>
+    </property>
+    <addaction name="actionUpload_from_computer"/>
+    <addaction name="actionUpload_from_saved_projects"/>
+   </widget>
+   <widget class="QMenu" name="menuExport">
+    <property name="title">
+     <string>Export</string>
+    </property>
+    <addaction name="actionSave_file"/>
+    <addaction name="actionExport_to_Gephi"/>
+    <addaction name="actionExport_to_Cytoscape"/>
+   </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionColor_select"/>
+   </widget>
+   <addaction name="menuImport"/>
+   <addaction name="menuExport"/>
+   <addaction name="menuSettings"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionUpload_from_computer">
+   <property name="text">
+    <string>Upload from computer</string>
+   </property>
+  </action>
+  <action name="actionUpload_from_saved_projects">
+   <property name="text">
+    <string>Upload from saved projects</string>
+   </property>
+  </action>
+  <action name="actionSave_file">
+   <property name="text">
+    <string>Save file</string>
+   </property>
+  </action>
+  <action name="actionExport_to_Gephi">
+   <property name="text">
+    <string>Export to Gephi</string>
+   </property>
+  </action>
+  <action name="actionExport_to_Cytoscape">
+   <property name="text">
+    <string>Export to Cytoscape</string>
+   </property>
+  </action>
+  <action name="actionColor_select">
+   <property name="text">
+    <string>Color select</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
+ <connections/>
+</ui>
