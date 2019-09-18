@@ -6,9 +6,14 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-
+import PyQt5
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
+    PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+
+if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
+    PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -117,6 +122,13 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuImport.menuAction())
         self.menubar.addAction(self.menuExport.menuAction())
         self.menubar.addAction(self.menuSettings.menuAction())
+        self.viewPort = QtWidgets.QLabel(self.centralwidget)
+        self.viewPort.setGeometry(QtCore.QRect(69, 39, 921, 601))
+        self.viewPort.setFrameShape(QtWidgets.QFrame.Box)
+        self.viewPort.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.viewPort.setLineWidth(1)
+        self.viewPort.setMidLineWidth(0)
+        self.viewPort.setObjectName("viewPort")
 
         self.retranslateUi(MainWindow)
         self.tabWidget_info_layers.setCurrentIndex(0)
@@ -137,6 +149,8 @@ class Ui_MainWindow(object):
         self.actionExport_to_Gephi.setText(_translate("MainWindow", "Export to Gephi"))
         self.actionExport_to_Cytoscape.setText(_translate("MainWindow", "Export to Cytoscape"))
         self.actionColor_select.setText(_translate("MainWindow", "Color select"))
+        self.viewPort.setText(_translate("MainWindow", "TextLabel"))
+
 import images_rc
 
 
