@@ -23,8 +23,9 @@ class Logic(QMainWindow, Ui_MainWindow):
     def setImage(self):
         fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *jpeg *.bmp *.tif)")
         if fileName:
-            image = mpimg.imread(fileName)
-            imgplot = self.MplWidget.canvas.axes.imshow(image)
+            image = plt.imread(fileName)
+            arr = np.asarray(image)
+            imgplot = self.MplWidget.canvas.axes.imshow(arr, cmap='gray', vmin=0, vmax=255)
             self.MplWidget.canvas.draw()
 
 

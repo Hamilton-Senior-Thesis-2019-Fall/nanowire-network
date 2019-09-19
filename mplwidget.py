@@ -22,3 +22,4 @@ class MplWidget(QWidget):
 
         self.canvas.axes = self.canvas.figure.add_subplot(111)
         self.setLayout(vertical_layout)
+        self.canvas.axes.axis('off')
