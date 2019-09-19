@@ -1,19 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'mockup.ui'
+# Form implementation generated from reading ui file 'C:\Users\Lavimoe\Desktop\cs2019F\mockup.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.1
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
-import PyQt5
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
-    PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
-
-if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
-    PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -37,16 +32,6 @@ class Ui_MainWindow(object):
         self.tab_layers_tab = QtWidgets.QWidget()
         self.tab_layers_tab.setObjectName("tab_layers_tab")
         self.tabWidget_info_layers.addTab(self.tab_layers_tab, "")
-        self.frame_photo_frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame_photo_frame.setGeometry(QtCore.QRect(69, 39, 921, 601))
-        self.frame_photo_frame.setMouseTracking(True)
-        self.frame_photo_frame.setAutoFillBackground(False)
-        self.frame_photo_frame.setStyleSheet("#frame_photo_frame {\n"
-"background: #ffffff\n"
-"}")
-        self.frame_photo_frame.setFrameShape(QtWidgets.QFrame.Box)
-        self.frame_photo_frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_photo_frame.setObjectName("frame_photo_frame")
         self.tabWidget_toolbar = QtWidgets.QTabWidget(self.centralwidget)
         self.tabWidget_toolbar.setGeometry(QtCore.QRect(0, 20, 71, 621))
         self.tabWidget_toolbar.setAutoFillBackground(True)
@@ -87,6 +72,9 @@ class Ui_MainWindow(object):
         self.pushButton_standard_edge.setText("")
         self.pushButton_standard_edge.setObjectName("pushButton_standard_edge")
         self.tabWidget_toolbar.addTab(self.tabWidget_toolbarPage1, "")
+        self.MplWidget = MplWidget(self.centralwidget)
+        self.MplWidget.setGeometry(QtCore.QRect(80, 20, 901, 621))
+        self.MplWidget.setObjectName("MplWidget")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1126, 21))
@@ -122,16 +110,9 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuImport.menuAction())
         self.menubar.addAction(self.menuExport.menuAction())
         self.menubar.addAction(self.menuSettings.menuAction())
-        self.viewPort = QtWidgets.QLabel(self.centralwidget)
-        self.viewPort.setGeometry(QtCore.QRect(69, 39, 921, 601))
-        self.viewPort.setFrameShape(QtWidgets.QFrame.Box)
-        self.viewPort.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.viewPort.setLineWidth(1)
-        self.viewPort.setMidLineWidth(0)
-        self.viewPort.setObjectName("viewPort")
 
         self.retranslateUi(MainWindow)
-        self.tabWidget_info_layers.setCurrentIndex(0)
+        self.tabWidget_info_layers.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -149,8 +130,7 @@ class Ui_MainWindow(object):
         self.actionExport_to_Gephi.setText(_translate("MainWindow", "Export to Gephi"))
         self.actionExport_to_Cytoscape.setText(_translate("MainWindow", "Export to Cytoscape"))
         self.actionColor_select.setText(_translate("MainWindow", "Color select"))
-        self.viewPort.setText(_translate("MainWindow", "TextLabel"))
-
+from mplwidget import MplWidget
 import images_rc
 
 
