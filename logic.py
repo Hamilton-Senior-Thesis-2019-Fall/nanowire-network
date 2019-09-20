@@ -44,6 +44,7 @@ class Logic(QMainWindow, Ui_MainWindow):
 
     def activateButtons(self):
         self.actionUpload_from_computer.triggered.connect(self.setImage)
+        self.actionExport_to_Gephi.triggered.connect(self.convertToCSV)
         self.pushButton_standard_node.clicked.connect(self.addNode)
         self.pushButton_standard_edge.clicked.connect(self.addEdge)
 
@@ -68,6 +69,27 @@ class Logic(QMainWindow, Ui_MainWindow):
             rgb_arr = np.stack((gray_arr, gray_arr, gray_arr), axis=-1)
             imgplot = self.MplWidget.canvas.axes.imshow(rgb_arr)
             self.MplWidget.canvas.draw()
+
+    def convertToCSV(self):
+        if self.filename == '':
+            f = open('output.csv', 'w+')
+        else:
+            f = open(self.filename + '_gephi.csv', 'w+')
+        # matrix = [[2345,1,2,3],[0,1,2,3],[0,1,2,3],[0,1,2,3]]
+
+        line = ''
+        if (not len(self.edges)):
+            f.close()
+            return
+        for i, val in enumerate(self.edges[0]):
+            line += ';' + getNodeLetter(i)
+        f.write(line + '\n')
+        for i, row in enumerate(self.edges):
+            line = getNodeLetter(i)
+            for val in row:
+                line += ';' + str(val)
+            f.write(line + '\n')
+        f.close()
 
     def replotImage(self):
         image = plt.imread(self.filename)
@@ -137,6 +159,15 @@ class Logic(QMainWindow, Ui_MainWindow):
         if self.filename != '' and len(self.nodes) >= 2:
             self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineStart))
             self.cid.append(self.MplWidget.canvas.mpl_connect('button_release_event', self.lineEnd))
+
+
+def getNodeLetter(num):
+    nodeLetter = ""
+    num += 1
+    while num > 0:
+        num, remainder = divmod(num - 1, 26)
+        nodeLetter = chr(65 + remainder) + nodeLetter
+    return nodeLetter
 
 def main():
     import sys
