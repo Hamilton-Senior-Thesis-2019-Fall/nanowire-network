@@ -18,21 +18,27 @@ from skimage import measure
 from skimage import transform
 from skimage import exposure
 from sklearn.neighbors import NearestNeighbors
+import matplotlib.lines as lines
+
 
 class Logic(QMainWindow, Ui_MainWindow):
     def __init__(self, *args, **kwargs):
+        self.cid = []
+
         QMainWindow.__init__(self, *args, **kwargs)
+
         self.setupUi(self)
         self.activateButtons()
         self.show()
 
         self.filename = ''
 
-        self.cid = []
-
         self.nodes = []
         self.edges = []
+        self.edgeCenters = []
+        self.edgeNodes = []
 
+        self.edgeStarted = False;
         self.edgeStart = -1
         self.edgeEnd = -1
 
@@ -41,24 +47,102 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.nav.setStyleSheet("QToolBar { border: 2px;\
         background:white; }")
         self.addToolBar(self.nav)
+        self.MplWidget.canvas.setFocusPolicy( QtCore.Qt.ClickFocus )
+        self.MplWidget.canvas.setFocus()
 
     def activateButtons(self):
         self.actionUpload_from_computer.triggered.connect(self.setImage)
         self.actionExport_to_Gephi.triggered.connect(self.convertToCSV)
-        self.pushButton_standard_node.clicked.connect(self.addNode)
-        self.pushButton_standard_edge.clicked.connect(self.addEdge)
+        #self.pushButton_standard_node.clicked.connect(self.addNode)
+        #self.pushButton_standard_edge.clicked.connect(self.addEdge)
+
+        self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onClick))
+        self.cid.append(self.MplWidget.canvas.mpl_connect('key_press_event', self.onKey))
+        self.cid.append(self.MplWidget.canvas.mpl_connect('key_release_event', self.onKeyRelease))
+
+    def onClick(self, event):
+        modifiers = QtWidgets.QApplication.keyboardModifiers()
+        if self.filename != '':
+            #If control is held down, removing stuff
+            if modifiers == QtCore.Qt.ControlModifier:
+                self.edgeStarted = False;
+                self.removeNearest(event.xdata, event.ydata)
+            else:
+                if modifiers == QtCore.Qt.ShiftModifier:
+                    if self.edgeStarted:
+                        self.lineEnd(event.xdata, event.ydata)
+                        self.edgeStarted = False;
+                    else:
+                        self.lineStart(event.xdata, event.ydata)
+                        self.edgeStarted = True;
+                else:
+                    self.edgeStarted = False;
+                    self.addPoint(event.xdata, event.ydata)
+
+        #self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onClick))
+
+    def onKey(self, event):
+        if event.key == 'control':
+            self.replotImage()
+            x_coords = [i[0] for i in self.edgeCenters]
+            y_coords = [i[1] for i in self.edgeCenters]
+            self.MplWidget.canvas.axes.scatter(x_coords, y_coords, 12, 'red', zorder=3)
+            self.MplWidget.canvas.draw()
+
+
+    def onKeyRelease(self, event):
+        self.replotImage()
 
     def distance(self, position1, position2):
         """finds the distance between two points"""
         return math.sqrt((position1[0] - position2[0]) ** 2 +
                          (position1[1] - position2[1]) ** 2)
 
-    def plotNodes(self, img):
-        updated_img = np.copy(img)
+    def midpoint(self, position1, position2):
+        return [(position1[0] + position2[0]) / 2, (position1[1] + position2[1]) / 2]
+
+    def findClosestNode(self, x_coord, y_coord):
+        pt = [x_coord, y_coord]
+        if self.edgeStarted and self.edgeStart == 0:
+            min_dist = self.distance(pt, self.nodes[1])
+            min_ind = 1
+        else:
+            min_dist = self.distance(pt, self.nodes[0])
+            min_ind = 0
         for i in range(len(self.nodes)):
-            rr, cc = draw.circle(self.nodes[i][1], self.nodes[i][0],12)
-            updated_img[rr, cc] = [0, 0, 255]
-        return updated_img
+            if self.distance(pt, self.nodes[i]) < min_dist:
+                min_dist = self.distance(pt, self.nodes[i])
+                min_ind = i
+
+        return min_ind, min_dist
+
+    def findClosestEdge(self, x_coord, y_coord):
+        pt = [x_coord, y_coord]
+        min_dist = self.distance(pt, self.edgeCenters[0])
+        min_ind = 0
+        for i in range(len(self.edgeCenters)):
+            if self.distance(pt, self.edgeCenters[i]) < min_dist:
+                min_dist = self.distance(pt, self.edgeCenters[i])
+                min_ind = i
+
+        return min_ind, min_dist
+
+    def plotNodes(self):
+        x_coords = [i[0] for i in self.nodes]
+        y_coords = [i[1] for i in self.nodes]
+        self.MplWidget.canvas.axes.scatter(x_coords, y_coords, 15, 'blue', zorder=3)
+
+    def plotLines(self):
+        self.edgeCenters = []
+        self.edgeNodes = []
+        for r in range(len(self.edges)):
+            for c in range(len(self.edges)):
+                if r != c and self.edges[r][c] > 0:
+                    self.edgeCenters.append(self.midpoint(self.nodes[r], self.nodes[c]))
+                    self.edgeNodes.append([r,c])
+                    line_x = [self.nodes[r][0], self.nodes[c][0]]
+                    line_y = [self.nodes[r][1], self.nodes[c][1]]
+                    self.MplWidget.canvas.axes.add_line(lines.Line2D(line_x, line_y, linewidth=2, color='red'))
 
     def setImage(self):
         fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *jpeg *.bmp *.tif)")
@@ -92,19 +176,27 @@ class Logic(QMainWindow, Ui_MainWindow):
         f.close()
 
     def replotImage(self):
+        #Clearing the figure and getting rid of the axes labels
+        self.MplWidget.canvas.axes.clear()
+        self.MplWidget.canvas.axes.axis('off')
+        #Plotting the image in greyscale
         image = plt.imread(self.filename)
         gray_arr = np.asarray(image)
         rgb_arr = np.stack((gray_arr, gray_arr, gray_arr), axis=-1)
-        marked_arr = self.plotNodes(rgb_arr)
-        imgplot = self.MplWidget.canvas.axes.imshow(marked_arr)
+        imgplot = self.MplWidget.canvas.axes.imshow(rgb_arr)
+        #Plotting lines and nodes
+        self.plotLines()
+        self.plotNodes()
+
         self.MplWidget.canvas.draw()
 
-        for i in range(len(self.cid)):
-            self.MplWidget.canvas.mpl_disconnect(self.cid[i])
+        #Disconnecting event handlers (not quite sure about this)
+        #for i in range(len(self.cid)):
+        #    self.MplWidget.canvas.mpl_disconnect(self.cid[i])
 
 
 
-    def addPoint(self, event):
+    def addPoint(self, x_coord, y_coord):
         #Add more rows/col to edges adj matrix
         if len(self.nodes) == 0:
             self.edges = [[1]]
@@ -112,44 +204,47 @@ class Logic(QMainWindow, Ui_MainWindow):
             self.edges = np.pad(self.edges, ((0,1),(0,1)), 'constant')
             self.edges[-1][-1] = 1
 
-        self.nodes.append([event.xdata, event.ydata])
+        self.nodes.append([x_coord, y_coord])
         self.replotImage()
 
-    def lineStart(self, event):
-        pt = [event.xdata, event.ydata]
-        min_dist = self.distance(pt, self.nodes[0])
-        min_ind = 0
-        for i in range(len(self.nodes)):
-            if self.distance(pt, self.nodes[i]) < min_dist:
-                min_dist = self.distance(pt, self.nodes[i])
-                min_ind = i
+    def removePoint(self, x_coord, y_coord):
+        del_ind, del_dist = self.findClosestNode(x_coord, y_coord)
+        del self.nodes[del_ind]
+        self.edges = np.delete(self.edges, del_ind, axis=0)
+        self.edges = np.delete(self.edges, del_ind, axis=1)
 
+        self.replotImage()
+
+    def lineStart(self, x_coord, y_coord):
+        min_ind, min_dist = self.findClosestNode(x_coord, y_coord)
         self.edgeStart = min_ind
 
-        print('line start')
-
-
-    def lineEnd(self, event):
-        pt = [event.xdata, event.ydata]
-
-        if self.edgeStart != 0:
-            min_dist = self.distance(pt, self.nodes[0])
-            min_ind = 0
-        else:
-            min_dist = self.distance(pt, self.nodes[1])
-            min_ind = 0
-        for i in range(len(self.nodes)):
-            if self.distance(pt, self.nodes[i]) < min_dist and i != self.edgeStart:
-                min_dist = self.distance(pt, self.nodes[i])
-                min_ind = i
-
+    def lineEnd(self, x_coord, y_coord):
+        min_ind, min_dist = self.findClosestNode(x_coord, y_coord)
         self.edgeEnd = min_ind
 
         self.edges[self.edgeStart,self.edgeEnd] = 1
-        print('line end')
-        print(self.edgeStart)
-        print(self.edgeEnd)
-        print(self.edges)
+        self.replotImage()
+
+    def removeLine(self, x_coord, y_coord):
+        del_ind, dist = self.findClosestEdge(x_coord, y_coord)
+
+        del self.edgeCenters[del_ind]
+        self.edges[self.edgeNodes[del_ind][0]][self.edgeNodes[del_ind][1]] = 0
+        self.edges[self.edgeNodes[del_ind][1]][self.edgeNodes[del_ind][0]] = 0
+        del self.edgeNodes[del_ind]
+
+        self.replotImage()
+
+    def removeNearest(self, x_coord, y_coord):
+        ind1, node_dist = self.findClosestNode(x_coord, y_coord)
+        ind2, edge_dist = self.findClosestEdge(x_coord, y_coord)
+
+        if node_dist < edge_dist:
+            self.removePoint(x_coord, y_coord)
+        else:
+            self.removeLine(x_coord, y_coord)
+
 
     def addNode(self):
         if self.filename != '':
@@ -158,7 +253,7 @@ class Logic(QMainWindow, Ui_MainWindow):
     def addEdge(self):
         if self.filename != '' and len(self.nodes) >= 2:
             self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineStart))
-            self.cid.append(self.MplWidget.canvas.mpl_connect('button_release_event', self.lineEnd))
+            self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineEnd))
 
 
 def getNodeLetter(num):
