@@ -19,6 +19,7 @@ from skimage import transform
 from skimage import exposure
 from sklearn.neighbors import NearestNeighbors
 import matplotlib.lines as lines
+import os
 
 
 class Logic(QMainWindow, Ui_MainWindow):
@@ -42,6 +43,9 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.edgeStart = -1
         self.edgeEnd = -1
 
+        self.press = False
+        self.move = False
+
         # matplotlib canvas
         self.nav = NavigationToolbar(self.MplWidget.canvas, self)
         self.nav.setStyleSheet("QToolBar { border: 2px;\
@@ -56,7 +60,11 @@ class Logic(QMainWindow, Ui_MainWindow):
         #self.pushButton_standard_node.clicked.connect(self.addNode)
         #self.pushButton_standard_edge.clicked.connect(self.addEdge)
 
-        self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onClick))
+        self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onpress))
+        self.cid.append(self.MplWidget.canvas.mpl_connect('motion_notify_event', self.onmove))
+        self.cid.append(self.MplWidget.canvas.mpl_connect('button_release_event', self.onrelease))
+
+        # self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onClick))
         self.cid.append(self.MplWidget.canvas.mpl_connect('key_press_event', self.onKey))
         self.cid.append(self.MplWidget.canvas.mpl_connect('key_release_event', self.onKeyRelease))
 
@@ -118,6 +126,8 @@ class Logic(QMainWindow, Ui_MainWindow):
 
     def findClosestEdge(self, x_coord, y_coord):
         pt = [x_coord, y_coord]
+        if not self.edgeCenters:
+            return -1, 0
         min_dist = self.distance(pt, self.edgeCenters[0])
         min_ind = 0
         for i in range(len(self.edgeCenters)):
@@ -158,7 +168,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         if self.filename == '':
             f = open('output.csv', 'w+')
         else:
-            f = open(self.filename + '_gephi.csv', 'w+')
+            f = open(os.path.splitext(self.filename)[0] + '_gephi.csv', 'w+')
         # matrix = [[2345,1,2,3],[0,1,2,3],[0,1,2,3],[0,1,2,3]]
 
         line = ''
@@ -239,22 +249,32 @@ class Logic(QMainWindow, Ui_MainWindow):
     def removeNearest(self, x_coord, y_coord):
         ind1, node_dist = self.findClosestNode(x_coord, y_coord)
         ind2, edge_dist = self.findClosestEdge(x_coord, y_coord)
-
-        if node_dist < edge_dist:
+        if (node_dist < edge_dist) or (ind2 == -1):
             self.removePoint(x_coord, y_coord)
         else:
             self.removeLine(x_coord, y_coord)
 
+    def onpress(self, event):
+        self.press = True
 
-    def addNode(self):
-        if self.filename != '':
-            self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.addPoint))
+    def onmove(self, event):
+        if self.press:
+            self.move = True
+
+    def onrelease(self, event):
+        if self.press and not self.move:
+            self.onClick(event)
+        self.press = False
+        self.move = False
+
+    # def addNode(self):
+    #     if self.filename != '':
+    #       self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.addPoint))
 
     def addEdge(self):
         if self.filename != '' and len(self.nodes) >= 2:
             self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineStart))
             self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineEnd))
-
 
 def getNodeLetter(num):
     nodeLetter = ""
