@@ -6,39 +6,24 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-import PyQt5
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
-    PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
-
-if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
-    PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1126, 682)
+        MainWindow.resize(1227, 859)
+        MainWindow.setMinimumSize(QtCore.QSize(1000, 0))
         MainWindow.setStyleSheet("#MainWindow {\n"
 "background: #2c3539\n"
 "}")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.tabWidget_info_layers = QtWidgets.QTabWidget(self.centralwidget)
-        self.tabWidget_info_layers.setGeometry(QtCore.QRect(986, 20, 141, 621))
-        self.tabWidget_info_layers.setAutoFillBackground(True)
-        self.tabWidget_info_layers.setStyleSheet("tabWidget_info_layers {\n"
-"background: #d8d8d8\n"
-"}")
-        self.tabWidget_info_layers.setObjectName("tabWidget_info_layers")
-        self.tab_info_tab = QtWidgets.QWidget()
-        self.tab_info_tab.setObjectName("tab_info_tab")
-        self.tabWidget_info_layers.addTab(self.tab_info_tab, "")
-        self.tab_layers_tab = QtWidgets.QWidget()
-        self.tab_layers_tab.setObjectName("tab_layers_tab")
-        self.tabWidget_info_layers.addTab(self.tab_layers_tab, "")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.centralwidget)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.tabWidget_toolbar = QtWidgets.QTabWidget(self.centralwidget)
-        self.tabWidget_toolbar.setGeometry(QtCore.QRect(0, 20, 71, 621))
+        self.tabWidget_toolbar.setMaximumSize(QtCore.QSize(80, 16777215))
         self.tabWidget_toolbar.setAutoFillBackground(True)
         self.tabWidget_toolbar.setStyleSheet("tabWidget_toolbar {\n"
 "background: #d8d8d8\n"
@@ -77,12 +62,32 @@ class Ui_MainWindow(object):
         self.pushButton_standard_edge.setText("")
         self.pushButton_standard_edge.setObjectName("pushButton_standard_edge")
         self.tabWidget_toolbar.addTab(self.tabWidget_toolbarPage1, "")
+        self.horizontalLayout_2.addWidget(self.tabWidget_toolbar)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem)
         self.MplWidget = MplWidget(self.centralwidget)
-        self.MplWidget.setGeometry(QtCore.QRect(80, 20, 901, 621))
+        self.MplWidget.setMinimumSize(QtCore.QSize(500, 0))
         self.MplWidget.setObjectName("MplWidget")
+        self.horizontalLayout_2.addWidget(self.MplWidget)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem1)
+        self.tabWidget_info_layers = QtWidgets.QTabWidget(self.centralwidget)
+        self.tabWidget_info_layers.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.tabWidget_info_layers.setAutoFillBackground(True)
+        self.tabWidget_info_layers.setStyleSheet("tabWidget_info_layers {\n"
+"background: #d8d8d8\n"
+"}")
+        self.tabWidget_info_layers.setObjectName("tabWidget_info_layers")
+        self.tab_info_tab = QtWidgets.QWidget()
+        self.tab_info_tab.setObjectName("tab_info_tab")
+        self.tabWidget_info_layers.addTab(self.tab_info_tab, "")
+        self.tab_layers_tab = QtWidgets.QWidget()
+        self.tab_layers_tab.setObjectName("tab_layers_tab")
+        self.tabWidget_info_layers.addTab(self.tab_layers_tab, "")
+        self.horizontalLayout_2.addWidget(self.tabWidget_info_layers)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1126, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1227, 21))
         self.menubar.setObjectName("menubar")
         self.menuImport = QtWidgets.QMenu(self.menubar)
         self.menuImport.setObjectName("menuImport")
@@ -123,9 +128,9 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.tabWidget_toolbar.setTabText(self.tabWidget_toolbar.indexOf(self.tabWidget_toolbarPage1), _translate("MainWindow", "Tools"))
         self.tabWidget_info_layers.setTabText(self.tabWidget_info_layers.indexOf(self.tab_info_tab), _translate("MainWindow", "Info"))
         self.tabWidget_info_layers.setTabText(self.tabWidget_info_layers.indexOf(self.tab_layers_tab), _translate("MainWindow", "Layers"))
-        self.tabWidget_toolbar.setTabText(self.tabWidget_toolbar.indexOf(self.tabWidget_toolbarPage1), _translate("MainWindow", "Tools"))
         self.menuImport.setTitle(_translate("MainWindow", "Import"))
         self.menuExport.setTitle(_translate("MainWindow", "Export"))
         self.menuSettings.setTitle(_translate("MainWindow", "Settings"))
