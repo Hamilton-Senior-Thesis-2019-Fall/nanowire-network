@@ -34,6 +34,8 @@ class Logic(QMainWindow, Ui_MainWindow):
 
         self.filename = ''
 
+        self.button = "node"
+
         self.nodes = []
         self.edges = []
         self.edgeCenters = []
@@ -57,8 +59,8 @@ class Logic(QMainWindow, Ui_MainWindow):
     def activateButtons(self):
         self.actionUpload_from_computer.triggered.connect(self.setImage)
         self.actionExport_to_Gephi.triggered.connect(self.convertToCSV)
-        #self.pushButton_standard_node.clicked.connect(self.addNode)
-        #self.pushButton_standard_edge.clicked.connect(self.addEdge)
+        self.pushButton_standard_node.clicked.connect(self.addNode)
+        self.pushButton_standard_edge.clicked.connect(self.addEdge)
 
         self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onpress))
         self.cid.append(self.MplWidget.canvas.mpl_connect('motion_notify_event', self.onmove))
@@ -76,17 +78,28 @@ class Logic(QMainWindow, Ui_MainWindow):
                 self.edgeStarted = False;
                 self.removeNearest(event.xdata, event.ydata)
             else:
-                if modifiers == QtCore.Qt.ShiftModifier:
-                    if self.edgeStarted:
-                        self.lineEnd(event.xdata, event.ydata)
-                        self.edgeStarted = False;
+                if self.button == "node":
+                    if modifiers == QtCore.Qt.ShiftModifier:
+                        if self.edgeStarted:
+                            self.lineEnd(event.xdata, event.ydata)
+                            self.edgeStarted = False;
+                        else:
+                            self.lineStart(event.xdata, event.ydata)
+                            self.edgeStarted = True;
                     else:
-                        self.lineStart(event.xdata, event.ydata)
-                        self.edgeStarted = True;
-                else:
-                    self.edgeStarted = False;
-                    self.addPoint(event.xdata, event.ydata)
-
+                        self.edgeStarted = False;
+                        self.addPoint(event.xdata, event.ydata)
+                elif self.button == "edge":
+                    if modifiers == QtCore.Qt.ShiftModifier:
+                        self.edgeStarted = False;
+                        self.addPoint(event.xdata, event.ydata)
+                    else:
+                        if self.edgeStarted:
+                            self.lineEnd(event.xdata, event.ydata)
+                            self.edgeStarted = False;
+                        else:
+                            self.lineStart(event.xdata, event.ydata)
+                            self.edgeStarted = True;
         #self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onClick))
 
     def onKey(self, event):
@@ -267,14 +280,18 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.press = False
         self.move = False
 
-    # def addNode(self):
+    def addNode(self):
+        QtWidgets.QApplication.restoreOverrideCursor()
+        self.button = 'node'
     #     if self.filename != '':
     #       self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.addPoint))
 
     def addEdge(self):
-        if self.filename != '' and len(self.nodes) >= 2:
-            self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineStart))
-            self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineEnd))
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.button = 'edge'
+        # if self.filename != '' and len(self.nodes) >= 2:
+        #     self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineStart))
+        #     self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineEnd))
 
 def getNodeLetter(num):
     nodeLetter = ""
