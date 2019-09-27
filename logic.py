@@ -281,13 +281,11 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.move = False
 
     def addNode(self):
-        QtWidgets.QApplication.restoreOverrideCursor()
         self.button = 'node'
     #     if self.filename != '':
     #       self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.addPoint))
 
     def addEdge(self):
-        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.button = 'edge'
         # if self.filename != '' and len(self.nodes) >= 2:
         #     self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineStart))
