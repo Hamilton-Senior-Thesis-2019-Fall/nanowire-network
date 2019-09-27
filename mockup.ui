@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1126</width>
-    <height>682</height>
+    <width>1227</width>
+    <height>859</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1000</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -19,69 +25,38 @@ background: #2c3539
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTabWidget" name="tabWidget_info_layers">
-    <property name="geometry">
-     <rect>
-      <x>986</x>
-      <y>20</y>
-      <width>141</width>
-      <height>621</height>
-     </rect>
-    </property>
-    <property name="autoFillBackground">
-     <bool>true</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">tabWidget_info_layers {
-background: #d8d8d8
-}</string>
-    </property>
-    <property name="currentIndex">
-     <number>1</number>
-    </property>
-    <widget class="QWidget" name="tab_info_tab">
-     <attribute name="title">
-      <string>Info</string>
-     </attribute>
-    </widget>
-    <widget class="QWidget" name="tab_layers_tab">
-     <attribute name="title">
-      <string>Layers</string>
-     </attribute>
-    </widget>
-   </widget>
-   <widget class="QTabWidget" name="tabWidget_toolbar">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>20</y>
-      <width>71</width>
-      <height>621</height>
-     </rect>
-    </property>
-    <property name="autoFillBackground">
-     <bool>true</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">tabWidget_toolbar {
-background: #d8d8d8
-}</string>
-    </property>
-    <widget class="QWidget" name="tabWidget_toolbarPage1">
-     <attribute name="title">
-      <string>Tools</string>
-     </attribute>
-     <widget class="QPushButton" name="pushButton_standard_node">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>40</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <widget class="QTabWidget" name="tabWidget_toolbar">
+      <property name="maximumSize">
+       <size>
+        <width>80</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
       </property>
       <property name="styleSheet">
-       <string notr="true">#pushButton_standard_node {
+       <string notr="true">tabWidget_toolbar {
+background: #d8d8d8
+}</string>
+      </property>
+      <widget class="QWidget" name="tabWidget_toolbarPage1">
+       <attribute name="title">
+        <string>Tools</string>
+       </attribute>
+       <widget class="QPushButton" name="pushButton_standard_node">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>51</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#pushButton_standard_node {
 background-color: transparent;
 border-image: url(:imgs/standard_node.png);
 background: none;
@@ -92,22 +67,22 @@ background-repeat: none;
 border: 2px solid #000000
 }
 	</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_standard_edge">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>90</y>
-        <width>31</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">#pushButton_standard_edge {
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_standard_edge">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>90</y>
+          <width>31</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#pushButton_standard_edge {
 background-color: transparent;
 border-image: url(:imgs/standard_edge.png);
 background: none;
@@ -118,30 +93,95 @@ background-repeat: none;
 border: 2px solid #000000
 }
 	</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
       </property>
-      <property name="text">
-       <string/>
+      <property name="sizeType">
+       <enum>QSizePolicy::Maximum</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="MplWidget" name="MplWidget" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>500</width>
+        <height>0</height>
+       </size>
       </property>
      </widget>
-    </widget>
-   </widget>
-   <widget class="MplWidget" name="MplWidget" native="true">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>20</y>
-      <width>901</width>
-      <height>621</height>
-     </rect>
-    </property>
-   </widget>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Maximum</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QTabWidget" name="tabWidget_info_layers">
+      <property name="maximumSize">
+       <size>
+        <width>200</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">tabWidget_info_layers {
+background: #d8d8d8
+}</string>
+      </property>
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="tab_info_tab">
+       <attribute name="title">
+        <string>Info</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="tab_layers_tab">
+       <attribute name="title">
+        <string>Layers</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1126</width>
+     <width>1227</width>
      <height>21</height>
     </rect>
    </property>
