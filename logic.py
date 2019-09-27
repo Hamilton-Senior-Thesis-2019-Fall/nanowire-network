@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from mockup import Ui_MainWindow
 from matplotlib.backends.backend_qt5agg import (NavigationToolbar2QT as NavigationToolbar)
 import matplotlib.pyplot as plt
@@ -7,6 +7,7 @@ import matplotlib.image as mpimg
 import numpy as np
 import random
 import math
+import datetime as dt
 from skimage import io
 from skimage import feature
 from skimage import draw
@@ -59,6 +60,8 @@ class Logic(QMainWindow, Ui_MainWindow):
     def activateButtons(self):
         self.actionUpload_from_computer.triggered.connect(self.setImage)
         self.actionExport_to_Gephi.triggered.connect(self.convertToCSV)
+        self.actionSave_file.triggered.connect(self.save_plot)
+        self.actionUpload_from_saved_projects.triggered.connect(self.open_plot)
         self.pushButton_standard_node.clicked.connect(self.addNode)
         self.pushButton_standard_edge.clicked.connect(self.addEdge)
 
@@ -290,6 +293,90 @@ class Logic(QMainWindow, Ui_MainWindow):
         # if self.filename != '' and len(self.nodes) >= 2:
         #     self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineStart))
         #     self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineEnd))
+
+    def save_plot(self):
+        curr_time = str(dt.datetime.now())
+        # QInputDialog.getText("Save Project", "Project name:", QLineEdit.Normal, "")
+        # if okPressed:
+        save_file_name = ("%s_" % self.filename) if self.filename != '' else "SaveFile"
+        for c in curr_time:
+            if not c in ['-', ' ', ':', '.']:
+                save_file_name += c
+            else:
+                save_file_name += '_'
+        out_file = open(save_file_name + ".nwas", "w+")
+
+        # Write node coords
+        for x, y in self.nodes[:-1]:
+            out_file.write("%f,%f,%s," % (x, y, "STD_NODE"))
+        out_file.write("%f,%f,%s\n" % (self.nodes[-1][0], self.nodes[-1][1], "STD_NODE"))
+
+        # Write adjacency matrix
+        out_file.write("%d\n" % len(self.edges))
+        for i in range(len(self.edges)):
+            for j in range(len(self.edges[i])):
+                out_file.write("%f " % self.edges[i][j])
+            out_file.write('\n')
+
+        # Write image binary
+        out_file.write("%s\n" % self.filename)
+        out_file.close()
+        out_file = open(save_file_name + ".nwas", "ab")
+        with open(self.filename, "rb") as img_file:
+            data = img_file.read()
+            out_file.write(data)
+        out_file.close()
+
+    def open_plot(self):
+        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Save File", "", "NWAS Files (*.nwas)")
+        if fileName:
+            # We will read this many lines again after reopening the file so that we can read the image file
+            lines_read = 0
+            with open(fileName, 'r') as saved_file:
+
+                # Read the node coords and add them to self.nodes
+                nodes = saved_file.readline().strip().split(',')
+                lines_read += 1
+                for i in range(0, len(nodes), 3):
+                    self.nodes.append([float(nodes[i]), float(nodes[i + 1])])
+
+                # Read in the number of nodes
+                num_nodes = int(saved_file.readline().strip())
+                lines_read += 1
+
+                for i in range(num_nodes):
+                    line = saved_file.readline().strip().split()
+                    lines_read += 1
+
+                    self.edges.append([float(x) for x in line])
+
+                img_file_name = saved_file.readline().strip()
+                lines_read += 1
+                self.filename = img_file_name
+
+            with open(fileName, "rb") as saved_file:
+                # For now we'll just try to use the file name
+                # for _ in range(lines_read):
+                #     x = saved_file.readline()
+                #     print(x)
+                # img_binary = saved_file.read()
+                # temp = open("__temp.tif", "wb+")
+                # temp.write(img_binary)
+                # temp.close()
+                # image = plt.imread("$$temp$$")
+                try:
+                    image = plt.imread(self.filename)
+                except (FileNotFoundError):
+                    msg = QMessageBox.critical(self, "Error loading image: File not found",
+                                            "Make sure file '%s' is in current directory" % self.filename)
+                    return
+                gray_arr = np.asarray(image)
+                #print(gray_arr)
+                rgb_arr = np.stack((gray_arr, gray_arr, gray_arr), axis=-1)
+                #print(rgb_arr)
+                imgplot = self.MplWidget.canvas.axes.imshow(rgb_arr)
+                self.MplWidget.canvas.draw()
+                self.replotImage()
 
 def getNodeLetter(num):
     nodeLetter = ""
