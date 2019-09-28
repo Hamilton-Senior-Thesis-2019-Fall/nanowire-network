@@ -1,6 +1,3 @@
-import PyQt5
-import skimage
-import sklearn
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from mockup import Ui_MainWindow

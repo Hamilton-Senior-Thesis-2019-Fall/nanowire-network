@@ -1,13 +1,12 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 block_cipher = None
-
-
+import PyQt5
 a = Analysis(['logic.py'],
              pathex=['C:\\Users\\Lavimoe\\Desktop\\cs2019F\\nanowire-network'],
              binaries=[],
-             datas=[],
-             hiddenimports=['sklearn.utils._cython_blas', 'sklearn.neighbors.typedefs', 'sklearn.neighbors.quad_tree', 'sklearn.tree._utils'],
+             datas=[(HOMEPATH + '\\PyQt5\\Qt\\bin\*', 'PyQt5\\Qt\\bin')],
+             hiddenimports=['sklearn.utils._cython_blas', 'sklearn.neighbors.typedefs', 'sklearn.neighbors.quad_tree', 'sklearn.tree._utils', 'PyQt5.sip'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],
