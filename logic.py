@@ -190,9 +190,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             self.resetPlot()
             self.replotImage()
             image = plt.imread(self.filename)
-            gray_arr = np.asarray(image)
-            rgb_arr = np.stack((gray_arr, gray_arr, gray_arr), axis=-1)
-            imgplot = self.MplWidget.canvas.axes.imshow(rgb_arr)
+            imgplot = self.MplWidget.canvas.axes.imshow(image, cmap = plt.cm.gist_gray)
             self.MplWidget.canvas.draw()
 
     def convertToCSV(self):
@@ -222,9 +220,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.MplWidget.canvas.axes.axis('off')
         #Plotting the image in greyscale
         image = plt.imread(self.filename)
-        gray_arr = np.asarray(image)
-        rgb_arr = np.stack((gray_arr, gray_arr, gray_arr), axis=-1)
-        imgplot = self.MplWidget.canvas.axes.imshow(rgb_arr)
+        imgplot = self.MplWidget.canvas.axes.imshow(image, cmap = plt.cm.gist_gray)
         #Plotting lines and nodes
         self.plotLines()
         self.plotNodes()
