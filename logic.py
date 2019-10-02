@@ -57,6 +57,19 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.MplWidget.canvas.setFocusPolicy( QtCore.Qt.ClickFocus )
         self.MplWidget.canvas.setFocus()
 
+    def resetPlot(self):
+        self.nodes = []
+        self.edges = []
+        self.edgeCenters = []
+        self.edgeNodes = []
+
+        self.edgeStarted = False;
+        self.edgeStart = -1
+        self.edgeEnd = -1
+
+        self.press = False
+        self.move = False
+
     def activateButtons(self):
         self.actionUpload_from_computer.triggered.connect(self.setImage)
         self.actionExport_to_Gephi.triggered.connect(self.convertToCSV)
@@ -174,10 +187,10 @@ class Logic(QMainWindow, Ui_MainWindow):
         fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *jpeg *.bmp *.tif)")
         if fileName:
             self.filename = fileName
+            self.resetPlot()
+            self.replotImage()
             image = plt.imread(self.filename)
-            gray_arr = np.asarray(image)
-            rgb_arr = np.stack((gray_arr, gray_arr, gray_arr), axis=-1)
-            imgplot = self.MplWidget.canvas.axes.imshow(rgb_arr)
+            imgplot = self.MplWidget.canvas.axes.imshow(image, cmap = plt.cm.gist_gray)
             self.MplWidget.canvas.draw()
 
     def convertToCSV(self):
@@ -207,9 +220,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.MplWidget.canvas.axes.axis('off')
         #Plotting the image in greyscale
         image = plt.imread(self.filename)
-        gray_arr = np.asarray(image)
-        rgb_arr = np.stack((gray_arr, gray_arr, gray_arr), axis=-1)
-        imgplot = self.MplWidget.canvas.axes.imshow(rgb_arr)
+        imgplot = self.MplWidget.canvas.axes.imshow(image, cmap = plt.cm.gist_gray)
         #Plotting lines and nodes
         self.plotLines()
         self.plotNodes()
