@@ -36,7 +36,8 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.filename = ''
 
         self.button = "node"
-
+        self.nodeTypes = ['standard','spheroplast', 'curved', 'filament']
+        self.edgeTypes = ['celltocell', 'celltosurface', 'cellcontact']
         self.nodes = []
         self.edges = []
         self.edgeCenters = []
@@ -57,6 +58,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.MplWidget.canvas.setFocusPolicy( QtCore.Qt.ClickFocus )
         self.MplWidget.canvas.setFocus()
 
+        self.resetCounterDisplay()
     def resetPlot(self):
         self.nodes = []
         self.edges = []
@@ -75,8 +77,8 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.actionExport_to_Gephi.triggered.connect(self.convertToCSV)
         self.actionSave_file.triggered.connect(self.save_plot)
         self.actionUpload_from_saved_projects.triggered.connect(self.open_plot)
-        self.pushButton_standard_node.clicked.connect(self.addNode)
-        self.pushButton_standard_edge.clicked.connect(self.addEdge)
+        self.node_painter_standard.clicked.connect(self.addNode)
+        self.edge_painter_celltocell.clicked.connect(self.addEdge)
 
         self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onpress))
         self.cid.append(self.MplWidget.canvas.mpl_connect('motion_notify_event', self.onmove))
@@ -294,8 +296,21 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.press = False
         self.move = False
 
+    def resetCounterDisplay(self):
+        counterDisplayText = "Node Counters:\n\n"
+        for n in self.nodeTypes:
+            counterDisplayText += n + ": 0\n"
+        counterDisplayText += "\nEdge Counters:\n\n"
+        for n in self.edgeTypes:
+            counterDisplayText += n + ": 0\n"
+        self.counter_label.setText(counterDisplayText)
+
+    def updateCounterDisplay(self, type, number):
+        self.counter_label.setText("meh")
+
     def addNode(self):
         self.button = 'node'
+        self.resetCounterDisplay()
     #     if self.filename != '':
     #       self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.addPoint))
 
