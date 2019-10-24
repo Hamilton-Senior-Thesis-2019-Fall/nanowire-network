@@ -122,9 +122,10 @@ class Logic(QMainWindow, Ui_MainWindow):
 
     def addAutoNodes(self, list):
         for yslice,xslice in list:
-            x = (xslice.start + xslice.stop - 1)/2
-            y = (yslice.start + yslice.stop - 1)/2
-            self.addPoint(x, y)
+            if ((yslice.stop - yslice.start) > 30) and ((xslice.stop - xslice.start) > 30):
+                x = (xslice.start + xslice.stop - 1)/2
+                y = (yslice.start + yslice.stop - 1)/2
+                self.addPoint(x, y)
 
             # print('x: ', x, '  y: ', y, '\n')
 
@@ -202,7 +203,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             image = plt.imread(self.filename)
             imgplot = self.MplWidget.canvas.axes.imshow(image, cmap = plt.cm.gist_gray)
             self.MplWidget.canvas.draw()
-            self.addAutoNodes(findNodes())
+            self.addAutoNodes(findNodes(self.filename))
 
 
     def convertToCSV(self):
