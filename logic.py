@@ -22,6 +22,8 @@ from sklearn.neighbors import NearestNeighbors
 import matplotlib.lines as lines
 import os
 
+from automation import findNodes
+
 
 class Logic(QMainWindow, Ui_MainWindow):
     def __init__(self, *args, **kwargs):
@@ -118,6 +120,14 @@ class Logic(QMainWindow, Ui_MainWindow):
                             self.edgeStarted = True;
         #self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onClick))
 
+    def addAutoNodes(self, list):
+        for yslice,xslice in list:
+            x = (xslice.start + xslice.stop - 1)/2
+            y = (yslice.start + yslice.stop - 1)/2
+            self.addPoint(x, y)
+
+            # print('x: ', x, '  y: ', y, '\n')
+
     def onKey(self, event):
         if event.key == 'control':
             self.replotImage()
@@ -192,6 +202,8 @@ class Logic(QMainWindow, Ui_MainWindow):
             image = plt.imread(self.filename)
             imgplot = self.MplWidget.canvas.axes.imshow(image, cmap = plt.cm.gist_gray)
             self.MplWidget.canvas.draw()
+            self.addAutoNodes(findNodes())
+
 
     def convertToCSV(self):
         if self.filename == '':
