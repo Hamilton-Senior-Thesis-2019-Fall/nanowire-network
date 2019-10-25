@@ -27,17 +27,22 @@ class Logic(QMainWindow, Ui_MainWindow):
     def __init__(self, *args, **kwargs):
         self.cid = []
 
-        QMainWindow.__init__(self, *args, **kwargs)
-
-        self.setupUi(self)
-        self.activateButtons()
-        self.show()
-
         self.filename = ''
 
         self.button = "node"
+        # track different button type, register with click event
+        self.buttonType = ""
+
+        # Distinguish different types of nodes
         self.nodeTypes = ['standard','spheroplast', 'curved', 'filament']
         self.edgeTypes = ['celltocell', 'celltosurface', 'cellcontact']
+        self.nodeColor = {'standard':'blue', 'spheroplast':'yellow', 'curved':'lightgreen', 'filament':'violet'}
+        self.nodeWithTypes = dict()
+        self.edgeWithTypes = dict()
+        self.nodeWithTypes.update((n,[]) for n in self.nodeTypes)
+        self.edgeWithTypes.update((e,[]) for e in self.edgeTypes)
+
+        # Record all nodes and edges regardless of their type
         self.nodes = []
         self.edges = []
         self.edgeCenters = []
@@ -50,7 +55,13 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.press = False
         self.move = False
 
-        # matplotlib canvas
+        # Note: Initiation sequence is important, attributes need to go first
+        QMainWindow.__init__(self, *args, **kwargs)
+        self.setupUi(self)
+        self.activateButtons()
+        self.show()
+
+        # Matplotlib canvas
         self.nav = NavigationToolbar(self.MplWidget.canvas, self)
         self.nav.setStyleSheet("QToolBar { border: 2px;\
         background:white; }")
@@ -59,6 +70,8 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.MplWidget.canvas.setFocus()
 
         self.resetCounterDisplay()
+
+
     def resetPlot(self):
         self.nodes = []
         self.edges = []
@@ -77,8 +90,15 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.actionExport_to_Gephi.triggered.connect(self.convertToCSV)
         self.actionSave_file.triggered.connect(self.save_plot)
         self.actionUpload_from_saved_projects.triggered.connect(self.open_plot)
-        self.node_painter_standard.clicked.connect(self.addNode)
-        self.edge_painter_celltocell.clicked.connect(self.addEdge)
+
+        self.node_painter_standard.clicked.connect(lambda:self.addNode('standard'))
+        self.node_painter_spheroplast.clicked.connect(lambda:self.addNode('spheroplast'))
+        self.node_painter_curved.clicked.connect(lambda:self.addNode('curved'))
+        self.node_painter_filament.clicked.connect(lambda:self.addNode('filament'))
+
+        self.edge_painter_celltocell.clicked.connect(lambda:self.addEdge('celltocell'))
+        self.edge_painter_celltosurface.clicked.connect(lambda:self.addEdge('celltosurface'))
+        self.edge_painter_cellcontact.clicked.connect(lambda:self.addEdge('cellcontact'))
 
         self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onpress))
         self.cid.append(self.MplWidget.canvas.mpl_connect('motion_notify_event', self.onmove))
@@ -169,9 +189,12 @@ class Logic(QMainWindow, Ui_MainWindow):
         return min_ind, min_dist
 
     def plotNodes(self):
-        x_coords = [i[0] for i in self.nodes]
-        y_coords = [i[1] for i in self.nodes]
-        self.MplWidget.canvas.axes.scatter(x_coords, y_coords, 15, 'blue', zorder=3)
+        for type in self.nodeWithTypes:
+            for n in self.nodeWithTypes[type]:
+                x_coords,y_coords = n
+                self.MplWidget.canvas.axes.scatter(x_coords, y_coords, 15, self.nodeColor[type], zorder=3)
+        self.updateCounterDisplay()
+
 
     def plotLines(self):
         self.edgeCenters = []
@@ -244,6 +267,8 @@ class Logic(QMainWindow, Ui_MainWindow):
             self.edges[-1][-1] = 1
 
         self.nodes.append([x_coord, y_coord])
+
+        self.nodeWithTypes[self.buttonType].append([x_coord, y_coord])
         self.replotImage()
 
     def removePoint(self, x_coord, y_coord):
@@ -299,23 +324,32 @@ class Logic(QMainWindow, Ui_MainWindow):
     def resetCounterDisplay(self):
         counterDisplayText = "Node Counters:\n\n"
         for n in self.nodeTypes:
+            self.nodeWithTypes[n] = []
             counterDisplayText += n + ": 0\n"
         counterDisplayText += "\nEdge Counters:\n\n"
-        for n in self.edgeTypes:
+        for e in self.edgeTypes:
+            self.edgeWithTypes[e] = []
             counterDisplayText += n + ": 0\n"
         self.counter_label.setText(counterDisplayText)
 
-    def updateCounterDisplay(self, type, number):
-        self.counter_label.setText("meh")
+    def updateCounterDisplay(self):
+        counterDisplayText = "Node Counters:\n\n"
+        for n in self.nodeTypes:
+            counterDisplayText += n + ": " + str(len(self.nodeWithTypes[n])) +  "\n"
+        counterDisplayText += "\nEdge Counters:\n\n"
+        for e in self.edgeTypes:
+            counterDisplayText += n + ": " + str(len(self.edgeWithTypes[e])) + "\n"
+        self.counter_label.setText(counterDisplayText)
 
-    def addNode(self):
+    def addNode(self, buttonType):
         self.button = 'node'
-        self.resetCounterDisplay()
+        self.buttonType = buttonType
     #     if self.filename != '':
     #       self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.addPoint))
 
-    def addEdge(self):
+    def addEdge(self, buttonType):
         self.button = 'edge'
+        self.buttonType = buttonType
         # if self.filename != '' and len(self.nodes) >= 2:
         #     self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineStart))
         #     self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineEnd))

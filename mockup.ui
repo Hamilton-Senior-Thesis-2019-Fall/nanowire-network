@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1115</width>
-    <height>764</height>
+    <width>1256</width>
+    <height>759</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -196,7 +196,7 @@ background-color: #cccccc;
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>standard_node.svg</normaloff>standard_node.svg</iconset>
+             <normaloff>spheroplast_node.svg</normaloff>spheroplast_node.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -246,7 +246,7 @@ background-color: #cccccc;
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>standard_node.svg</normaloff>standard_node.svg</iconset>
+             <normaloff>curved_node.svg</normaloff>curved_node.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -296,7 +296,7 @@ background-color: #cccccc;
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>standard_node.svg</normaloff>standard_node.svg</iconset>
+             <normaloff>filament_node.svg</normaloff>filament_node.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -486,18 +486,76 @@ background: #d8d8d8
        <attribute name="title">
         <string>Info</string>
        </attribute>
-       <widget class="QLabel" name="counter_label">
+       <widget class="QWidget" name="verticalLayoutWidget">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
-          <width>161</width>
-          <height>200</height>
+          <y>10</y>
+          <width>171</width>
+          <height>661</height>
          </rect>
         </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>300</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="Line" name="line">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="counter_label">
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>300</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </widget>
       </widget>
       <widget class="QWidget" name="tab_layers_tab">
@@ -514,7 +572,7 @@ background: #d8d8d8
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1115</width>
+     <width>1256</width>
      <height>21</height>
     </rect>
    </property>
