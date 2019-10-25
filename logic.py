@@ -192,7 +192,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         for type in self.nodeWithTypes:
             for n in self.nodeWithTypes[type]:
                 x_coords,y_coords = n
-                self.MplWidget.canvas.axes.scatter(x_coords, y_coords, 15, self.nodeColor[type], zorder=3)
+                self.MplWidget.canvas.axes.scatter(x_coords, y_coords, 20, self.nodeColor[type], zorder=3)
         self.updateCounterDisplay()
 
 
@@ -255,8 +255,6 @@ class Logic(QMainWindow, Ui_MainWindow):
         #Disconnecting event handlers (not quite sure about this)
         #for i in range(len(self.cid)):
         #    self.MplWidget.canvas.mpl_disconnect(self.cid[i])
-
-
 
     def addPoint(self, x_coord, y_coord):
         #Add more rows/col to edges adj matrix

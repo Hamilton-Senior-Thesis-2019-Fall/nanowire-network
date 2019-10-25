@@ -86,7 +86,7 @@ class Ui_MainWindow(object):
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("standard_node.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.node_painter_standard.setIcon(icon1)
-        self.node_painter_standard.setIconSize(QtCore.QSize(20, 20))
+        self.node_painter_standard.setIconSize(QtCore.QSize(30, 30))
         self.node_painter_standard.setObjectName("node_painter_standard")
         self.gridLayout_2.addWidget(self.node_painter_standard, 0, 0, 1, 1)
         self.node_painter_spheroplast = QtWidgets.QPushButton(self.gridLayoutWidget)
@@ -112,7 +112,7 @@ class Ui_MainWindow(object):
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("spheroplast_node.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.node_painter_spheroplast.setIcon(icon2)
-        self.node_painter_spheroplast.setIconSize(QtCore.QSize(20, 20))
+        self.node_painter_spheroplast.setIconSize(QtCore.QSize(30, 30))
         self.node_painter_spheroplast.setObjectName("node_painter_spheroplast")
         self.gridLayout_2.addWidget(self.node_painter_spheroplast, 1, 0, 1, 1)
         self.node_painter_curved = QtWidgets.QPushButton(self.gridLayoutWidget)
@@ -138,7 +138,7 @@ class Ui_MainWindow(object):
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap("curved_node.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.node_painter_curved.setIcon(icon3)
-        self.node_painter_curved.setIconSize(QtCore.QSize(20, 20))
+        self.node_painter_curved.setIconSize(QtCore.QSize(30, 30))
         self.node_painter_curved.setObjectName("node_painter_curved")
         self.gridLayout_2.addWidget(self.node_painter_curved, 2, 0, 1, 1)
         self.node_painter_filament = QtWidgets.QPushButton(self.gridLayoutWidget)
@@ -164,7 +164,7 @@ class Ui_MainWindow(object):
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap("filament_node.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.node_painter_filament.setIcon(icon4)
-        self.node_painter_filament.setIconSize(QtCore.QSize(20, 20))
+        self.node_painter_filament.setIconSize(QtCore.QSize(30, 30))
         self.node_painter_filament.setObjectName("node_painter_filament")
         self.gridLayout_2.addWidget(self.node_painter_filament, 3, 0, 1, 1)
         self.edge_painter_celltocell = QtWidgets.QPushButton(self.gridLayoutWidget)
@@ -326,7 +326,7 @@ class Ui_MainWindow(object):
         self.actionExport_to_Cytoscape.setText(_translate("MainWindow", "Export to Cytoscape"))
         self.actionColor_select.setText(_translate("MainWindow", "Color select"))
 from mplwidget import MplWidget
-import images_rc
+
 
 
 if __name__ == "__main__":

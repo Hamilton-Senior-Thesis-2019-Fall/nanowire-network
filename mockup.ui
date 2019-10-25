@@ -150,8 +150,8 @@ background-color: #cccccc;
            </property>
            <property name="iconSize">
             <size>
-             <width>20</width>
-             <height>20</height>
+             <width>30</width>
+             <height>30</height>
             </size>
            </property>
           </widget>
@@ -200,8 +200,8 @@ background-color: #cccccc;
            </property>
            <property name="iconSize">
             <size>
-             <width>20</width>
-             <height>20</height>
+             <width>30</width>
+             <height>30</height>
             </size>
            </property>
           </widget>
@@ -250,8 +250,8 @@ background-color: #cccccc;
            </property>
            <property name="iconSize">
             <size>
-             <width>20</width>
-             <height>20</height>
+             <width>30</width>
+             <height>30</height>
             </size>
            </property>
           </widget>
@@ -300,8 +300,8 @@ background-color: #cccccc;
            </property>
            <property name="iconSize">
             <size>
-             <width>20</width>
-             <height>20</height>
+             <width>30</width>
+             <height>30</height>
             </size>
            </property>
           </widget>
