@@ -211,6 +211,7 @@ class Logic(QMainWindow, Ui_MainWindow):
     def setImage(self):
         fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *jpeg *.bmp *.tif)")
         if fileName:
+            self.resetCounterDisplay();
             self.filename = fileName
             self.resetPlot()
             self.replotImage()
