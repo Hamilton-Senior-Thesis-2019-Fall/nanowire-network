@@ -29,17 +29,31 @@ def findNodes(filename):
 
     image = plt.imread(filename)
     cells = np.asarray(image)
-    # rgb_arr = np.stack((gray_arr, gray_arr, gray_arr), axis=-1)
-    #
-    # greyscale = color.rgb2gray(rgb_arr)
-    # gray = exposure.rescale_intensity(greyscale)
-    # im_thresh = filters.threshold_minimum(greyscale)
-    # binary = greyscale < im_thresh * .7
-    # binary_denoise = filters.rank.median(binary, morphology.disk(5))
+
+    rgb_arr = np.stack((cells, cells, cells), axis=-1)
+
+    greyscale = color.rgb2gray(cells)
+    gray = exposure.rescale_intensity(greyscale)
+    im_thresh = filters.threshold_minimum(gray)
+
+
+    # print(binary)
+
+    cells = filters.rank.median(gray, morphology.disk(7))
+
+    binary = cells > im_thresh * .6
+    for i in range(5):
+        binary = morphology.erosion(binary)
+
+    binary = morphology.remove_small_objects(binary, min_size=64)
+    binary = 1 - binary
+    #plt.imshow(binary)
+    #plt.show()
+
     #
     # plt.imshow(binary_denoise, cmap='Greys',  interpolation='nearest')
-    # plt.show()
-
+    #plt.imshow(cells, cmap='Greys',  interpolation='nearest')
+    #plt.show()
 
     # edges = feature.canny(gray/255.)
     # # edges = filters.sobel(gray)
@@ -52,13 +66,23 @@ def findNodes(filename):
 
     # Trying to get labels to change to individual cells
     # then can use that with find objects
+
     elevation_map = filters.sobel(cells)
 
-    markers = np.zeros_like(cells)
-    markers[cells < 50] = 1
-    markers[cells > 120] = 2
+    #markers = np.zeros_like(cells)
+    #markers[cells < 50] = 1
+    #markers[cells > 120] = 2
 
-    segmentation = morphology.watershed(elevation_map, markers)
+    markers = filters.rank.gradient(cells, morphology.disk(6), mask=binary) < 20
+    markers = ndi.label(markers)[0]
+
+
+
+    #gradient = filters.rank.gradient(cells, morphology.disk(2))
+
+
+
+    segmentation = morphology.watershed(elevation_map, markers, compactness=100, mask=binary)
 
     # NEXT LINE IS ISSUE IF THERE IS A BUNCH OF CELLS BUT NECESSARY FOR
     # THE PROGRAM TO RECOGNIZE DIFFERENT CELLS- NOT SURE WHY
