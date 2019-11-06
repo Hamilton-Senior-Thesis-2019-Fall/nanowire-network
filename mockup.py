@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1256, 759)
+        MainWindow.resize(1216, 904)
         MainWindow.setMinimumSize(QtCore.QSize(1000, 0))
         MainWindow.setStyleSheet("#MainWindow {\n"
 "background: #2c3539\n"
@@ -58,9 +58,9 @@ class Ui_MainWindow(object):
 "    ")
         self.edge_painter_cellcontact.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("standard_edge.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("cellcontact_edge.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.edge_painter_cellcontact.setIcon(icon)
-        self.edge_painter_cellcontact.setIconSize(QtCore.QSize(20, 20))
+        self.edge_painter_cellcontact.setIconSize(QtCore.QSize(40, 40))
         self.edge_painter_cellcontact.setObjectName("edge_painter_cellcontact")
         self.gridLayout_2.addWidget(self.edge_painter_cellcontact, 7, 0, 1, 1)
         self.node_painter_standard = QtWidgets.QPushButton(self.gridLayoutWidget)
@@ -187,8 +187,10 @@ class Ui_MainWindow(object):
 "}\n"
 "    ")
         self.edge_painter_celltocell.setText("")
-        self.edge_painter_celltocell.setIcon(icon)
-        self.edge_painter_celltocell.setIconSize(QtCore.QSize(20, 20))
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap("standard_edge.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.edge_painter_celltocell.setIcon(icon5)
+        self.edge_painter_celltocell.setIconSize(QtCore.QSize(35, 35))
         self.edge_painter_celltocell.setObjectName("edge_painter_celltocell")
         self.gridLayout_2.addWidget(self.edge_painter_celltocell, 5, 0, 1, 1)
         self.edge_painter_celltosurface = QtWidgets.QPushButton(self.gridLayoutWidget)
@@ -211,8 +213,10 @@ class Ui_MainWindow(object):
 "}\n"
 "    ")
         self.edge_painter_celltosurface.setText("")
-        self.edge_painter_celltosurface.setIcon(icon)
-        self.edge_painter_celltosurface.setIconSize(QtCore.QSize(20, 20))
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap("celltosurface_edge.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.edge_painter_celltosurface.setIcon(icon6)
+        self.edge_painter_celltosurface.setIconSize(QtCore.QSize(40, 40))
         self.edge_painter_celltosurface.setObjectName("edge_painter_celltosurface")
         self.gridLayout_2.addWidget(self.edge_painter_celltosurface, 6, 0, 1, 1)
         self.line_2 = QtWidgets.QFrame(self.gridLayoutWidget)
@@ -241,7 +245,7 @@ class Ui_MainWindow(object):
         self.tab_info_tab = QtWidgets.QWidget()
         self.tab_info_tab.setObjectName("tab_info_tab")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.tab_info_tab)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 10, 171, 661))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 10, 202, 661))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
@@ -271,7 +275,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addWidget(self.tabWidget_info_layers)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1256, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1216, 21))
         self.menubar.setObjectName("menubar")
         self.menuImport = QtWidgets.QMenu(self.menubar)
         self.menuImport.setObjectName("menuImport")
@@ -326,7 +330,6 @@ class Ui_MainWindow(object):
         self.actionExport_to_Cytoscape.setText(_translate("MainWindow", "Export to Cytoscape"))
         self.actionColor_select.setText(_translate("MainWindow", "Color select"))
 from mplwidget import MplWidget
-
 
 
 if __name__ == "__main__":

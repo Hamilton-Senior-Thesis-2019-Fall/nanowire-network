@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1256</width>
-    <height>853</height>
+    <width>1216</width>
+    <height>904</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -96,12 +96,12 @@ background-color: #cccccc;
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>standard_edge.svg</normaloff>standard_edge.svg</iconset>
+             <normaloff>cellcontact_edge.svg</normaloff>cellcontact_edge.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
-             <width>20</width>
-             <height>20</height>
+             <width>40</width>
+             <height>40</height>
             </size>
            </property>
           </widget>
@@ -350,8 +350,8 @@ background-color: #cccccc;
            </property>
            <property name="iconSize">
             <size>
-             <width>20</width>
-             <height>20</height>
+             <width>35</width>
+             <height>35</height>
             </size>
            </property>
           </widget>
@@ -396,12 +396,12 @@ background-color: #cccccc;
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>standard_edge.svg</normaloff>standard_edge.svg</iconset>
+             <normaloff>celltosurface_edge.svg</normaloff>celltosurface_edge.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
-             <width>20</width>
-             <height>20</height>
+             <width>40</width>
+             <height>40</height>
             </size>
            </property>
           </widget>
@@ -491,7 +491,7 @@ background: #d8d8d8
          <rect>
           <x>10</x>
           <y>10</y>
-          <width>171</width>
+          <width>202</width>
           <height>661</height>
          </rect>
         </property>
@@ -572,7 +572,7 @@ background: #d8d8d8
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1256</width>
+     <width>1216</width>
      <height>21</height>
     </rect>
    </property>
@@ -641,8 +641,6 @@ background: #d8d8d8
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
