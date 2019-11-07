@@ -597,8 +597,15 @@ background: #d8d8d8
     </property>
     <addaction name="actionColor_select"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionAutomation"/>
+   </widget>
    <addaction name="menuImport"/>
    <addaction name="menuExport"/>
+   <addaction name="menuTools"/>
    <addaction name="menuSettings"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -630,6 +637,11 @@ background: #d8d8d8
   <action name="actionColor_select">
    <property name="text">
     <string>Color select</string>
+   </property>
+  </action>
+  <action name="actionAutomation">
+   <property name="text">
+    <string>Automation</string>
    </property>
   </action>
  </widget>
