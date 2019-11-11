@@ -21,6 +21,7 @@ from skimage import exposure
 from sklearn.neighbors import NearestNeighbors
 import matplotlib.lines as lines
 import os
+from matplotlib.patches import Rectangle
 
 from automation import findNodes
 
@@ -51,6 +52,9 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.press = False
         self.move = False
 
+        self.shouldPlotIssues = True
+        self.issues = []
+
         # matplotlib canvas
         self.nav = NavigationToolbar(self.MplWidget.canvas, self)
         self.nav.setStyleSheet("QToolBar { border: 2px;\
@@ -58,6 +62,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.addToolBar(self.nav)
         self.MplWidget.canvas.setFocusPolicy( QtCore.Qt.ClickFocus )
         self.MplWidget.canvas.setFocus()
+
 
     def resetPlot(self):
         self.nodes = []
@@ -120,13 +125,20 @@ class Logic(QMainWindow, Ui_MainWindow):
                             self.edgeStarted = True;
         #self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onClick))
 
-    def addAutoNodes(self, list):
+    def addAutoNodes(self, values):
+        list = values[0]
+        av_size = values[1]
         for yslice,xslice in list:
-            if ((yslice.stop - yslice.start) > 30) and ((xslice.stop - xslice.start) > 30):
+            # if ((yslice.stop - yslice.start) * (xslice.stop - xslice.start) > av_size):
+            if ((yslice.stop - yslice.start) > 100) and ((xslice.stop - xslice.start) > 100) or \
+            ((yslice.stop - yslice.start) > 250) or ((xslice.stop - xslice.start) > 250):
+                xlength = xslice.stop - xslice.start
+                ylength = yslice.stop - yslice.start
+                self.issues.append([xslice.start,yslice.start,xlength, ylength])
+            elif ((yslice.stop - yslice.start) > 30) and ((xslice.stop - xslice.start) > 30):
                 x = (xslice.start + xslice.stop - 1)/2
                 y = (yslice.start + yslice.stop - 1)/2
                 self.addPoint(x, y)
-
             # print('x: ', x, '  y: ', y, '\n')
 
     def onKey(self, event):
@@ -181,6 +193,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         x_coords = [i[0] for i in self.nodes]
         y_coords = [i[1] for i in self.nodes]
         self.MplWidget.canvas.axes.scatter(x_coords, y_coords, 15, 'blue', zorder=3)
+
 
     def plotLines(self):
         self.edgeCenters = []
@@ -237,13 +250,18 @@ class Logic(QMainWindow, Ui_MainWindow):
         #Plotting lines and nodes
         self.plotLines()
         self.plotNodes()
-
+        if (self.shouldPlotIssues == True):
+            self.plotIssues()
         self.MplWidget.canvas.draw()
 
         #Disconnecting event handlers (not quite sure about this)
         #for i in range(len(self.cid)):
         #    self.MplWidget.canvas.mpl_disconnect(self.cid[i])
 
+    def plotIssues(self):
+        for issue in self.issues:
+            rect = Rectangle((issue[0],issue[1]),issue[2],issue[3],linewidth=1,edgecolor='g',facecolor='none')
+            self.MplWidget.canvas.axes.add_patch(rect)
 
 
     def addPoint(self, x_coord, y_coord):
@@ -399,6 +417,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                 rgb_arr = np.stack((gray_arr, gray_arr, gray_arr), axis=-1)
                 #print(rgb_arr)
                 imgplot = self.MplWidget.canvas.axes.imshow(rgb_arr)
+
                 self.MplWidget.canvas.draw()
                 self.replotImage()
 

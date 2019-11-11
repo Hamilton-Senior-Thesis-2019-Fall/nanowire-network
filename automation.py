@@ -60,6 +60,7 @@ def findNodes(filename):
     # fill_cells = ndi.binary_fill_holes(edges)
     # label_objects, nb_labels = ndi.label(fill_cells)
     # sizes = np.bincount(label_objects.ravel())
+
     # mask_sizes = sizes > 20
     # mask_sizes[0] = 0
     # cells_cleaned = mask_sizes[label_objects]
@@ -88,8 +89,15 @@ def findNodes(filename):
     # THE PROGRAM TO RECOGNIZE DIFFERENT CELLS- NOT SURE WHY
     segmentation = ndi.binary_fill_holes(segmentation - 1)
     labeled_cells, cell_num = ndi.label(segmentation)
+    sizes = np.bincount(labeled_cells.ravel())
+    for x, size in enumerate(sizes):
+        if (size < 900):
+            np.delete(sizes, [x])
+    # print(sizes)
+    # print(sizes.mean())
+    # print(np.median(sizes))
     cellLocs = ndi.find_objects(labeled_cells)
-    return cellLocs
+    return [cellLocs, sizes.mean() + np.median(sizes) /2]
     # print('Cells', cells)
     # print('Markers', markers)
     # print('LABEL', labeled_cells)
