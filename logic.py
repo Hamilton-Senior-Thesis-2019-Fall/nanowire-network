@@ -25,6 +25,25 @@ import os
 
 class Logic(QMainWindow, Ui_MainWindow):
     def __init__(self, *args, **kwargs):
+        self.resetPlot()
+        # Note: Initiation sequence is important, attributes need to go first
+        QMainWindow.__init__(self, *args, **kwargs)
+        self.setupUi(self)
+        self.activateButtons()
+        self.show()
+
+        # Matplotlib canvas
+        self.nav = NavigationToolbar(self.MplWidget.canvas, self)
+        self.nav.setStyleSheet("QToolBar { border: 2px;\
+        background:white; }")
+        self.addToolBar(self.nav)
+        self.MplWidget.canvas.setFocusPolicy( QtCore.Qt.ClickFocus )
+        self.MplWidget.canvas.setFocus()
+
+        self.resetCounterDisplay()
+
+
+    def resetPlot(self):
         self.cid = []
 
         self.filename = ''
@@ -66,36 +85,6 @@ class Logic(QMainWindow, Ui_MainWindow):
         # Those connections are handled differently when writing to the adjacency matrix.
         # {(startingNodex,startingNodey):[list of ending [x,y] coordinates]}
         self.nodesToSurface = dict()
-
-        # Note: Initiation sequence is important, attributes need to go first
-        QMainWindow.__init__(self, *args, **kwargs)
-        self.setupUi(self)
-        self.activateButtons()
-        self.show()
-
-        # Matplotlib canvas
-        self.nav = NavigationToolbar(self.MplWidget.canvas, self)
-        self.nav.setStyleSheet("QToolBar { border: 2px;\
-        background:white; }")
-        self.addToolBar(self.nav)
-        self.MplWidget.canvas.setFocusPolicy( QtCore.Qt.ClickFocus )
-        self.MplWidget.canvas.setFocus()
-
-        self.resetCounterDisplay()
-
-
-    def resetPlot(self):
-        self.nodes = []
-        self.edges = []
-        self.edgeCenters = []
-        self.edgeNodes = []
-
-        self.edgeStarted = False;
-        self.edgeStart = -1
-        self.edgeEnd = -1
-
-        self.press = False
-        self.move = False
 
     def activateButtons(self):
         self.actionUpload_from_computer.triggered.connect(self.setImage)
@@ -245,9 +234,9 @@ class Logic(QMainWindow, Ui_MainWindow):
     def setImage(self):
         fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *jpeg *.bmp *.tif)")
         if fileName:
+            self.resetPlot()
             self.resetCounterDisplay();
             self.filename = fileName
-            self.resetPlot()
             self.replotImage()
             image = plt.imread(self.filename)
             imgplot = self.MplWidget.canvas.axes.imshow(image, cmap = plt.cm.gist_gray)
@@ -394,7 +383,14 @@ class Logic(QMainWindow, Ui_MainWindow):
             counterDisplayText += n + ": " + str(len(self.nodeWithTypes[n])) +  "\n"
         counterDisplayText += "\nEdge Counters:\n\n"
         for e in self.edgeTypes:
-            counterDisplayText += e + ": " + str(len(self.edgeWithTypes[e])) + "\n"
+            counterDisplayText += e + ": "
+            if e == 'celltosurface':
+                counter = 0
+                for k in self.nodesToSurface:
+                    counter += len(self.nodesToSurface[k])
+                counterDisplayText += str(counter) + "\n"
+            else:
+                counterDisplayText += str(len(self.edgeWithTypes[e])) + "\n"
         self.counter_label.setText(counterDisplayText)
 
     def addNode(self, buttonType):
