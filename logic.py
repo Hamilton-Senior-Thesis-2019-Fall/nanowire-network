@@ -21,6 +21,9 @@ from skimage import exposure
 from sklearn.neighbors import NearestNeighbors
 import matplotlib.lines as lines
 import os
+from matplotlib.patches import Rectangle
+
+from automation import findNodes
 
 
 class Logic(QMainWindow, Ui_MainWindow):
@@ -50,7 +53,7 @@ class Logic(QMainWindow, Ui_MainWindow):
 
         self.button = "node"
         # track different button type, register with click event
-        self.buttonType = ""
+        self.buttonType = "standard"
 
         # Distinguish different types of nodes
         self.nodeTypes = ['standard','spheroplast', 'curved', 'filament']
@@ -77,6 +80,11 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.press = False
         self.move = False
 
+        self.notAutomated = True
+        self.shouldPlotIssues = True
+        self.issues = []
+
+
         # the pixel width of the node dot on the graph
         # It's important to avoid re-registering the same dot if clicked on nearby pixels
         self.nodeRdius = 12
@@ -92,6 +100,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.actionExport_to_Gephi.triggered.connect(self.convertToCSV)
         self.actionSave_file.triggered.connect(self.save_plot)
         self.actionUpload_from_saved_projects.triggered.connect(self.open_plot)
+        self.actionColor_select.triggered.connect(self.automateFile)
 
         self.node_painter_standard.clicked.connect(lambda:self.addNode('standard'))
         self.node_painter_spheroplast.clicked.connect(lambda:self.addNode('spheroplast'))
@@ -160,6 +169,32 @@ class Logic(QMainWindow, Ui_MainWindow):
                             self.edgeStarted = True;
         #self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onClick))
 
+    def automateFile(self):
+        modifiers = QtWidgets.QApplication.keyboardModifiers()
+        if modifiers == QtCore.Qt.ControlModifier:
+            self.shouldPlotIssues = not self.shouldPlotIssues
+            self.replotImage()
+        elif (self.notAutomated):
+            self.addAutoNodes(findNodes(self.filename))
+            self.notAutomated = False
+        else:
+            print("Already Automated")
+    def addAutoNodes(self, values):
+        list = values[0]
+        av_size = values[1]
+        for yslice,xslice in list:
+            # if ((yslice.stop - yslice.start) * (xslice.stop - xslice.start) > av_size):
+            if ((yslice.stop - yslice.start) > 100) and ((xslice.stop - xslice.start) > 100) or \
+            ((yslice.stop - yslice.start) > 250) or ((xslice.stop - xslice.start) > 250):
+                xlength = xslice.stop - xslice.start
+                ylength = yslice.stop - yslice.start
+                self.issues.append([xslice.start,yslice.start,xlength, ylength])
+            elif ((yslice.stop - yslice.start) > 30) and ((xslice.stop - xslice.start) > 30):
+                x = (xslice.start + xslice.stop - 1)/2
+                y = (yslice.start + yslice.stop - 1)/2
+                self.addPoint(x, y)
+            # print('x: ', x, '  y: ', y, '\n')
+
     def onKey(self, event):
         if event.key == 'control':
             self.replotImage()
@@ -217,6 +252,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.updateCounterDisplay()
 
 
+
     def plotLines(self):
         self.edgeCenters = []
         self.edgeNodes = []
@@ -249,6 +285,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             image = plt.imread(self.filename)
             imgplot = self.MplWidget.canvas.axes.imshow(image, cmap = plt.cm.gist_gray)
             self.MplWidget.canvas.draw()
+
 
     def convertToCSV(self):
         if self.filename == '':
@@ -294,12 +331,19 @@ class Logic(QMainWindow, Ui_MainWindow):
         #Plotting lines and nodes
         self.plotLines()
         self.plotNodes()
-
+        if (self.shouldPlotIssues == True):
+            self.plotIssues()
         self.MplWidget.canvas.draw()
 
         #Disconnecting event handlers (not quite sure about this)
         #for i in range(len(self.cid)):
         #    self.MplWidget.canvas.mpl_disconnect(self.cid[i])
+
+    def plotIssues(self):
+        for issue in self.issues:
+            rect = Rectangle((issue[0],issue[1]),issue[2],issue[3],linewidth=1,edgecolor='g',facecolor='none')
+            self.MplWidget.canvas.axes.add_patch(rect)
+
 
     def addPoint(self, x_coord, y_coord):
         #Add more rows/col to edges adj matrix
@@ -501,6 +545,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                 rgb_arr = np.stack((gray_arr, gray_arr, gray_arr), axis=-1)
                 #print(rgb_arr)
                 imgplot = self.MplWidget.canvas.axes.imshow(rgb_arr)
+
                 self.MplWidget.canvas.draw()
                 self.replotImage()
 
