@@ -80,7 +80,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.press = False
         self.move = False
 
-        self.notAutomated = True
+        self.shouldAutomate = False
         self.shouldPlotIssues = True
         self.issues = []
 
@@ -174,11 +174,12 @@ class Logic(QMainWindow, Ui_MainWindow):
         if modifiers == QtCore.Qt.ControlModifier:
             self.shouldPlotIssues = not self.shouldPlotIssues
             self.replotImage()
-        elif (self.notAutomated):
+        elif (self.shouldAutomate):
             self.addAutoNodes(findNodes(self.filename))
-            self.notAutomated = False
+            self.shouldAutomate = False
         else:
             print("Already Automated")
+
     def addAutoNodes(self, values):
         list = values[0]
         av_size = values[1]
@@ -216,7 +217,6 @@ class Logic(QMainWindow, Ui_MainWindow):
         return [(position1[0] + position2[0]) / 2, (position1[1] + position2[1]) / 2]
 
     def findClosestNode(self, x_coord, y_coord):
-
         pt = [x_coord, y_coord]
         if self.edgeStarted and self.edgeStart == 0:
             min_dist = self.distance(pt, self.nodes[1])
@@ -285,6 +285,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             image = plt.imread(self.filename)
             imgplot = self.MplWidget.canvas.axes.imshow(image, cmap = plt.cm.gist_gray)
             self.MplWidget.canvas.draw()
+            self.shouldAutomate = True
 
 
     def convertToCSV(self):
