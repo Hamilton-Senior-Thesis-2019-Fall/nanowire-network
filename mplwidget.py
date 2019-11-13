@@ -7,6 +7,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvas
 
 from matplotlib.figure import Figure
 
+from PyQt5 import QtCore
 
 class MplWidget(QWidget):
 
@@ -21,5 +22,6 @@ class MplWidget(QWidget):
         vertical_layout.addWidget(self.canvas)
 
         self.canvas.axes = self.canvas.figure.add_subplot(111)
+        self.canvas.figure.tight_layout()
         self.setLayout(vertical_layout)
         self.canvas.axes.axis('off')
