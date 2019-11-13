@@ -111,6 +111,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.cid.append(self.MplWidget.canvas.mpl_connect('key_release_event', self.onKeyRelease))
 
     def onClick(self, event):
+        print(self.nodes)
         modifiers = QtWidgets.QApplication.keyboardModifiers()
         if self.filename != '':
             #If control is held down, removing stuff
@@ -180,6 +181,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         return [(position1[0] + position2[0]) / 2, (position1[1] + position2[1]) / 2]
 
     def findClosestNode(self, x_coord, y_coord):
+
         pt = [x_coord, y_coord]
         if self.edgeStarted and self.edgeStart == 0:
             min_dist = self.distance(pt, self.nodes[1])
@@ -232,6 +234,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             for e in self.edgeWithTypes['celltosurface'][s]:
                 line_x = [s[0],e[0]]
                 line_y = [s[1],e[1]]
+                self.edgeCenters.append(self.midpoint(s, e))
                 self.MplWidget.canvas.axes.add_line(lines.Line2D(line_x, line_y, linewidth=2, color='orange'))
 
 
@@ -240,6 +243,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         if fileName:
             self.resetPlot()
             self.resetCounterDisplay();
+
             self.filename = fileName
             self.replotImage()
             image = plt.imread(self.filename)
@@ -319,14 +323,16 @@ class Logic(QMainWindow, Ui_MainWindow):
 
             self.nodeWithTypes[self.buttonType].append([x_coord, y_coord])
             self.replotImage()
+        print(self.nodes)
 
     def removePoint(self, x_coord, y_coord):
-        del_ind, del_dist = self.findClosestNode(x_coord, y_coord)
-        del self.nodes[del_ind]
-        self.edges = np.delete(self.edges, del_ind, axis=0)
-        self.edges = np.delete(self.edges, del_ind, axis=1)
+        if len(self.nodes) > 0:
+            del_ind, del_dist = self.findClosestNode(x_coord, y_coord)
+            del self.nodes[del_ind]
+            self.edges = np.delete(self.edges, del_ind, axis=0)
+            self.edges = np.delete(self.edges, del_ind, axis=1)
 
-        self.replotImage()
+            self.replotImage()
 
     def lineStart(self, x_coord, y_coord):
         min_ind, min_dist = self.findClosestNode(x_coord, y_coord)
@@ -344,7 +350,8 @@ class Logic(QMainWindow, Ui_MainWindow):
 
     def removeLine(self, x_coord, y_coord):
         del_ind, dist = self.findClosestEdge(x_coord, y_coord)
-
+        print(del_ind)
+        print(self.edgeNodes)
         del self.edgeCenters[del_ind]
         self.edges[self.edgeNodes[del_ind][0]][self.edgeNodes[del_ind][1]] = 0
         self.edges[self.edgeNodes[del_ind][1]][self.edgeNodes[del_ind][0]] = 0
