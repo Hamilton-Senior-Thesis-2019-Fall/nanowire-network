@@ -58,9 +58,10 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.nodeColor = {'standard':'blue', 'spheroplast':'yellow', 'curved':'lightgreen', 'filament':'violet'}
         self.nodeWithTypes = dict()
         self.edgeWithTypes = dict()
-        # {node/edgeType: [list of [x,y]}
+        # {nodeType: [list of [x,y]}
+        # {edgeType: {(startNodex, startNodey): [list of [x,y]]}}
         self.nodeWithTypes.update((n,[]) for n in self.nodeTypes)
-        self.edgeWithTypes.update((e,[]) for e in self.edgeTypes)
+        self.edgeWithTypes.update((e,dict()) for e in self.edgeTypes)
 
         # Record all nodes and edges regardless of their type
         self.nodes = []
@@ -71,6 +72,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.edgeStarted = False;
         self.edgeStart = -1
         self.edgeEnd = -1
+        self.edgeStartNode = [];
 
         self.press = False
         self.move = False
@@ -84,7 +86,6 @@ class Logic(QMainWindow, Ui_MainWindow):
         # which shouldn't be counted into total nodes.
         # Those connections are handled differently when writing to the adjacency matrix.
         # {(startingNodex,startingNodey):[list of ending [x,y] coordinates]}
-        self.nodesToSurface = dict()
 
     def activateButtons(self):
         self.actionUpload_from_computer.triggered.connect(self.setImage)
@@ -115,12 +116,13 @@ class Logic(QMainWindow, Ui_MainWindow):
             #If control is held down, removing stuff
             if modifiers == QtCore.Qt.ControlModifier:
                 self.edgeStarted = False;
-                self.removeNearest(event.xdata, event.ydata)
+                self.removeNearest(event.xdata, event.ydata);
+
             else:
                 if self.button == "node":
                     # if modifiers == QtCore.Qt.ShiftModifier:
                     #     if self.edgeStarted:
-                    #         self.lineEnd(event.xdata, event.ydata)
+                    #         self.(event.xdata, event.ydata)
                     #         self.edgeStarted = False;
                     #     else:
                     #         self.lineStart(event.xdata, event.ydata)
@@ -129,11 +131,17 @@ class Logic(QMainWindow, Ui_MainWindow):
                         self.edgeStarted = False;
                         self.addPoint(event.xdata, event.ydata)
                 elif self.button == "edge":
-                    print(self.edges)
+                    # print(self.edges)
                     # if modifiers == QtCore.Qt.ShiftModifier:
                     #     self.edgeStarted = False;
                     #     self.addPoint(event.xdata, event.ydata)
                     # else:
+                    if self.edgeStarted:
+                        startNodeTuple = tuple(self.nodes[self.edgeStart])
+                        if startNodeTuple not in self.edgeWithTypes[self.buttonType]:
+                            self.edgeWithTypes[self.buttonType][startNodeTuple] = []
+                        self.edgeWithTypes[self.buttonType][startNodeTuple].append([event.xdata, event.ydata])
+
                     if self.buttonType == "celltocell" or self.buttonType == "cellcontact":
                         if self.edgeStarted:
                             self.lineEnd(event.xdata, event.ydata)
@@ -143,13 +151,8 @@ class Logic(QMainWindow, Ui_MainWindow):
                             self.edgeStarted = True;
                     elif self.buttonType == 'celltosurface':
                         if self.edgeStarted:
-                            startCoord = tuple(self.nodes[self.edgeStart])
-                            if startCoord not in self.nodesToSurface:
-                                self.nodesToSurface[startCoord] = []
-                            self.nodesToSurface[startCoord].append([event.xdata, event.ydata])
 
                             self.edgeStarted = False;
-                            print(self.nodesToSurface)
                             self.replotImage()
                         else:
                             self.lineStart(event.xdata, event.ydata)
@@ -224,8 +227,9 @@ class Logic(QMainWindow, Ui_MainWindow):
                     line_y = [self.nodes[r][1], self.nodes[c][1]]
                     self.MplWidget.canvas.axes.add_line(lines.Line2D(line_x, line_y, linewidth=2, color='red'))
 
-        for s in list(self.nodesToSurface.keys()):
-            for e in self.nodesToSurface[s]:
+        celltosurface = self.edgeWithTypes['celltosurface']
+        for s in list(celltosurface.keys()):
+            for e in self.edgeWithTypes['celltosurface'][s]:
                 line_x = [s[0],e[0]]
                 line_y = [s[1],e[1]]
                 self.MplWidget.canvas.axes.add_line(lines.Line2D(line_x, line_y, linewidth=2, color='orange'))
@@ -269,7 +273,7 @@ class Logic(QMainWindow, Ui_MainWindow):
 
             # cell to surface edge
             currCoord = tuple(self.nodes[i])
-            if currCoord in self.nodesToSurface and len(self.nodesToSurface[currCoord]) > 0:
+            if currCoord in self.edgeWithTypes['celltosurface'] and len(self.edgeWithTypes['celltosurface'][currCoord]) > 0:
                 line += ";" + "1"
             else:
                 line += ";" + "0"
@@ -327,12 +331,15 @@ class Logic(QMainWindow, Ui_MainWindow):
     def lineStart(self, x_coord, y_coord):
         min_ind, min_dist = self.findClosestNode(x_coord, y_coord)
         self.edgeStart = min_ind
+        self.edgeStartNode = [x_coord, y_coord]
 
     def lineEnd(self, x_coord, y_coord):
         min_ind, min_dist = self.findClosestNode(x_coord, y_coord)
         self.edgeEnd = min_ind
         self.edges[self.edgeStart,self.edgeEnd] = 1
-        self.edgeWithTypes[self.buttonType].append([x_coord, y_coord])
+        print(self.edgeWithTypes)
+        # self.edgeWithTypes[self.buttonType][tuple(self.edgeStartNode)].append([x_coord, y_coord])
+
         self.replotImage()
 
     def removeLine(self, x_coord, y_coord):
@@ -373,7 +380,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             counterDisplayText += n + ": 0\n"
         counterDisplayText += "\nEdge Counters:\n\n"
         for e in self.edgeTypes:
-            self.edgeWithTypes[e] = []
+            self.edgeWithTypes[e] = dict()
             counterDisplayText += e + ": 0\n"
         self.counter_label.setText(counterDisplayText)
 
@@ -386,8 +393,8 @@ class Logic(QMainWindow, Ui_MainWindow):
             counterDisplayText += e + ": "
             if e == 'celltosurface':
                 counter = 0
-                for k in self.nodesToSurface:
-                    counter += len(self.nodesToSurface[k])
+                for k in self.edgeWithTypes['celltosurface']:
+                    counter += len(self.edgeWithTypes['celltosurface'][k])
                 counterDisplayText += str(counter) + "\n"
             else:
                 counterDisplayText += str(len(self.edgeWithTypes[e])) + "\n"
