@@ -30,6 +30,16 @@ def findNodes(filename):
     image = plt.imread(filename)
     cells = np.asarray(image)
 
+    scalebar_start = np.size(cells, 0)
+    found_scalebar = False
+    for row in range(np.size(cells, 0)):
+        if not found_scalebar:
+            if np.amin(cells[row]) == 0:
+                scalebar_start = row
+                found_scalebar = True
+
+    cells = cells[:scalebar_start][:]
+
     rgb_arr = np.stack((cells, cells, cells), axis=-1)
 
     greyscale = color.rgb2gray(cells)
