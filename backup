@@ -150,10 +150,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                         startNodeTuple = tuple(self.nodes[self.edgeStart])
                         if startNodeTuple not in self.edgeWithTypes[self.buttonType]:
                             self.edgeWithTypes[self.buttonType][startNodeTuple] = []
-                        for n in self.nodes:
-                            if n[0] - self.nodeRdius <= event.xdata <=  n[0] + self.nodeRdius and \
-                            n[1] - self.nodeRdius <= event.ydata <=  n[1] + self.nodeRdius:
-                                self.edgeWithTypes[self.buttonType][startNodeTuple].append(n)
+                        self.edgeWithTypes[self.buttonType][startNodeTuple].append([event.xdata, event.ydata])
 
                     if self.buttonType == "celltocell" or self.buttonType == "cellcontact":
                         if self.edgeStarted:
@@ -338,8 +335,6 @@ class Logic(QMainWindow, Ui_MainWindow):
         if (self.shouldPlotIssues == True):
             self.plotIssues()
         self.MplWidget.canvas.draw()
-        self.updateCounterDisplay()
-
 
         #Disconnecting event handlers (not quite sure about this)
         #for i in range(len(self.cid)):
@@ -400,38 +395,30 @@ class Logic(QMainWindow, Ui_MainWindow):
     def removeLine(self, x_coord, y_coord):
         del_ind, dist = self.findClosestEdge(x_coord, y_coord)
 
+        print("S:", self.nodes[self.edgeNodes[del_ind][0]])
+        print("E:", self.nodes[self.edgeNodes[del_ind][1]])
+
         endpoint1 = self.nodes[self.edgeNodes[del_ind][0]]
         endpoint2 = self.nodes[self.edgeNodes[del_ind][1]]
-        print("1:", endpoint1)
-        print("2:", endpoint2)
         for edgeType in self.edgeWithTypes:
-            print("before:", self.edgeWithTypes)
-            if tuple(endpoint1) in self.edgeWithTypes[edgeType]:
-                self.edgeWithTypes[edgeType][tuple(endpoint1)].remove(endpoint2)
-                break
-            elif tuple(endpoint2) in self.edgeWithTypes[edgeType]:
-                self.edgeWithTypes[edgeType][tuple(endpoint2)].remove(endpoint1)
-                break
-            else:
-             raise Exception("Node {} and node {} are not endpoints of any edge".format(endpoint1,endpoint2))
+            for startNode in self.edgeWithTypes[edgeType]:
+                if endpoint1[0] - self.nodeRdius <= startNode[0] <= endpoint1[0] + self.nodeRdius and \
+                endpoint1[1] - self.nodeRdius <= startNode[1] <= endpoint1[1] + self.nodeRdius:
+                    print("SP:",self.edgeWithTypes[edgeType][startNode])
+                    tempList = self.edgeWithTypes[edgeType][startNode]
+                    tempList.remove(endpoint1)
+                    self.edgeWithTypes[edgeType][startNode] = tempList
+                elif endpoint2[0] - self.nodeRdius <= startNode[0] <= endpoint2[0] + self.nodeRdius and \
+                endpoint2[1] - self.nodeRdius <= startNode[1] <= endpoint2[1] + self.nodeRdius:
+                    print("EP:",self.edgeWithTypes[edgeType][startNode])
+                    tempList = self.edgeWithTypes[edgeType][startNode]
+                    tempList.remove(endpoint2)
+                    self.edgeWithTypes[edgeType][startNode] = tempList
+                else:
+                 raise Exception("Node {} and node {} are not endpoints of any edge".format(endpoint1,endpoint2))
 
 
-         # for startNode in self.edgeWithTypes[edgeType]:
-         #     if endpoint1[0] - self.nodeRdius <= startNode[0] <= endpoint1[0] + self.nodeRdius and \
-         #     endpoint1[1] - self.nodeRdius <= startNode[1] <= endpoint1[1] + self.nodeRdius:
-         #         print("SP:",self.edgeWithTypes[edgeType][startNode])
-         #         tempList = self.edgeWithTypes[edgeType][startNode]
-         #         tempList.remove(endpoint2)
-         #         self.edgeWithTypes[edgeType][startNode] = tempList
-         #     elif endpoint2[0] - self.nodeRdius <= startNode[0] <= endpoint2[0] + self.nodeRdius and \
-         #     endpoint2[1] - self.nodeRdius <= startNode[1] <= endpoint2[1] + self.nodeRdius:
-         #         print("EP:",self.edgeWithTypes[edgeType][startNode])
-         #         tempList = self.edgeWithTypes[edgeType][startNode]
-         #         tempList.remove(endpoint1)
-         #         self.edgeWithTypes[edgeType][startNode] = tempList
 
-
-        print("after:", self.edgeWithTypes)
         del self.edgeCenters[del_ind]
         self.edges[self.edgeNodes[del_ind][0]][self.edgeNodes[del_ind][1]] = 0
         self.edges[self.edgeNodes[del_ind][1]][self.edgeNodes[del_ind][0]] = 0
@@ -484,10 +471,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                     counter += len(self.edgeWithTypes['celltosurface'][k])
                 counterDisplayText += str(counter) + "\n"
             else:
-                counter = 0
-                for n in self.edgeWithTypes[e]:
-                    counter += len(self.edgeWithTypes[e][n])
-                counterDisplayText += str(counter) + "\n"
+                counterDisplayText += str(len(self.edgeWithTypes[e])) + "\n"
         self.counter_label.setText(counterDisplayText)
 
     def addNode(self, buttonType):
