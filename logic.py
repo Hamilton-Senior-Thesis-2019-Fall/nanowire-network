@@ -164,8 +164,8 @@ class Logic(QMainWindow, Ui_MainWindow):
                             self.edgeStarted = True;
                     elif self.buttonType == 'celltosurface':
                         if self.edgeStarted:
-
                             self.edgeStarted = False;
+                            self.edgeWithTypes[self.buttonType][startNodeTuple].append([event.xdata, event.ydata])
                             self.replotImage()
                         else:
                             self.lineStart(event.xdata, event.ydata)
@@ -268,12 +268,13 @@ class Logic(QMainWindow, Ui_MainWindow):
                     line_y = [self.nodes[r][1], self.nodes[c][1]]
                     self.MplWidget.canvas.axes.add_line(lines.Line2D(line_x, line_y, linewidth=2, color='red'))
 
+        print(self.edgeWithTypes['celltosurface'])
         celltosurface = self.edgeWithTypes['celltosurface']
         for s in list(celltosurface.keys()):
             for e in self.edgeWithTypes['celltosurface'][s]:
                 line_x = [s[0],e[0]]
                 line_y = [s[1],e[1]]
-                self.edgeCenters.append(self.midpoint(s, e))
+                self.edgeCenters.append(e)
                 self.MplWidget.canvas.axes.add_line(lines.Line2D(line_x, line_y, linewidth=2, color='orange'))
 
 
@@ -393,29 +394,27 @@ class Logic(QMainWindow, Ui_MainWindow):
         min_ind, min_dist = self.findClosestNode(x_coord, y_coord)
         self.edgeEnd = min_ind
         self.edges[self.edgeStart,self.edgeEnd] = 1
-        # self.edgeWithTypes[self.buttonType][tuple(self.edgeStartNode)].append([x_coord, y_coord])
 
         self.replotImage()
 
     def removeLine(self, x_coord, y_coord):
         del_ind, dist = self.findClosestEdge(x_coord, y_coord)
 
-        endpoint1 = self.nodes[self.edgeNodes[del_ind][0]]
-        endpoint2 = self.nodes[self.edgeNodes[del_ind][1]]
-        print("1:", endpoint1)
-        print("2:", endpoint2)
-        for edgeType in self.edgeWithTypes:
-            print("before:", self.edgeWithTypes)
-            if tuple(endpoint1) in self.edgeWithTypes[edgeType]:
-                self.edgeWithTypes[edgeType][tuple(endpoint1)].remove(endpoint2)
-                break
-            elif tuple(endpoint2) in self.edgeWithTypes[edgeType]:
-                self.edgeWithTypes[edgeType][tuple(endpoint2)].remove(endpoint1)
-                break
-            else:
-             raise Exception("Node {} and node {} are not endpoints of any edge".format(endpoint1,endpoint2))
-
-
+        if self.buttonType == "celltocell":
+            endpoint1 = self.nodes[self.edgeNodes[del_ind][0]]
+            endpoint2 = self.nodes[self.edgeNodes[del_ind][1]]
+            print("1:", endpoint1)
+            print("2:", endpoint2)
+            for edgeType in self.edgeWithTypes:
+                print("before:", self.edgeWithTypes)
+                if tuple(endpoint1) in self.edgeWithTypes[edgeType]:
+                    self.edgeWithTypes[edgeType][tuple(endpoint1)].remove(endpoint2)
+                    break
+                elif tuple(endpoint2) in self.edgeWithTypes[edgeType]:
+                    self.edgeWithTypes[edgeType][tuple(endpoint2)].remove(endpoint1)
+                    break
+                else:
+                 raise Exception("Node {} and node {} are not endpoints of any edge".format(endpoint1,endpoint2))
          # for startNode in self.edgeWithTypes[edgeType]:
          #     if endpoint1[0] - self.nodeRdius <= startNode[0] <= endpoint1[0] + self.nodeRdius and \
          #     endpoint1[1] - self.nodeRdius <= startNode[1] <= endpoint1[1] + self.nodeRdius:
@@ -429,14 +428,18 @@ class Logic(QMainWindow, Ui_MainWindow):
          #         tempList = self.edgeWithTypes[edgeType][startNode]
          #         tempList.remove(endpoint1)
          #         self.edgeWithTypes[edgeType][startNode] = tempList
+            self.edges[self.edgeNodes[del_ind][0]][self.edgeNodes[del_ind][1]] = 0
+            self.edges[self.edgeNodes[del_ind][1]][self.edgeNodes[del_ind][0]] = 0
+            del self.edgeNodes[del_ind]
 
+        elif self.buttonType == "celltosurface":
+            surface = self.edgeCenters[del_ind]
+            for k in self.edgeWithTypes["celltosurface"]:
+                for surfaceNode in self.edgeWithTypes["celltosurface"][k]:
+                    if surfaceNode == surface:
+                        self.edgeWithTypes["celltosurface"][k].remove(surfaceNode)
 
-        print("after:", self.edgeWithTypes)
         del self.edgeCenters[del_ind]
-        self.edges[self.edgeNodes[del_ind][0]][self.edgeNodes[del_ind][1]] = 0
-        self.edges[self.edgeNodes[del_ind][1]][self.edgeNodes[del_ind][0]] = 0
-        del self.edgeNodes[del_ind]
-
         self.replotImage()
 
     def removeNearest(self, x_coord, y_coord):
