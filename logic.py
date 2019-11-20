@@ -121,7 +121,7 @@ class Logic(QMainWindow, Ui_MainWindow):
     def onClick(self, event):
         modifiers = QtWidgets.QApplication.keyboardModifiers()
         if self.filename != '':
-             if self.calibrating:
+            if self.calibrating:
                 self.calibration_point_coords.append((event.xdata, event.ydata))
                 print(self.calibration_point_coords)
                 self.calibration_points.extend(plt.plot(event.x, event.y, color="m"))
