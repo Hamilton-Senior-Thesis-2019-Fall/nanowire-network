@@ -19,7 +19,6 @@ from skimage import filters
 from skimage import measure
 from skimage import transform
 from skimage import exposure
-from sklearn.neighbors import NearestNeighbors
 import matplotlib.lines as lines
 import os
 
@@ -419,7 +418,8 @@ class Logic(QMainWindow, Ui_MainWindow):
 
     def addPoint(self, x_coord, y_coord):
         #Add more rows/col to edges adj matrix
-
+        x_coord = round(x_coord, 6)
+        y_coord = round(y_coord, 6)
         #when a new point is very close to a nearby point, consider to merge it
         #at this point, forbid creating new point which is close to a nearby point to avoid double-clicking
         duplicateNode = False
@@ -451,23 +451,25 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.saved = False
 
     def lineStart(self, x_coord, y_coord):
-        min_ind, min_dist = self.findClosestNode(x_coord, y_coord)
-        self.edgeStart = min_ind
-
-    def lineStart(self, x_coord, y_coord):
+        x_coord = round(x_coord, 6)
+        y_coord = round(y_coord, 6)
         min_ind, min_dist = self.findClosestNode(x_coord, y_coord)
         self.edgeStart = min_ind
 
     def lineEnd(self, x_coord, y_coord):
+        x_coord = round(x_coord, 6)
+        y_coord = round(y_coord, 6)
         min_ind, min_dist = self.findClosestNode(x_coord, y_coord)
         self.edgeEnd = min_ind
-        self.edges[self.edgeStart,self.edgeEnd] = self.weight()
-        self.edges[self.edgeEnd,self.edgeStart] = self.weight()
+        self.edges[self.edgeStart][self.edgeEnd] = self.weight()
+        self.edges[self.edgeEnd][self.edgeStart] = self.weight()
         self.edgeWithTypes[self.buttonType].append([x_coord, y_coord])
         self.replotImage()
         self.saved = False
 
     def removeLine(self, x_coord, y_coord):
+        x_coord = round(x_coord, 6)
+        y_coord = round(y_coord, 6)
         del_ind, dist = self.findClosestEdge(x_coord, y_coord)
 
         del self.edgeCenters[del_ind]
@@ -479,6 +481,8 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.saved = False
 
     def removeNearest(self, x_coord, y_coord):
+        x_coord = round(x_coord, 6)
+        y_coord = round(y_coord, 6)
         ind1, node_dist = self.findClosestNode(x_coord, y_coord)
         ind2, edge_dist = self.findClosestEdge(x_coord, y_coord)
         if (node_dist < edge_dist) or (ind2 == -1):
@@ -547,9 +551,9 @@ class Logic(QMainWindow, Ui_MainWindow):
             # Write node coords
             for n_type in self.nodeTypes:
                 for x, y in self.nodeWithTypes[n_type][:-1]:
-                    out_file.write("%f,%f,%s," % (x, y, n_type))
+                    out_file.write("%.6f,%.6f,%s," % (x, y, n_type))
                 try:
-                    out_file.write("%f,%f,%s" % (self.nodeWithTypes[n_type][-1][0], self.nodeWithTypes[n_type][-1][1], n_type))
+                    out_file.write("%.6f,%.6f,%s" % (self.nodeWithTypes[n_type][-1][0], self.nodeWithTypes[n_type][-1][1], n_type))
                 except:
                     out_file.write("")
             out_file.write("\n")
@@ -558,7 +562,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             out_file.write("%d\n" % len(self.edges))
             for i in range(len(self.edges)):
                 for j in range(len(self.edges[i])):
-                    out_file.write("%f " % self.edges[i][j])
+                    out_file.write("%.6f " % self.edges[i][j])
                 out_file.write('\n')
 
             # Write node to surface dict
