@@ -1,0 +1,1127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:viz="http://www.gexf.net/1.1draft/viz"
+      xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd"
+      version="1.2">
+ <meta lastmodifieddate="19-11-21">
+  <creator>Nanowire Network Analysis</creator>
+  <description>CS410 Hamilton College Senior Project</description>
+  <keywords>cells, schewanella, Hamilton, 410</keywords>
+ </meta>
+ <graph defaultedgetype="undirected">
+  <attributes class="edge">
+   <attribute id="0" title="edgetype" type="string" />
+   <attribute id="1" title="length" type="float" />
+   <attribute id="2" title="currentohms" type="float" />
+  </attributes>
+  <nodes>
+   <node id="A" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="765.109878" y="812.785753" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="B" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="622.449199" y="927.473749" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="C" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="359.505989" y="577.815224" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="D" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="286.777016" y="521.869860" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="E" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="356.708721" y="963.838235" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="F" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="507.761203" y="1050.553549" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="G" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="426.640426" y="1047.756281" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="H" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="675.597295" y="1114.890718" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="I" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="725.948123" y="1084.120768" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="J" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="773.501682" y="1061.742622" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="K" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="846.230655" y="916.284676" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="L" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="944.135042" y="807.191216" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="M" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="835.041583" y="1428.184756" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="N" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="837.838851" y="1517.697338" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="O" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="874.203337" y="1559.656361" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="P" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="904.973287" y="1472.941047" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="Q" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="952.526847" y="1444.968365" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="R" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1111.971134" y="1509.305534" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="S" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1092.390257" y="1458.954706" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="T" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1067.214843" y="1366.644856" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="U" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1131.552012" y="1366.644856" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="V" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1193.091912" y="1274.335005" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="W" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1153.930157" y="1173.633350" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="X" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1165.119230" y="1109.296182" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="Y" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1167.916498" y="1148.457936" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="Z" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1215.470057" y="1081.323500" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AA" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1251.834544" y="1321.888565" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AB" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1268.618153" y="1358.253051" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AC" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1318.968981" y="1358.253051" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AD" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1372.117077" y="1327.483101" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AE" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1341.347126" y="1274.335005" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AF" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1254.631812" y="1254.754128" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AG" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1559.534046" y="1257.551396" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AH" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1663.032969" y="1279.929542" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AI" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1691.005651" y="1201.606032" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AJ" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1808.490915" y="1226.781446" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AK" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1640.654824" y="1092.512572" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AL" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1484.007804" y="804.393948" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AM" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1707.789260" y="796.002143" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AN" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1934.367984" y="893.906530" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AO" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1903.598034" y="1693.925235" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AP" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1746.951015" y="1526.089143" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AQ" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1190.294644" y="1635.182603" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AR" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1346.941663" y="1601.615384" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AS" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="373.492330" y="1724.695185" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AT" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="334.330575" y="1719.100649" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AU" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="362.303257" y="1660.358017" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AV" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="236.426188" y="1540.075484" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AW" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="35.022878" y="1352.658515" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AX" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="216.845311" y="1162.444277" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AY" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="242.020725" y="1044.959013" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="AZ" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="54.603755" y="933.068285" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BA" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="43.414683" y="807.191216" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BB" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="21.036537" y="695.300488" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BC" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="258.804334" y="728.867707" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BD" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="303.560625" y="706.489561" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BE" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="289.574284" y="614.179710" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BF" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="138.521801" y="530.261665" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BG" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="169.291751" y="457.532691" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BH" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="776.298950" y="418.370937" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BI" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="857.419728" y="421.168205" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BJ" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="837.838851" y="309.277477" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BK" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="748.326268" y="183.400408" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BL" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="714.759050" y="219.764895" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BM" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="650.421881" y="188.994944" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BN" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="647.624613" y="49.131535" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BO" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="614.057395" y="60.320607" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BP" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="588.881981" y="26.753389" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BQ" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="681.191832" y="18.361584" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BR" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="530.139349" y="68.712412" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BS" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="566.503836" y="152.630458" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BT" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="348.316916" y="60.320607" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BU" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="261.601602" y="46.334266" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BV" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="158.102679" y="138.644117" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BW" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="141.319069" y="191.792213" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BX" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="99.360046" y="121.860508" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BY" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1674.222042" y="244.940308" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="BZ" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1456.035122" y="714.881366" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="CA" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1268.618153" y="762.434925" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="CB" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1604.290337" y="636.557856" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="CC" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1626.668483" y="583.409760" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="CD" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1674.222042" y="544.248006" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="CE" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1995.907885" y="398.790059" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="CF" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1911.989839" y="222.562163" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="CG" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1839.260866" y="200.184017" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="CH" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1755.342820" y="278.507527" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="CI" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1870.030816" y="99.482362" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="CJ" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1791.707306" y="43.536998" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="CK" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1746.951015" y="51.928803" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="CL" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="457.410376" y="566.626151" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="CM" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="516.153008" y="449.140887" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="CN" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1358.130736" y="1044.959013" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="CO" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="1377.711613" y="1067.337159" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="SURFACE" label="surfaceGhost">
+    <viz:color r="0" g="0" b="0" />
+    <viz:position x="0.0" y="0.0" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+  </nodes>
+  <edges>
+   <edge id = "0" source="C" target="BE" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="78.821439" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "1" source="F" target="H" weight="3.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="179.744889" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "2" source="H" target="F" weight="3.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="179.744889" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "3" source="H" target="J" weight="2.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="111.400131" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "4" source="J" target="H" weight="2.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="111.400131" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "5" source="M" target="P" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="83.027518" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "6" source="P" target="M" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="83.027518" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "7" source="P" target="Q" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="55.170753" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "8" source="P" target="R" weight="3.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="210.167753" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "9" source="Q" target="P" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="55.170753" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "10" source="R" target="P" weight="3.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="210.167753" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "11" source="S" target="AQ" weight="3.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="201.597472" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "12" source="T" target="U" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="64.337169" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "13" source="U" target="T" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="64.337169" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "14" source="U" target="AA" weight="2.000000">
+    <attvalues>
+     <attvalue for="0" value="celltocell" />
+     <attvalue for="1" value="128.339445" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "15" source="W" target="AE" weight="3.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="212.757946" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "16" source="Z" target="AF" weight="3.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="177.797148" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "17" source="AA" target="U" weight="2.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="128.339445" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "18" source="AA" target="AC" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="76.350563" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "19" source="AA" target="AE" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="101.359969" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "20" source="AC" target="AA" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="celltocell" />
+     <attvalue for="1" value="76.350563" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "21" source="AE" target="W" weight="3.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="212.757946" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "22" source="AE" target="AA" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="celltocell" />
+     <attvalue for="1" value="101.359969" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "23" source="AF" target="Z" weight="3.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="177.797148" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "24" source="AG" target="AH" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="105.890550" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "25" source="AH" target="AG" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="105.890550" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "26" source="AQ" target="S" weight="3.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="201.597472" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "27" source="AZ" target="BA" weight="2.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="126.373383" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "28" source="BA" target="AZ" weight="2.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="126.373383" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "29" source="BD" target="BE" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="93.363410" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "30" source="BE" target="C" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="78.821439" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "31" source="BE" target="BD" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="93.363410" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "32" source="BE" target="BF" weight="3.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="172.797832" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "33" source="BF" target="BE" weight="3.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="172.797832" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "34" source="BF" target="BG" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="78.970206" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "35" source="BG" target="BF" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="78.970206" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "36" source="BH" target="CM" weight="4.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="261.959350" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "37" source="BI" target="BJ" weight="2.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="113.591134" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "38" source="BJ" target="BI" weight="2.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="113.591134" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "39" source="BM" target="BN" weight="2.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="139.891379" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "40" source="BN" target="BM" weight="2.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="139.891379" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "41" source="BO" target="BS" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="103.838575" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "42" source="BR" target="BT" weight="3.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="182.015987" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "43" source="BS" target="BO" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="103.838575" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "44" source="BT" target="BR" weight="3.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="182.015987" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "45" source="BT" target="BU" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="87.836003" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "46" source="BU" target="BT" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="87.836003" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "47" source="CB" target="CC" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="57.667162" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "48" source="CC" target="CB" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="57.667162" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "49" source="CC" target="CD" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="61.603441" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "50" source="CD" target="CC" weight="1.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="61.603441" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "51" source="CD" target="CG" weight="7.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="381.599059" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "52" source="CG" target="CD" weight="7.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="381.599059" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+   <edge id = "53" source="CM" target="BH" weight="4.000000">
+    <attvalues>
+     <attvalue for="0" value="None" />
+     <attvalue for="1" value="261.959350" />
+     <attvalue for="2" value="1.000000" />
+    </attvalues>
+    <viz:color r="255" g="0" b="0" />
+    <viz:thickness value="0.05" />
+    <viz:shape value="solid" />
+   </edge>
+  </edges>
+ </graph>
+</gexf>
