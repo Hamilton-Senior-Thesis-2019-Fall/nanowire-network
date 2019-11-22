@@ -156,35 +156,31 @@ class Logic(QMainWindow, Ui_MainWindow):
                           self.edgeStarted = False;
                           self.addPoint(event.xdata, event.ydata)
                   elif self.button == "edge":
-                      # print(self.edges)
-                      # if modifiers == QtCore.Qt.ShiftModifier:
-                      #     self.edgeStarted = False;
-                      #     self.addPoint(event.xdata, event.ydata)
-                      # else:
-                      if self.edgeStarted:
-                          startNodeTuple = tuple(self.nodes[self.edgeStart])
-                          if startNodeTuple not in self.edgeWithTypes[self.buttonType]:
-                              self.edgeWithTypes[self.buttonType][startNodeTuple] = []
-                          for n in self.nodes:
-                              if n[0] - self.nodeRdius <= event.xdata <=  n[0] + self.nodeRdius and \
-                              n[1] - self.nodeRdius <= event.ydata <=  n[1] + self.nodeRdius:
-                                  self.edgeWithTypes[self.buttonType][startNodeTuple].append(n)
+                        print(self.edges)
+                        # if modifiers == QtCore.Qt.ShiftModifier:
+                        #     self.edgeStarted = False;
+                        #     self.addPoint(event.xdata, event.ydata)
+                        # else:
+                        if self.buttonType == "celltocell" or self.buttonType == "cellcontact":
+                            if self.edgeStarted:
+                                self.lineEnd(event.xdata, event.ydata)
+                                self.edgeStarted = False;
+                            else:
+                                self.lineStart(event.xdata, event.ydata)
+                                self.edgeStarted = True;
+                        elif self.buttonType == 'celltosurface':
+                            if self.edgeStarted:
+                                startCoord = tuple(self.nodes[self.edgeStart])
+                                if startCoord not in self.edgeWithTypes['celltosurface']:
+                                    self.edgeWithTypes['celltosurface'][startCoord] = []
+                                self.edgeWithTypes['celltosurface'][startCoord].append([event.xdata, event.ydata])
 
-                      if self.buttonType == "celltocell" or self.buttonType == "cellcontact":
-                          if self.edgeStarted:
-                              self.lineEnd(event.xdata, event.ydata)
-                              self.edgeStarted = False;
-                          else:
-                              self.lineStart(event.xdata, event.ydata)
-                              self.edgeStarted = True;
-                      elif self.buttonType == 'celltosurface':
-                          if self.edgeStarted:
-                              self.edgeStarted = False;
-                              self.edgeWithTypes[self.buttonType][startNodeTuple].append([event.xdata, event.ydata])
-                              self.replotImage()
-                          else:
-                              self.lineStart(event.xdata, event.ydata)
-                              self.edgeStarted = True;
+                                self.edgeStarted = False;
+                                print(self.edgeWithTypes['celltosurface'])
+                                self.replotImage()
+                            else:
+                                self.lineStart(event.xdata, event.ydata)
+                                self.edgeStarted = True;
           #self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onClick))
     def automateFile(self):
         modifiers = QtWidgets.QApplication.keyboardModifiers()
@@ -279,9 +275,9 @@ class Logic(QMainWindow, Ui_MainWindow):
                     line_y = [self.nodes[r][1], self.nodes[c][1]]
                     self.MplWidget.canvas.axes.add_line(lines.Line2D(line_x, line_y, linewidth=2, color='red'))
 
-        print(self.edgeWithTypes['celltosurface'])
         celltosurface = self.edgeWithTypes['celltosurface']
-        for s in list(celltosurface.keys()):
+        print(celltosurface)
+        for s in list(celltosurface):
             for e in self.edgeWithTypes['celltosurface'][s]:
                 line_x = [s[0],e[0]]
                 line_y = [s[1],e[1]]
@@ -290,7 +286,7 @@ class Logic(QMainWindow, Ui_MainWindow):
 
     def setImage(self):
         if not self.saved:
-            msg = QMessageBox.warning(self, "File not saved", 
+            msg = QMessageBox.warning(self, "File not saved",
                                         "You are about to leave the current project. Do you want to continue without saving?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
             if msg == QMessageBox.No:
                 return
@@ -314,7 +310,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             try:
                 f = open(os.path.splitext(self.filename)[0] + '_gephi.csv', 'w+')
             except (PermissionError):
-                msg = QMessageBox.critical(self, "Error loading file", 
+                msg = QMessageBox.critical(self, "Error loading file",
                                             "Unable to open this file. Make sure it is not in use by another program")
                 return
         # matrix = [[2345,1,2,3],[0,1,2,3],[0,1,2,3],[0,1,2,3]]
@@ -347,9 +343,9 @@ class Logic(QMainWindow, Ui_MainWindow):
         f.close()
 
     def convertToGEXF(self):
-        date = dt.datetime.now() 
+        date = dt.datetime.now()
         with open("test_gexf.gexf", "w+") as out_file:
-            out_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n") 
+            out_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
             out_file.write('<gexf xmlns="http://www.gexf.net/1.2draft"\n' +
             '      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n' +
             '      xmlns:viz="http://www.gexf.net/1.1draft/viz"\n' +
@@ -421,8 +417,8 @@ class Logic(QMainWindow, Ui_MainWindow):
                     out_file.write('    <viz:shape value="solid" />\n')
                     out_file.write("   </edge>\n")
                     count += 1
-        for node in self.nodesToSurface:
-            for loc in self.nodesToSurface[node]:
+        for node in self.edgeWithTypes['celltosurface']:
+            for loc in self.edgeWithTypes['celltosurface'][node]:
                 print("Here is the node:", node)
                 out_file.write("   <edge id = \"%d\" source=\"%s\" target=\"SURFACE\" weight=\"%f\">\n" % (count, getNodeLetter(self.nodes.index([round(x, 6) for x in node])), self.weight(node, loc)))
                 out_file.write("    <attvalues>\n")
@@ -690,7 +686,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                 out_file.write('\n')
 
             # Write node to surface dict
-            for key, val in self.nodesToSurface.items():
+            for key, val in self.edgeWithTypes['celltosurface']:
                 print("Examining Key {}, and val {}".format(key, val))
                 kx, ky = key
                 for vx, vy in val:
@@ -717,7 +713,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         # CRITICAL*** Fix error with loading onto existing image plot
         if self.filename != '':
             if not self.saved:
-                msg = QMessageBox.warning(self, "File not saved", 
+                msg = QMessageBox.warning(self, "File not saved",
                                             "You are about to leave the current project. Do you want to continue without saving?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
                 if msg == QMessageBox.No:
                     return
@@ -754,9 +750,9 @@ class Logic(QMainWindow, Ui_MainWindow):
                     bits = line.split(':')
                     kx, ky = [float(x) for x in bits[0].split(',')]
                     vx, vy = [float(x) for x in bits[1].split(',')]
-                    if not (kx, ky) in self.nodesToSurface:
-                        self.nodesToSurface[(kx, ky)] = []
-                    self.nodesToSurface[(kx, ky)].append([vx, vy])
+                    if not (kx, ky) in self.edgeWithTypes['celltosurface']:
+                        self.edgeWithTypes['celltosurface'][(kx, ky)] = []
+                    self.edgeWithTypes['celltosurface'][(kx, ky)].append([vx, vy])
                     line = saved_file.readline().strip()
                 img_file_name = saved_file.readline().strip()
                 lines_read += 1
@@ -775,7 +771,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                 try:
                     image = plt.imread(self.filename)
                 except (FileNotFoundError):
-                    msg = QMessageBox.critical(self, "Error loading image: File not found", 
+                    msg = QMessageBox.critical(self, "Error loading image: File not found",
                                             "Make sure file '%s' exists" % self.filename)
                     return
                 gray_arr = np.asarray(image)
@@ -791,7 +787,7 @@ class Logic(QMainWindow, Ui_MainWindow):
     def calibrate_measure(self, args=[]):
         if not self.calibrating:
             self.pxdist = 0.0
-            msg = QMessageBox.information(self, "Measure calibration", 
+            msg = QMessageBox.information(self, "Measure calibration",
                                                 u"To calibrate the measurement tool, select point A and point B, then enter the distance between the two in \u03bcm")
             self.calibration_points = []
             self.calibrating = True
@@ -808,7 +804,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                 self.calibrating=False
 
     def automation_button_functionality(self):
-        msg = QMessageBox.warning(self, "File overwrite", 
+        msg = QMessageBox.warning(self, "File overwrite",
                                                 "This action overwrites current project. Any unsaved changes will be lost. Continue?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if msg == QMessageBox.Yes:
             # automation.functon()
@@ -838,8 +834,8 @@ class Logic(QMainWindow, Ui_MainWindow):
             counterDisplayText += e + ": "
             if e == 'celltosurface':
                 counter = 0
-                for k in self.nodesToSurface:
-                    counter += len(self.nodesToSurface[k])
+                for k in self.edgeWithTypes['celltosurface']:
+                    counter += len(self.edgeWithTypes['celltosurface'][k])
                 counterDisplayText += str(counter) + "\n"
             else:
                 counterDisplayText += str(len(self.edgeWithTypes[e])) + "\n"
@@ -1040,7 +1036,7 @@ main()
     #     # CRITICAL*** Fix error with loading onto existing image plot
     #     if self.filename != '':
     #         if not self.saved:
-    #             msg = QMessageBox.warning(self, "File not saved", 
+    #             msg = QMessageBox.warning(self, "File not saved",
     #                                         "You are about to leave the current project. Do you want to continue without saving?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
     #             if msg == QMessageBox.No:
     #                 return
@@ -1100,7 +1096,7 @@ main()
     #             try:
     #                 image = plt.imread(self.filename)
     #             except (FileNotFoundError):
-    #                 msg = QMessageBox.critical(self, "Error loading image: File not found", 
+    #                 msg = QMessageBox.critical(self, "Error loading image: File not found",
     #                                         "Make sure file '%s' exists" % self.filename)
     #                 return
     #             gray_arr = np.asarray(image)
