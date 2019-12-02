@@ -51,7 +51,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.filename = ''
         self.save_loc = ''
 
-        self.button = "node"
+        self.button = ""
         # track different button type, register with click event
         self.buttonType = "standard"
 
@@ -110,6 +110,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.actionUpload_from_saved_projects.triggered.connect(self.open_plot)
         self.actionColor_select.triggered.connect(self.automateFile)
 
+        self.clear_painter.clicked.connect(lambda:self.addNode('clear'))
         self.node_painter_standard.clicked.connect(lambda:self.addNode('standard'))
         self.node_painter_spheroplast.clicked.connect(lambda:self.addNode('spheroplast'))
         self.node_painter_curved.clicked.connect(lambda:self.addNode('curved'))
@@ -156,11 +157,19 @@ class Logic(QMainWindow, Ui_MainWindow):
                           self.edgeStarted = False;
                           self.addPoint(event.xdata, event.ydata)
                   elif self.button == "edge":
-                        print(self.edges)
                         # if modifiers == QtCore.Qt.ShiftModifier:
                         #     self.edgeStarted = False;
                         #     self.addPoint(event.xdata, event.ydata)
                         # else:
+                        if self.edgeStarted:
+                            startNodeTuple = tuple(self.nodes[self.edgeStart])
+                            if startNodeTuple not in self.edgeWithTypes[self.buttonType]:
+                                self.edgeWithTypes[self.buttonType][startNodeTuple] = []
+                            for n in self.nodes:
+                                if n[0] - self.nodeRdius <= event.xdata <=  n[0] + self.nodeRdius and \
+                                n[1] - self.nodeRdius <= event.ydata <=  n[1] + self.nodeRdius:
+                                    self.edgeWithTypes[self.buttonType][startNodeTuple].append(n)
+
                         if self.buttonType == "celltocell" or self.buttonType == "cellcontact":
                             if self.edgeStarted:
                                 self.lineEnd(event.xdata, event.ydata)
@@ -170,13 +179,8 @@ class Logic(QMainWindow, Ui_MainWindow):
                                 self.edgeStarted = True;
                         elif self.buttonType == 'celltosurface':
                             if self.edgeStarted:
-                                startCoord = tuple(self.nodes[self.edgeStart])
-                                if startCoord not in self.edgeWithTypes['celltosurface']:
-                                    self.edgeWithTypes['celltosurface'][startCoord] = []
-                                self.edgeWithTypes['celltosurface'][startCoord].append([event.xdata, event.ydata])
-
                                 self.edgeStarted = False;
-                                print(self.edgeWithTypes['celltosurface'])
+                                self.edgeWithTypes[self.buttonType][startNodeTuple].append([event.xdata, event.ydata])
                                 self.replotImage()
                             else:
                                 self.lineStart(event.xdata, event.ydata)
@@ -276,7 +280,6 @@ class Logic(QMainWindow, Ui_MainWindow):
                     self.MplWidget.canvas.axes.add_line(lines.Line2D(line_x, line_y, linewidth=2, color='red'))
 
         celltosurface = self.edgeWithTypes['celltosurface']
-        print(celltosurface)
         for s in list(celltosurface):
             for e in self.edgeWithTypes['celltosurface'][s]:
                 line_x = [s[0],e[0]]
@@ -497,10 +500,16 @@ class Logic(QMainWindow, Ui_MainWindow):
     def removePoint(self, x_coord, y_coord):
         if len(self.nodes) > 0:
             del_ind, del_dist = self.findClosestNode(x_coord, y_coord)
+            # delete from nodeWithTypes
+            for ntype in self.nodeWithTypes:
+                for i in self.nodeWithTypes[ntype]:
+                    print(i)
+                    if self.nodes[del_ind] == i:
+                        self.nodeWithTypes[ntype].remove(self.nodes[del_ind])
+
             del self.nodes[del_ind]
             self.edges = np.delete(self.edges, del_ind, axis=0)
             self.edges = np.delete(self.edges, del_ind, axis=1)
-
             self.replotImage()
             self.saved = False
 
@@ -518,7 +527,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.edgeEnd = min_ind
         self.edges[self.edgeStart][self.edgeEnd] = self.weight()
         self.edges[self.edgeEnd][self.edgeStart] = self.weight()
-        self.edgeWithTypes[self.buttonType].append([x_coord, y_coord])
+        # self.edgeWithTypes[self.buttonType].append([x_coord, y_coord])
         self.replotImage()
         self.saved = False
 
@@ -541,7 +550,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                     self.edgeWithTypes[edgeType][tuple(endpoint2)].remove(endpoint1)
                     break
                 else:
-                 raise Exception("Node {} and node {} are not endpoints of any edge".format(endpoint1,endpoint2))
+                 raise Exception("Node {} and node {} are not endpoints of any edge, current edges:{}".format(endpoint1,endpoint2,self.edgeWithTypes))
          # for startNode in self.edgeWithTypes[edgeType]:
          #     if endpoint1[0] - self.nodeRdius <= startNode[0] <= endpoint1[0] + self.nodeRdius and \
          #     endpoint1[1] - self.nodeRdius <= startNode[1] <= endpoint1[1] + self.nodeRdius:
@@ -568,6 +577,7 @@ class Logic(QMainWindow, Ui_MainWindow):
 
         del self.edgeCenters[del_ind]
         self.replotImage()
+        print("After deletion", self.edgeWithTypes)
         self.saved = False
 
     def removeNearest(self, x_coord, y_coord):
@@ -627,6 +637,8 @@ class Logic(QMainWindow, Ui_MainWindow):
     def addNode(self, buttonType):
         self.button = 'node'
         self.buttonType = buttonType
+        if buttonType == "clear":
+            self.button = ''
         self.saved = False
 
     def addEdge(self, buttonType):
@@ -686,10 +698,12 @@ class Logic(QMainWindow, Ui_MainWindow):
                 out_file.write('\n')
 
             # Write node to surface dict
-            for key, val in self.edgeWithTypes['celltosurface']:
-                print("Examining Key {}, and val {}".format(key, val))
+            for key in self.edgeWithTypes['celltosurface']:
+                print("Examining Key {}".format(key))
+                print("Seeing: ",self.edgeWithTypes)
                 kx, ky = key
-                for vx, vy in val:
+                val = self.edgeWithTypes['celltosurface'][key]
+                for [vx, vy] in val:
                     out_file.write("%s,%s:%s,%s\n" % (kx, ky, vx, vy))
                     # for elt in val[:-1]:
                     #     out_file.write("%s:" % elt)
@@ -801,7 +815,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                 for p in self.calibration_points:
                     p.remove()
                 print(self.pxdist)
-                self.calibrating=False
+                self.calibrating = False
 
     def automation_button_functionality(self):
         msg = QMessageBox.warning(self, "File overwrite",
@@ -814,32 +828,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         i, okPressed = QInputDialog.getInt(self, "Set distance",u"Distance (\u03bcm):", 10, 0, 100, 1)
         return i if okPressed else None
 
-    def resetCounterDisplay(self):
-        counterDisplayText = "Node Counters:\n\n"
-        for n in self.nodeTypes:
-            self.nodeWithTypes[n] = []
-            counterDisplayText += n + ": 0\n"
-        counterDisplayText += "\nEdge Counters:\n\n"
-        for e in self.edgeTypes:
-            self.edgeWithTypes[e] = []
-            counterDisplayText += e + ": 0\n"
-        self.counter_label.setText(counterDisplayText)
 
-    def updateCounterDisplay(self):
-        counterDisplayText = "Node Counters:\n\n"
-        for n in self.nodeTypes:
-            counterDisplayText += n + ": " + str(len(self.nodeWithTypes[n])) +  "\n"
-        counterDisplayText += "\nEdge Counters:\n\n"
-        for e in self.edgeTypes:
-            counterDisplayText += e + ": "
-            if e == 'celltosurface':
-                counter = 0
-                for k in self.edgeWithTypes['celltosurface']:
-                    counter += len(self.edgeWithTypes['celltosurface'][k])
-                counterDisplayText += str(counter) + "\n"
-            else:
-                counterDisplayText += str(len(self.edgeWithTypes[e])) + "\n"
-        self.counter_label.setText(counterDisplayText)
 
 def getNodeLetter(num):
     nodeLetter = ""
