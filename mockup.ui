@@ -56,321 +56,7 @@ background: #d8d8d8
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="1" column="0">
-          <widget class="QPushButton" name="node_painter_spheroplast">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="toolTip">
-            <string/>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">#node_painter_spheroplast {
-background-color: transparent;
-background: none;
-border: none;
-background-repeat: none;
-}
-#node_painter_spheroplast:pressed{
-background-color: #cccccc;
-}
-	</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>spheroplast_node.svg</normaloff>spheroplast_node.svg</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>30</width>
-             <height>30</height>
-            </size>
-           </property>
-          </widget>
-         </item>
          <item row="2" column="0">
-          <widget class="QPushButton" name="node_painter_curved">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="toolTip">
-            <string/>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">#node_painter_curved{
-background-color: transparent;
-background: none;
-border: none;
-background-repeat: none;
-}
-#node_painter_curved:pressed{
-background-color: #cccccc;
-}
-	</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>curved_node.svg</normaloff>curved_node.svg</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>30</width>
-             <height>30</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QPushButton" name="node_painter_filament">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="toolTip">
-            <string/>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">#node_painter_filament {
-background-color: transparent;
-background: none;
-border: none;
-background-repeat: none;
-}
-#node_painter_filament:pressed{
-background-color: #cccccc;
-}
-	</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>filament_node.svg</normaloff>filament_node.svg</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>30</width>
-             <height>30</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="8" column="0">
-          <widget class="Line" name="line_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="0">
-          <widget class="QPushButton" name="edge_painter_celltosurface">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="toolTip">
-            <string/>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">#edge_painter_celltosurface {
-background-color: transparent;
-background: none;
-border: none;
-background-repeat: none;
-}
-#edge_painter_celltosurface:pressed{
-background-color: #cccccc;
-}
-	</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>celltosurface_edge.svg</normaloff>celltosurface_edge.svg</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="0">
-          <widget class="QPushButton" name="edge_painter_cellcontact">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="toolTip">
-            <string/>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">#edge_painter_cellcontact{
-background-color: transparent;
-background: none;
-border: none;
-background-repeat: none;
-}
-#edge_painter_cellcontact:pressed{
-background-color: #cccccc;
-}
-	</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>cellcontact_edge.svg</normaloff>cellcontact_edge.svg</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0">
-          <widget class="QPushButton" name="edge_painter_celltocell">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="toolTip">
-            <string/>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">#edge_painter_celltocell {
-background-color: transparent;
-background: none;
-border: none;
-background-repeat: none;
-}
-#edge_painter_celltocell:pressed{
-background-color: #cccccc;
-}
-	</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>standard_edge.svg</normaloff>standard_edge.svg</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>35</width>
-             <height>35</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="Line" name="line_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
           <widget class="QPushButton" name="node_painter_standard">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -410,7 +96,7 @@ background-color: #cccccc;
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>standard_node.svg</normaloff>standard_node.svg</iconset>
+             <normaloff>icon/standard_node.svg</normaloff>icon/standard_node.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -420,8 +106,8 @@ background-color: #cccccc;
            </property>
           </widget>
          </item>
-         <item row="9" column="0">
-          <widget class="QPushButton" name="eraser">
+         <item row="3" column="0">
+          <widget class="QPushButton" name="node_painter_spheroplast">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -444,13 +130,13 @@ background-color: #cccccc;
             <string/>
            </property>
            <property name="styleSheet">
-            <string notr="true">#eraser{
+            <string notr="true">#node_painter_spheroplast {
 background-color: transparent;
 background: none;
 border: none;
 background-repeat: none;
 }
-#eraser:pressed{
+#node_painter_spheroplast:pressed{
 background-color: #cccccc;
 }
 	</string>
@@ -460,13 +146,328 @@ background-color: #cccccc;
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>eraser.svg</normaloff>eraser.svg</iconset>
+             <normaloff>icon/spheroplast_node.svg</normaloff>icon/spheroplast_node.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
              <width>30</width>
              <height>30</height>
             </size>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="0">
+          <widget class="QPushButton" name="edge_painter_celltosurface">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">#edge_painter_celltosurface {
+background-color: transparent;
+background: none;
+border: none;
+background-repeat: none;
+}
+#edge_painter_celltosurface:pressed{
+background-color: #cccccc;
+}
+	</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>icon/celltosurface_edge.svg</normaloff>icon/celltosurface_edge.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QPushButton" name="edge_painter_celltocell">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">#edge_painter_celltocell {
+background-color: transparent;
+background: none;
+border: none;
+background-repeat: none;
+}
+#edge_painter_celltocell:pressed{
+background-color: #cccccc;
+}
+	</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>icon/standard_edge.svg</normaloff>icon/standard_edge.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="0">
+          <widget class="QPushButton" name="edge_painter_cellcontact">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">#edge_painter_cellcontact{
+background-color: transparent;
+background: none;
+border: none;
+background-repeat: none;
+}
+#edge_painter_cellcontact:pressed{
+background-color: #cccccc;
+}
+	</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>icon/cellcontact_edge.svg</normaloff>icon/cellcontact_edge.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="Line" name="line_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="clear_painter">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">#clear_painter {
+background-color: transparent;
+background: none;
+border: none;
+background-repeat: none;
+}
+#clear_painter:pressed{
+background-color: #cccccc;
+}
+	</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>icon/clear_arrow.svg</normaloff>
+             <selectedon>icon/clear_arrow.svg</selectedon>icon/clear_arrow.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QPushButton" name="node_painter_curved">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">#node_painter_curved{
+background-color: transparent;
+background: none;
+border: none;
+background-repeat: none;
+}
+#node_painter_curved:pressed{
+background-color: #cccccc;
+}
+	</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>icon/curved_node.svg</normaloff>icon/curved_node.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QPushButton" name="node_painter_filament">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">#node_painter_filament {
+background-color: transparent;
+background: none;
+border: none;
+background-repeat: none;
+}
+#node_painter_filament:pressed{
+background-color: #cccccc;
+}
+	</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>icon/filament_node.svg</normaloff>icon/filament_node.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="Line" name="line_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
            </property>
           </widget>
          </item>
@@ -650,18 +651,11 @@ background: #d8d8d8
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
-     <string>Settings</string>
+     <string>Automation</string>
     </property>
     <addaction name="actionColor_select"/>
    </widget>
-   <widget class="QMenu" name="menuAutomation">
-    <property name="title">
-     <string>Automation</string>
-    </property>
-    <addaction name="actionStart"/>
-   </widget>
    <addaction name="menuImport"/>
-   <addaction name="menuAutomation"/>
    <addaction name="menuExport"/>
    <addaction name="menuSettings"/>
   </widget>
@@ -693,7 +687,7 @@ background: #d8d8d8
   </action>
   <action name="actionColor_select">
    <property name="text">
-    <string>Color select</string>
+    <string>Activate</string>
    </property>
   </action>
   <action name="actionAutomation">

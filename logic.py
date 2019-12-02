@@ -51,7 +51,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.filename = ''
         self.save_loc = ''
 
-        self.button = "node"
+        self.button = ""
         # track different button type, register with click event
         self.buttonType = "standard"
 
@@ -110,6 +110,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.actionUpload_from_saved_projects.triggered.connect(self.open_plot)
         self.actionColor_select.triggered.connect(self.automateFile)
 
+        self.clear_painter.clicked.connect(lambda:self.addNode('clear'))
         self.node_painter_standard.clicked.connect(lambda:self.addNode('standard'))
         self.node_painter_spheroplast.clicked.connect(lambda:self.addNode('spheroplast'))
         self.node_painter_curved.clicked.connect(lambda:self.addNode('curved'))
@@ -162,7 +163,6 @@ class Logic(QMainWindow, Ui_MainWindow):
                         # else:
                         if self.edgeStarted:
                             startNodeTuple = tuple(self.nodes[self.edgeStart])
-                            print("Asdasdasdas", self.edgeWithTypes)
                             if startNodeTuple not in self.edgeWithTypes[self.buttonType]:
                                 self.edgeWithTypes[self.buttonType][startNodeTuple] = []
                             for n in self.nodes:
@@ -500,10 +500,16 @@ class Logic(QMainWindow, Ui_MainWindow):
     def removePoint(self, x_coord, y_coord):
         if len(self.nodes) > 0:
             del_ind, del_dist = self.findClosestNode(x_coord, y_coord)
+            # delete from nodeWithTypes
+            for ntype in self.nodeWithTypes:
+                for i in self.nodeWithTypes[ntype]:
+                    print(i)
+                    if self.nodes[del_ind] == i:
+                        self.nodeWithTypes[ntype].remove(self.nodes[del_ind])
+
             del self.nodes[del_ind]
             self.edges = np.delete(self.edges, del_ind, axis=0)
             self.edges = np.delete(self.edges, del_ind, axis=1)
-
             self.replotImage()
             self.saved = False
 
@@ -571,6 +577,7 @@ class Logic(QMainWindow, Ui_MainWindow):
 
         del self.edgeCenters[del_ind]
         self.replotImage()
+        print("After deletion", self.edgeWithTypes)
         self.saved = False
 
     def removeNearest(self, x_coord, y_coord):
@@ -630,6 +637,8 @@ class Logic(QMainWindow, Ui_MainWindow):
     def addNode(self, buttonType):
         self.button = 'node'
         self.buttonType = buttonType
+        if buttonType == "clear":
+            self.button = ''
         self.saved = False
 
     def addEdge(self, buttonType):
@@ -689,10 +698,12 @@ class Logic(QMainWindow, Ui_MainWindow):
                 out_file.write('\n')
 
             # Write node to surface dict
-            for key, val in self.edgeWithTypes['celltosurface']:
-                print("Examining Key {}, and val {}".format(key, val))
+            for key in self.edgeWithTypes['celltosurface']:
+                print("Examining Key {}".format(key))
+                print("Seeing: ",self.edgeWithTypes)
                 kx, ky = key
-                for vx, vy in val:
+                val = self.edgeWithTypes['celltosurface'][key]
+                for [vx, vy] in val:
                     out_file.write("%s,%s:%s,%s\n" % (kx, ky, vx, vy))
                     # for elt in val[:-1]:
                     #     out_file.write("%s:" % elt)
@@ -804,7 +815,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                 for p in self.calibration_points:
                     p.remove()
                 print(self.pxdist)
-                self.calibrating=False
+                self.calibrating = False
 
     def automation_button_functionality(self):
         msg = QMessageBox.warning(self, "File overwrite",

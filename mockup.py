@@ -5,15 +5,10 @@
 # Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
-import PyQt5
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
-    PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
-
-if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
-    PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -42,6 +37,32 @@ class Ui_MainWindow(object):
         self.gridLayout_2 = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_2.setObjectName("gridLayout_2")
+        self.node_painter_standard = QtWidgets.QPushButton(self.gridLayoutWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.node_painter_standard.sizePolicy().hasHeightForWidth())
+        self.node_painter_standard.setSizePolicy(sizePolicy)
+        self.node_painter_standard.setMinimumSize(QtCore.QSize(0, 0))
+        self.node_painter_standard.setMaximumSize(QtCore.QSize(40, 40))
+        self.node_painter_standard.setToolTip("")
+        self.node_painter_standard.setStyleSheet("#node_painter_standard {\n"
+"background-color: transparent;\n"
+"background: none;\n"
+"border: none;\n"
+"background-repeat: none;\n"
+"}\n"
+"#node_painter_standard:pressed{\n"
+"background-color: #cccccc;\n"
+"}\n"
+"    ")
+        self.node_painter_standard.setText("")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("icon/standard_node.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.node_painter_standard.setIcon(icon)
+        self.node_painter_standard.setIconSize(QtCore.QSize(30, 30))
+        self.node_painter_standard.setObjectName("node_painter_standard")
+        self.gridLayout_2.addWidget(self.node_painter_standard, 2, 0, 1, 1)
         self.node_painter_spheroplast = QtWidgets.QPushButton(self.gridLayoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -62,69 +83,12 @@ class Ui_MainWindow(object):
 "}\n"
 "    ")
         self.node_painter_spheroplast.setText("")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("spheroplast_node.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.node_painter_spheroplast.setIcon(icon)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("icon/spheroplast_node.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.node_painter_spheroplast.setIcon(icon1)
         self.node_painter_spheroplast.setIconSize(QtCore.QSize(30, 30))
         self.node_painter_spheroplast.setObjectName("node_painter_spheroplast")
-        self.gridLayout_2.addWidget(self.node_painter_spheroplast, 1, 0, 1, 1)
-        self.node_painter_curved = QtWidgets.QPushButton(self.gridLayoutWidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.node_painter_curved.sizePolicy().hasHeightForWidth())
-        self.node_painter_curved.setSizePolicy(sizePolicy)
-        self.node_painter_curved.setMinimumSize(QtCore.QSize(40, 40))
-        self.node_painter_curved.setMaximumSize(QtCore.QSize(40, 40))
-        self.node_painter_curved.setToolTip("")
-        self.node_painter_curved.setStyleSheet("#node_painter_curved{\n"
-"background-color: transparent;\n"
-"background: none;\n"
-"border: none;\n"
-"background-repeat: none;\n"
-"}\n"
-"#node_painter_curved:pressed{\n"
-"background-color: #cccccc;\n"
-"}\n"
-"    ")
-        self.node_painter_curved.setText("")
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("curved_node.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.node_painter_curved.setIcon(icon1)
-        self.node_painter_curved.setIconSize(QtCore.QSize(30, 30))
-        self.node_painter_curved.setObjectName("node_painter_curved")
-        self.gridLayout_2.addWidget(self.node_painter_curved, 2, 0, 1, 1)
-        self.node_painter_filament = QtWidgets.QPushButton(self.gridLayoutWidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.node_painter_filament.sizePolicy().hasHeightForWidth())
-        self.node_painter_filament.setSizePolicy(sizePolicy)
-        self.node_painter_filament.setMinimumSize(QtCore.QSize(40, 40))
-        self.node_painter_filament.setMaximumSize(QtCore.QSize(40, 40))
-        self.node_painter_filament.setToolTip("")
-        self.node_painter_filament.setStyleSheet("#node_painter_filament {\n"
-"background-color: transparent;\n"
-"background: none;\n"
-"border: none;\n"
-"background-repeat: none;\n"
-"}\n"
-"#node_painter_filament:pressed{\n"
-"background-color: #cccccc;\n"
-"}\n"
-"    ")
-        self.node_painter_filament.setText("")
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("filament_node.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.node_painter_filament.setIcon(icon2)
-        self.node_painter_filament.setIconSize(QtCore.QSize(30, 30))
-        self.node_painter_filament.setObjectName("node_painter_filament")
-        self.gridLayout_2.addWidget(self.node_painter_filament, 3, 0, 1, 1)
-        self.line_3 = QtWidgets.QFrame(self.gridLayoutWidget)
-        self.line_3.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line_3.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.line_3.setObjectName("line_3")
-        self.gridLayout_2.addWidget(self.line_3, 8, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.node_painter_spheroplast, 3, 0, 1, 1)
         self.edge_painter_celltosurface = QtWidgets.QPushButton(self.gridLayoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -145,12 +109,38 @@ class Ui_MainWindow(object):
 "}\n"
 "    ")
         self.edge_painter_celltosurface.setText("")
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("celltosurface_edge.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.edge_painter_celltosurface.setIcon(icon3)
-        self.edge_painter_celltosurface.setIconSize(QtCore.QSize(40, 40))
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap("icon/celltosurface_edge.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.edge_painter_celltosurface.setIcon(icon2)
+        self.edge_painter_celltosurface.setIconSize(QtCore.QSize(30, 30))
         self.edge_painter_celltosurface.setObjectName("edge_painter_celltosurface")
-        self.gridLayout_2.addWidget(self.edge_painter_celltosurface, 6, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.edge_painter_celltosurface, 8, 0, 1, 1)
+        self.edge_painter_celltocell = QtWidgets.QPushButton(self.gridLayoutWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.edge_painter_celltocell.sizePolicy().hasHeightForWidth())
+        self.edge_painter_celltocell.setSizePolicy(sizePolicy)
+        self.edge_painter_celltocell.setMinimumSize(QtCore.QSize(40, 40))
+        self.edge_painter_celltocell.setMaximumSize(QtCore.QSize(40, 40))
+        self.edge_painter_celltocell.setToolTip("")
+        self.edge_painter_celltocell.setStyleSheet("#edge_painter_celltocell {\n"
+"background-color: transparent;\n"
+"background: none;\n"
+"border: none;\n"
+"background-repeat: none;\n"
+"}\n"
+"#edge_painter_celltocell:pressed{\n"
+"background-color: #cccccc;\n"
+"}\n"
+"    ")
+        self.edge_painter_celltocell.setText("")
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap("icon/standard_edge.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.edge_painter_celltocell.setIcon(icon3)
+        self.edge_painter_celltocell.setIconSize(QtCore.QSize(30, 30))
+        self.edge_painter_celltocell.setObjectName("edge_painter_celltocell")
+        self.gridLayout_2.addWidget(self.edge_painter_celltocell, 7, 0, 1, 1)
         self.edge_painter_cellcontact = QtWidgets.QPushButton(self.gridLayoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -172,94 +162,100 @@ class Ui_MainWindow(object):
 "    ")
         self.edge_painter_cellcontact.setText("")
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("cellcontact_edge.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap("icon/cellcontact_edge.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.edge_painter_cellcontact.setIcon(icon4)
-        self.edge_painter_cellcontact.setIconSize(QtCore.QSize(40, 40))
+        self.edge_painter_cellcontact.setIconSize(QtCore.QSize(30, 30))
         self.edge_painter_cellcontact.setObjectName("edge_painter_cellcontact")
-        self.gridLayout_2.addWidget(self.edge_painter_cellcontact, 7, 0, 1, 1)
-        self.edge_painter_celltocell = QtWidgets.QPushButton(self.gridLayoutWidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.edge_painter_celltocell.sizePolicy().hasHeightForWidth())
-        self.edge_painter_celltocell.setSizePolicy(sizePolicy)
-        self.edge_painter_celltocell.setMinimumSize(QtCore.QSize(40, 40))
-        self.edge_painter_celltocell.setMaximumSize(QtCore.QSize(40, 40))
-        self.edge_painter_celltocell.setToolTip("")
-        self.edge_painter_celltocell.setStyleSheet("#edge_painter_celltocell {\n"
-"background-color: transparent;\n"
-"background: none;\n"
-"border: none;\n"
-"background-repeat: none;\n"
-"}\n"
-"#edge_painter_celltocell:pressed{\n"
-"background-color: #cccccc;\n"
-"}\n"
-"    ")
-        self.edge_painter_celltocell.setText("")
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("standard_edge.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.edge_painter_celltocell.setIcon(icon5)
-        self.edge_painter_celltocell.setIconSize(QtCore.QSize(35, 35))
-        self.edge_painter_celltocell.setObjectName("edge_painter_celltocell")
-        self.gridLayout_2.addWidget(self.edge_painter_celltocell, 5, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.edge_painter_cellcontact, 9, 0, 1, 1)
         self.line_2 = QtWidgets.QFrame(self.gridLayoutWidget)
         self.line_2.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_2.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_2.setObjectName("line_2")
-        self.gridLayout_2.addWidget(self.line_2, 4, 0, 1, 1)
-        self.node_painter_standard = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.gridLayout_2.addWidget(self.line_2, 6, 0, 1, 1)
+        self.clear_painter = QtWidgets.QPushButton(self.gridLayoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.node_painter_standard.sizePolicy().hasHeightForWidth())
-        self.node_painter_standard.setSizePolicy(sizePolicy)
-        self.node_painter_standard.setMinimumSize(QtCore.QSize(0, 0))
-        self.node_painter_standard.setMaximumSize(QtCore.QSize(40, 40))
-        self.node_painter_standard.setToolTip("")
-        self.node_painter_standard.setStyleSheet("#node_painter_standard {\n"
+        sizePolicy.setHeightForWidth(self.clear_painter.sizePolicy().hasHeightForWidth())
+        self.clear_painter.setSizePolicy(sizePolicy)
+        self.clear_painter.setMinimumSize(QtCore.QSize(0, 0))
+        self.clear_painter.setMaximumSize(QtCore.QSize(40, 40))
+        self.clear_painter.setToolTip("")
+        self.clear_painter.setStyleSheet("#clear_painter {\n"
 "background-color: transparent;\n"
 "background: none;\n"
 "border: none;\n"
 "background-repeat: none;\n"
 "}\n"
-"#node_painter_standard:pressed{\n"
+"#clear_painter:pressed{\n"
 "background-color: #cccccc;\n"
 "}\n"
 "    ")
-        self.node_painter_standard.setText("")
+        self.clear_painter.setText("")
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap("icon/clear_arrow.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap("icon/clear_arrow.svg"), QtGui.QIcon.Selected, QtGui.QIcon.On)
+        self.clear_painter.setIcon(icon5)
+        self.clear_painter.setIconSize(QtCore.QSize(30, 30))
+        self.clear_painter.setObjectName("clear_painter")
+        self.gridLayout_2.addWidget(self.clear_painter, 0, 0, 1, 1)
+        self.node_painter_curved = QtWidgets.QPushButton(self.gridLayoutWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.node_painter_curved.sizePolicy().hasHeightForWidth())
+        self.node_painter_curved.setSizePolicy(sizePolicy)
+        self.node_painter_curved.setMinimumSize(QtCore.QSize(40, 40))
+        self.node_painter_curved.setMaximumSize(QtCore.QSize(40, 40))
+        self.node_painter_curved.setToolTip("")
+        self.node_painter_curved.setStyleSheet("#node_painter_curved{\n"
+"background-color: transparent;\n"
+"background: none;\n"
+"border: none;\n"
+"background-repeat: none;\n"
+"}\n"
+"#node_painter_curved:pressed{\n"
+"background-color: #cccccc;\n"
+"}\n"
+"    ")
+        self.node_painter_curved.setText("")
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("standard_node.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.node_painter_standard.setIcon(icon6)
-        self.node_painter_standard.setIconSize(QtCore.QSize(30, 30))
-        self.node_painter_standard.setObjectName("node_painter_standard")
-        self.gridLayout_2.addWidget(self.node_painter_standard, 0, 0, 1, 1)
-        self.eraser = QtWidgets.QPushButton(self.gridLayoutWidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        icon6.addPixmap(QtGui.QPixmap("icon/curved_node.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.node_painter_curved.setIcon(icon6)
+        self.node_painter_curved.setIconSize(QtCore.QSize(30, 30))
+        self.node_painter_curved.setObjectName("node_painter_curved")
+        self.gridLayout_2.addWidget(self.node_painter_curved, 4, 0, 1, 1)
+        self.node_painter_filament = QtWidgets.QPushButton(self.gridLayoutWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.eraser.sizePolicy().hasHeightForWidth())
-        self.eraser.setSizePolicy(sizePolicy)
-        self.eraser.setMinimumSize(QtCore.QSize(0, 0))
-        self.eraser.setMaximumSize(QtCore.QSize(40, 40))
-        self.eraser.setToolTip("")
-        self.eraser.setStyleSheet("#eraser{\n"
+        sizePolicy.setHeightForWidth(self.node_painter_filament.sizePolicy().hasHeightForWidth())
+        self.node_painter_filament.setSizePolicy(sizePolicy)
+        self.node_painter_filament.setMinimumSize(QtCore.QSize(40, 40))
+        self.node_painter_filament.setMaximumSize(QtCore.QSize(40, 40))
+        self.node_painter_filament.setToolTip("")
+        self.node_painter_filament.setStyleSheet("#node_painter_filament {\n"
 "background-color: transparent;\n"
 "background: none;\n"
 "border: none;\n"
 "background-repeat: none;\n"
 "}\n"
-"#eraser:pressed{\n"
+"#node_painter_filament:pressed{\n"
 "background-color: #cccccc;\n"
 "}\n"
 "    ")
-        self.eraser.setText("")
+        self.node_painter_filament.setText("")
         icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap("eraser.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.eraser.setIcon(icon7)
-        self.eraser.setIconSize(QtCore.QSize(30, 30))
-        self.eraser.setObjectName("eraser")
-        self.gridLayout_2.addWidget(self.eraser, 9, 0, 1, 1)
+        icon7.addPixmap(QtGui.QPixmap("icon/filament_node.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.node_painter_filament.setIcon(icon7)
+        self.node_painter_filament.setIconSize(QtCore.QSize(30, 30))
+        self.node_painter_filament.setObjectName("node_painter_filament")
+        self.gridLayout_2.addWidget(self.node_painter_filament, 5, 0, 1, 1)
+        self.line_3 = QtWidgets.QFrame(self.gridLayoutWidget)
+        self.line_3.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line_3.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_3.setObjectName("line_3")
+        self.gridLayout_2.addWidget(self.line_3, 1, 0, 1, 1)
         self.tabWidget_toolbar.addTab(self.tabWidget_toolbarPage1, "")
         self.horizontalLayout_2.addWidget(self.tabWidget_toolbar)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum)
@@ -337,6 +333,8 @@ class Ui_MainWindow(object):
         self.actionColor_select.setObjectName("actionColor_select")
         self.actionAutomation = QtWidgets.QAction(MainWindow)
         self.actionAutomation.setObjectName("actionAutomation")
+        self.actionStart = QtWidgets.QAction(MainWindow)
+        self.actionStart.setObjectName("actionStart")
         self.menuImport.addAction(self.actionUpload_from_computer)
         self.menuImport.addAction(self.actionUpload_from_saved_projects)
         self.menuExport.addAction(self.actionSave_file)
@@ -360,14 +358,15 @@ class Ui_MainWindow(object):
         self.tabWidget_info_layers.setTabText(self.tabWidget_info_layers.indexOf(self.tab_layers_tab), _translate("MainWindow", "Layers"))
         self.menuImport.setTitle(_translate("MainWindow", "Import"))
         self.menuExport.setTitle(_translate("MainWindow", "Export"))
-        self.menuSettings.setTitle(_translate("MainWindow", "Settings"))
+        self.menuSettings.setTitle(_translate("MainWindow", "Automation"))
         self.actionUpload_from_computer.setText(_translate("MainWindow", "Upload from computer"))
         self.actionUpload_from_saved_projects.setText(_translate("MainWindow", "Upload from saved projects"))
         self.actionSave_file.setText(_translate("MainWindow", "Save file"))
         self.actionExport_to_Gephi.setText(_translate("MainWindow", "Export to Gephi"))
         self.actionExport_to_Cytoscape.setText(_translate("MainWindow", "Export to Cytoscape"))
-        self.actionColor_select.setText(_translate("MainWindow", "Color select"))
+        self.actionColor_select.setText(_translate("MainWindow", "Activate"))
         self.actionAutomation.setText(_translate("MainWindow", "Automation"))
+        self.actionStart.setText(_translate("MainWindow", "Start"))
 from mplwidget import MplWidget
 
 
