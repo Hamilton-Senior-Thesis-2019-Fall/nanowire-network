@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1216, 759)
+        MainWindow.resize(1155, 759)
         MainWindow.setMinimumSize(QtCore.QSize(1000, 0))
         MainWindow.setStyleSheet("#MainWindow {\n"
 "background: #2c3539\n"
@@ -282,11 +282,10 @@ class Ui_MainWindow(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.label = QtWidgets.QLabel(self.verticalLayoutWidget)
-        self.label.setMinimumSize(QtCore.QSize(200, 300))
-        self.label.setText("")
-        self.label.setObjectName("label")
-        self.verticalLayout.addWidget(self.label)
+        self.tooltip_label = QtWidgets.QLabel(self.verticalLayoutWidget)
+        self.tooltip_label.setMinimumSize(QtCore.QSize(200, 300))
+        self.tooltip_label.setObjectName("tooltip_label")
+        self.verticalLayout.addWidget(self.tooltip_label)
         spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem2)
         self.line = QtWidgets.QFrame(self.verticalLayoutWidget)
@@ -304,7 +303,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addWidget(self.tabWidget_info_layers)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1216, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1155, 21))
         self.menubar.setObjectName("menubar")
         self.menuImport = QtWidgets.QMenu(self.menubar)
         self.menuImport.setObjectName("menuImport")
@@ -350,6 +349,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.tabWidget_toolbar.setTabText(self.tabWidget_toolbar.indexOf(self.tabWidget_toolbarPage1), _translate("MainWindow", "Tools"))
+        self.tooltip_label.setText(_translate("MainWindow", "TextLabel"))
         self.counter_label.setText(_translate("MainWindow", "TextLabel"))
         self.tabWidget_info_layers.setTabText(self.tabWidget_info_layers.indexOf(self.tab_info_tab), _translate("MainWindow", "Info"))
         self.menuImport.setTitle(_translate("MainWindow", "Import"))

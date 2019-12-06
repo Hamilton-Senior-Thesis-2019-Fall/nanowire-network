@@ -120,6 +120,8 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.edge_painter_celltosurface.clicked.connect(lambda:self.addEdge('celltosurface'))
         self.edge_painter_cellcontact.clicked.connect(lambda:self.addEdge('cellcontact'))
 
+        self.updateToolTipDisplay("clear")
+
         self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onpress))
         self.cid.append(self.MplWidget.canvas.mpl_connect('motion_notify_event', self.onmove))
         self.cid.append(self.MplWidget.canvas.mpl_connect('button_release_event', self.onrelease))
@@ -670,17 +672,48 @@ class Logic(QMainWindow, Ui_MainWindow):
                 counterDisplayText += str(counter) + "\n"
         self.counter_label.setText(counterDisplayText)
 
+    def updateToolTipDisplay(self, button):
+        text = 'Current Button Type: ' + button + "\n\n"
+        if button == "clear":
+            text = text + "Tip:\nYou can click on any existing \n" + \
+            "node to change their type.\n" + \
+            "Click on elsewhere will not \n" + \
+            "create any new object."
+        elif button == "standard" or button == "spheroplast" or button == "curved" or button == "filament":
+            text = text + "Tip:\nYou can click anywhere \n" + \
+            "on the image to create a node\n" + \
+            "indicating a cell of " + button + ".\n"
+        elif button == "celltocell":
+            text = text + "Tip:\nYou can click on two nodes \n" + \
+            "on the image to create\n" + \
+            "a cell to cell edge. Such edge\n" + \
+            "has weight based on length."
+        elif button == "celltosurface":
+            text = text + "Tip:\nYou can click on a nodes \n" + \
+            "and anywhere on image to create\n" + \
+            "a cell to surface edge. Such edge\n" + \
+            "has weight based on length."
+        elif button == "cellcontact":
+            text = text + "Tip:\nYou can click on two nodes \n" + \
+            "on the image to create\n" + \
+            "a cell to cell edge. Such edge\n" + \
+            "has a constant weight."
+
+        self.tooltip_label.setText(text)
+
     def addNode(self, buttonType):
         self.button = 'node'
         self.buttonType = buttonType
         if buttonType == "clear":
             self.button = 'clear'
         self.saved = False
+        self.updateToolTipDisplay(buttonType)
 
     def addEdge(self, buttonType):
         self.button = 'edge'
         self.buttonType = buttonType
         self.saved = False
+        self.updateToolTipDisplay(buttonType)
         # if self.filename != '' and len(self.nodes) >= 2:
         #     self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineStart))
         #     self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineEnd))
