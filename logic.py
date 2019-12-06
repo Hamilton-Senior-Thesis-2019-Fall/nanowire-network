@@ -60,8 +60,8 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.edgeTypes = ['celltocell', 'celltosurface', 'cellcontact']
         self.nodeColor = {'standard':'blue', 'spheroplast':'yellow', 'curved':'lightgreen', 'filament':'violet'}
         self.nodeWithTypes = dict()
-        self.edgeWithTypes = dict()
         # {nodeType: [list of [x,y]}
+        self.edgeWithTypes = dict()
         # {edgeType: {(startNodex, startNodey): [list of [x,y]]}}
         self.nodeWithTypes.update((n,[]) for n in self.nodeTypes)
         self.edgeWithTypes.update((e,dict()) for e in self.edgeTypes)
@@ -185,6 +185,9 @@ class Logic(QMainWindow, Ui_MainWindow):
                             else:
                                 self.lineStart(event.xdata, event.ydata)
                                 self.edgeStarted = True;
+                  elif self.button == "clear":
+                    # Dan: clear_arrow allows type change for nodes
+                    self.nodeTypeChange(event.xdata, event.ydata)
           #self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onClick))
     def automateFile(self):
         modifiers = QtWidgets.QApplication.keyboardModifiers()
@@ -231,6 +234,25 @@ class Logic(QMainWindow, Ui_MainWindow):
 
     def midpoint(self, position1, position2):
         return [(position1[0] + position2[0]) / 2, (position1[1] + position2[1]) / 2]
+
+    def nodeTypeChange(self, x_coord, y_coord):
+        node_ind, node_dist = self.findClosestNode(x_coord, y_coord)
+        currNode = self.nodes[node_ind]
+        nodeType = ''
+        for type in self.nodeWithTypes:
+            if currNode in self.nodeWithTypes[type]:
+                nodeType = type
+                self.nodeWithTypes[type].remove(currNode)
+                break
+        if nodeType != '':
+            nextTypeInd = (self.nodeTypes.index(nodeType) + 1) % len(self.nodeTypes)
+            self.nodeWithTypes[self.nodeTypes[nextTypeInd]].append(currNode)
+            self.replotImage()
+
+        else:
+            raise Exception("node {} not found in self.nodeWithTypes when attempting node type change").format(currNode)
+
+
 
     def findClosestNode(self, x_coord, y_coord):
         pt = [x_coord, y_coord]
@@ -652,7 +674,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.button = 'node'
         self.buttonType = buttonType
         if buttonType == "clear":
-            self.button = ''
+            self.button = 'clear'
         self.saved = False
 
     def addEdge(self, buttonType):
@@ -794,8 +816,13 @@ class Logic(QMainWindow, Ui_MainWindow):
 
                 # Dan: read edgeWithTypes into dictionary
                 # eval is not the safest way, but don't want to import new lib
-                self.edgeWithTypes = eval(saved_file.readline().strip())
-                print(self.edgeWithTypes)
+                try:
+                    self.edgeWithTypes = eval(saved_file.readline().strip())
+                    print(self.edgeWithTypes)
+                except SyntaxError:
+                    # older test file don't have this,so it needs to be handled
+                    print("older test file don't have edgeWithTypes saved,so it needs to be handled")
+
 
 
             with open(fileName, "rb") as saved_file:
@@ -853,7 +880,6 @@ class Logic(QMainWindow, Ui_MainWindow):
     def get_int(self):
         i, okPressed = QInputDialog.getInt(self, "Set distance",u"Distance (\u03bcm):", 10, 0, 100, 1)
         return i if okPressed else None
-
 
 
 def getNodeLetter(num):
