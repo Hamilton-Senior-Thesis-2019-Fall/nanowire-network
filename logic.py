@@ -525,6 +525,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         y_coord = round(y_coord, 6)
         min_ind, min_dist = self.findClosestNode(x_coord, y_coord)
         self.edgeEnd = min_ind
+        print(self.weight())
         self.edges[self.edgeStart][self.edgeEnd] = self.weight()
         self.edges[self.edgeEnd][self.edgeStart] = self.weight()
         # self.edgeWithTypes[self.buttonType].append([x_coord, y_coord])
@@ -535,22 +536,45 @@ class Logic(QMainWindow, Ui_MainWindow):
         x_coord = round(x_coord, 6)
         y_coord = round(y_coord, 6)
         del_ind, dist = self.findClosestEdge(x_coord, y_coord)
+        # print(self.buttonType)
+        # if self.buttonType == "celltocell":
+        found = False
+        # print("before:", self.edgeWithTypes)
+        for edgeType in self.edgeWithTypes:
+            if edgeType != "celltosurface":
+                try:
+                    endpoint1 = self.nodes[self.edgeNodes[del_ind][0]]
+                    endpoint2 = self.nodes[self.edgeNodes[del_ind][1]]
+                    # print("1:", endpoint1)
+                    # print("2:", endpoint2)
+                except IndexError:
+                    # Dan: prevent index out of bound
+                    continue
 
-        if self.buttonType == "celltocell":
-            endpoint1 = self.nodes[self.edgeNodes[del_ind][0]]
-            endpoint2 = self.nodes[self.edgeNodes[del_ind][1]]
-            print("1:", endpoint1)
-            print("2:", endpoint2)
-            for edgeType in self.edgeWithTypes:
-                print("before:", self.edgeWithTypes)
                 if tuple(endpoint1) in self.edgeWithTypes[edgeType]:
                     self.edgeWithTypes[edgeType][tuple(endpoint1)].remove(endpoint2)
+                    self.edges[self.edgeNodes[del_ind][0]][self.edgeNodes[del_ind][1]] = 0
+                    self.edges[self.edgeNodes[del_ind][1]][self.edgeNodes[del_ind][0]] = 0
+                    del self.edgeNodes[del_ind]
+                    found = True
                     break
                 elif tuple(endpoint2) in self.edgeWithTypes[edgeType]:
                     self.edgeWithTypes[edgeType][tuple(endpoint2)].remove(endpoint1)
+                    self.edges[self.edgeNodes[del_ind][0]][self.edgeNodes[del_ind][1]] = 0
+                    self.edges[self.edgeNodes[del_ind][1]][self.edgeNodes[del_ind][0]] = 0
+                    del self.edgeNodes[del_ind]
+                    found = True
                     break
-                else:
-                 raise Exception("Node {} and node {} are not endpoints of any edge, current edges:{}".format(endpoint1,endpoint2,self.edgeWithTypes))
+            else:
+                surface = self.edgeCenters[del_ind]
+                for k in self.edgeWithTypes["celltosurface"]:
+                    for surfaceNode in self.edgeWithTypes["celltosurface"][k]:
+                        if surfaceNode == surface:
+                            self.edgeWithTypes["celltosurface"][k].remove(surfaceNode)
+                            found = True
+                            break
+        if not found:
+            raise Exception("edge with {} center point is not found, current edges:{}".format(self.edgeCenters[del_ind],self.edgeWithTypes))
          # for startNode in self.edgeWithTypes[edgeType]:
          #     if endpoint1[0] - self.nodeRdius <= startNode[0] <= endpoint1[0] + self.nodeRdius and \
          #     endpoint1[1] - self.nodeRdius <= startNode[1] <= endpoint1[1] + self.nodeRdius:
@@ -564,20 +588,10 @@ class Logic(QMainWindow, Ui_MainWindow):
          #         tempList = self.edgeWithTypes[edgeType][startNode]
          #         tempList.remove(endpoint1)
          #         self.edgeWithTypes[edgeType][startNode] = tempList
-            self.edges[self.edgeNodes[del_ind][0]][self.edgeNodes[del_ind][1]] = 0
-            self.edges[self.edgeNodes[del_ind][1]][self.edgeNodes[del_ind][0]] = 0
-            del self.edgeNodes[del_ind]
-
-        elif self.buttonType == "celltosurface":
-            surface = self.edgeCenters[del_ind]
-            for k in self.edgeWithTypes["celltosurface"]:
-                for surfaceNode in self.edgeWithTypes["celltosurface"][k]:
-                    if surfaceNode == surface:
-                        self.edgeWithTypes["celltosurface"][k].remove(surfaceNode)
 
         del self.edgeCenters[del_ind]
         self.replotImage()
-        print("After deletion", self.edgeWithTypes)
+        # print("After deletion", self.edgeWithTypes)
         self.saved = False
 
     def removeNearest(self, x_coord, y_coord):
@@ -715,11 +729,17 @@ class Logic(QMainWindow, Ui_MainWindow):
 
             # Write image binary
             out_file.write("%s\n" % self.filename)
+
+            # Dan: above code stores edge matrix, but we also need to store edge type,
+            # so I append edgeWithTypes in the end to avoid file read conflict
+            out_file.write(str(self.edgeWithTypes))
+
             out_file.close()
             out_file = open(save_file_name + ".nwas", "ab")
             with open(self.filename, "rb") as img_file:
                 data = img_file.read()
                 out_file.write(data)
+
             out_file.close()
             self.saved = True
 
@@ -771,6 +791,12 @@ class Logic(QMainWindow, Ui_MainWindow):
                 img_file_name = saved_file.readline().strip()
                 lines_read += 1
                 self.filename = img_file_name
+
+                # Dan: read edgeWithTypes into dictionary
+                # eval is not the safest way, but don't want to import new lib
+                self.edgeWithTypes = eval(saved_file.readline().strip())
+                print(self.edgeWithTypes)
+
 
             with open(fileName, "rb") as saved_file:
                 # For now we'll just try to use the file name

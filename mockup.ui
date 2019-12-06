@@ -616,11 +616,6 @@ background: #d8d8d8
         </layout>
        </widget>
       </widget>
-      <widget class="QWidget" name="tab_layers_tab">
-       <attribute name="title">
-        <string>Layers</string>
-       </attribute>
-      </widget>
      </widget>
     </item>
    </layout>
