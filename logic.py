@@ -60,8 +60,8 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.edgeTypes = ['celltocell', 'celltosurface', 'cellcontact']
         self.nodeColor = {'standard':'blue', 'spheroplast':'yellow', 'curved':'lightgreen', 'filament':'violet'}
         self.nodeWithTypes = dict()
-        self.edgeWithTypes = dict()
         # {nodeType: [list of [x,y]}
+        self.edgeWithTypes = dict()
         # {edgeType: {(startNodex, startNodey): [list of [x,y]]}}
         self.nodeWithTypes.update((n,[]) for n in self.nodeTypes)
         self.edgeWithTypes.update((e,dict()) for e in self.edgeTypes)
@@ -119,6 +119,8 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.edge_painter_celltocell.clicked.connect(lambda:self.addEdge('celltocell'))
         self.edge_painter_celltosurface.clicked.connect(lambda:self.addEdge('celltosurface'))
         self.edge_painter_cellcontact.clicked.connect(lambda:self.addEdge('cellcontact'))
+
+        self.updateToolTipDisplay("clear")
 
         self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onpress))
         self.cid.append(self.MplWidget.canvas.mpl_connect('motion_notify_event', self.onmove))
@@ -185,6 +187,9 @@ class Logic(QMainWindow, Ui_MainWindow):
                             else:
                                 self.lineStart(event.xdata, event.ydata)
                                 self.edgeStarted = True;
+                  elif self.button == "clear":
+                    # Dan: clear_arrow allows type change for nodes
+                    self.nodeTypeChange(event.xdata, event.ydata)
           #self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onClick))
     def automateFile(self):
         modifiers = QtWidgets.QApplication.keyboardModifiers()
@@ -231,6 +236,25 @@ class Logic(QMainWindow, Ui_MainWindow):
 
     def midpoint(self, position1, position2):
         return [(position1[0] + position2[0]) / 2, (position1[1] + position2[1]) / 2]
+
+    def nodeTypeChange(self, x_coord, y_coord):
+        node_ind, node_dist = self.findClosestNode(x_coord, y_coord)
+        currNode = self.nodes[node_ind]
+        nodeType = ''
+        for type in self.nodeWithTypes:
+            if currNode in self.nodeWithTypes[type]:
+                nodeType = type
+                self.nodeWithTypes[type].remove(currNode)
+                break
+        if nodeType != '':
+            nextTypeInd = (self.nodeTypes.index(nodeType) + 1) % len(self.nodeTypes)
+            self.nodeWithTypes[self.nodeTypes[nextTypeInd]].append(currNode)
+            self.replotImage()
+
+        else:
+            raise Exception("node {} not found in self.nodeWithTypes when attempting node type change").format(currNode)
+
+
 
     def findClosestNode(self, x_coord, y_coord):
         pt = [x_coord, y_coord]
@@ -525,6 +549,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         y_coord = round(y_coord, 6)
         min_ind, min_dist = self.findClosestNode(x_coord, y_coord)
         self.edgeEnd = min_ind
+        print(self.weight())
         self.edges[self.edgeStart][self.edgeEnd] = self.weight()
         self.edges[self.edgeEnd][self.edgeStart] = self.weight()
         # self.edgeWithTypes[self.buttonType].append([x_coord, y_coord])
@@ -535,22 +560,45 @@ class Logic(QMainWindow, Ui_MainWindow):
         x_coord = round(x_coord, 6)
         y_coord = round(y_coord, 6)
         del_ind, dist = self.findClosestEdge(x_coord, y_coord)
+        # print(self.buttonType)
+        # if self.buttonType == "celltocell":
+        found = False
+        # print("before:", self.edgeWithTypes)
+        for edgeType in self.edgeWithTypes:
+            if edgeType != "celltosurface":
+                try:
+                    endpoint1 = self.nodes[self.edgeNodes[del_ind][0]]
+                    endpoint2 = self.nodes[self.edgeNodes[del_ind][1]]
+                    # print("1:", endpoint1)
+                    # print("2:", endpoint2)
+                except IndexError:
+                    # Dan: prevent index out of bound
+                    continue
 
-        if self.buttonType == "celltocell":
-            endpoint1 = self.nodes[self.edgeNodes[del_ind][0]]
-            endpoint2 = self.nodes[self.edgeNodes[del_ind][1]]
-            print("1:", endpoint1)
-            print("2:", endpoint2)
-            for edgeType in self.edgeWithTypes:
-                print("before:", self.edgeWithTypes)
                 if tuple(endpoint1) in self.edgeWithTypes[edgeType]:
                     self.edgeWithTypes[edgeType][tuple(endpoint1)].remove(endpoint2)
+                    self.edges[self.edgeNodes[del_ind][0]][self.edgeNodes[del_ind][1]] = 0
+                    self.edges[self.edgeNodes[del_ind][1]][self.edgeNodes[del_ind][0]] = 0
+                    del self.edgeNodes[del_ind]
+                    found = True
                     break
                 elif tuple(endpoint2) in self.edgeWithTypes[edgeType]:
                     self.edgeWithTypes[edgeType][tuple(endpoint2)].remove(endpoint1)
+                    self.edges[self.edgeNodes[del_ind][0]][self.edgeNodes[del_ind][1]] = 0
+                    self.edges[self.edgeNodes[del_ind][1]][self.edgeNodes[del_ind][0]] = 0
+                    del self.edgeNodes[del_ind]
+                    found = True
                     break
-                else:
-                 raise Exception("Node {} and node {} are not endpoints of any edge, current edges:{}".format(endpoint1,endpoint2,self.edgeWithTypes))
+            else:
+                surface = self.edgeCenters[del_ind]
+                for k in self.edgeWithTypes["celltosurface"]:
+                    for surfaceNode in self.edgeWithTypes["celltosurface"][k]:
+                        if surfaceNode == surface:
+                            self.edgeWithTypes["celltosurface"][k].remove(surfaceNode)
+                            found = True
+                            break
+        if not found:
+            raise Exception("edge with {} center point is not found, current edges:{}".format(self.edgeCenters[del_ind],self.edgeWithTypes))
          # for startNode in self.edgeWithTypes[edgeType]:
          #     if endpoint1[0] - self.nodeRdius <= startNode[0] <= endpoint1[0] + self.nodeRdius and \
          #     endpoint1[1] - self.nodeRdius <= startNode[1] <= endpoint1[1] + self.nodeRdius:
@@ -564,20 +612,10 @@ class Logic(QMainWindow, Ui_MainWindow):
          #         tempList = self.edgeWithTypes[edgeType][startNode]
          #         tempList.remove(endpoint1)
          #         self.edgeWithTypes[edgeType][startNode] = tempList
-            self.edges[self.edgeNodes[del_ind][0]][self.edgeNodes[del_ind][1]] = 0
-            self.edges[self.edgeNodes[del_ind][1]][self.edgeNodes[del_ind][0]] = 0
-            del self.edgeNodes[del_ind]
-
-        elif self.buttonType == "celltosurface":
-            surface = self.edgeCenters[del_ind]
-            for k in self.edgeWithTypes["celltosurface"]:
-                for surfaceNode in self.edgeWithTypes["celltosurface"][k]:
-                    if surfaceNode == surface:
-                        self.edgeWithTypes["celltosurface"][k].remove(surfaceNode)
 
         del self.edgeCenters[del_ind]
         self.replotImage()
-        print("After deletion", self.edgeWithTypes)
+        # print("After deletion", self.edgeWithTypes)
         self.saved = False
 
     def removeNearest(self, x_coord, y_coord):
@@ -634,17 +672,48 @@ class Logic(QMainWindow, Ui_MainWindow):
                 counterDisplayText += str(counter) + "\n"
         self.counter_label.setText(counterDisplayText)
 
+    def updateToolTipDisplay(self, button):
+        text = 'Current Button Type: ' + button + "\n\n"
+        if button == "clear":
+            text = text + "Tip:\nYou can click on any existing \n" + \
+            "node to change their type.\n" + \
+            "Click on elsewhere will not \n" + \
+            "create any new object."
+        elif button == "standard" or button == "spheroplast" or button == "curved" or button == "filament":
+            text = text + "Tip:\nYou can click anywhere \n" + \
+            "on the image to create a node\n" + \
+            "indicating a cell of " + button + ".\n"
+        elif button == "celltocell":
+            text = text + "Tip:\nYou can click on two nodes \n" + \
+            "on the image to create\n" + \
+            "a cell to cell edge. Such edge\n" + \
+            "has weight based on length."
+        elif button == "celltosurface":
+            text = text + "Tip:\nYou can click on a nodes \n" + \
+            "and anywhere on image to create\n" + \
+            "a cell to surface edge. Such edge\n" + \
+            "has weight based on length."
+        elif button == "cellcontact":
+            text = text + "Tip:\nYou can click on two nodes \n" + \
+            "on the image to create\n" + \
+            "a cell to cell edge. Such edge\n" + \
+            "has a constant weight."
+
+        self.tooltip_label.setText(text)
+
     def addNode(self, buttonType):
         self.button = 'node'
         self.buttonType = buttonType
         if buttonType == "clear":
-            self.button = ''
+            self.button = 'clear'
         self.saved = False
+        self.updateToolTipDisplay(buttonType)
 
     def addEdge(self, buttonType):
         self.button = 'edge'
         self.buttonType = buttonType
         self.saved = False
+        self.updateToolTipDisplay(buttonType)
         # if self.filename != '' and len(self.nodes) >= 2:
         #     self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineStart))
         #     self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineEnd))
@@ -715,11 +784,17 @@ class Logic(QMainWindow, Ui_MainWindow):
 
             # Write image binary
             out_file.write("%s\n" % self.filename)
+
+            # Dan: above code stores edge matrix, but we also need to store edge type,
+            # so I append edgeWithTypes in the end to avoid file read conflict
+            out_file.write(str(self.edgeWithTypes))
+
             out_file.close()
             out_file = open(save_file_name + ".nwas", "ab")
             with open(self.filename, "rb") as img_file:
                 data = img_file.read()
                 out_file.write(data)
+
             out_file.close()
             self.saved = True
 
@@ -771,6 +846,17 @@ class Logic(QMainWindow, Ui_MainWindow):
                 img_file_name = saved_file.readline().strip()
                 lines_read += 1
                 self.filename = img_file_name
+
+                # Dan: read edgeWithTypes into dictionary
+                # eval is not the safest way, but don't want to import new lib
+                try:
+                    self.edgeWithTypes = eval(saved_file.readline().strip())
+                    print(self.edgeWithTypes)
+                except SyntaxError:
+                    # older test file don't have this,so it needs to be handled
+                    print("older test file don't have edgeWithTypes saved,so it needs to be handled")
+
+
 
             with open(fileName, "rb") as saved_file:
                 # For now we'll just try to use the file name
@@ -827,7 +913,6 @@ class Logic(QMainWindow, Ui_MainWindow):
     def get_int(self):
         i, okPressed = QInputDialog.getInt(self, "Set distance",u"Distance (\u03bcm):", 10, 0, 100, 1)
         return i if okPressed else None
-
 
 
 def getNodeLetter(num):
