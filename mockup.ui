@@ -613,6 +613,13 @@ background: #d8d8d8
            </property>
           </spacer>
          </item>
+         <item>
+          <widget class="QLabel" name="status_label">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
       </widget>
