@@ -187,7 +187,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                             else:
                                 self.lineStart(event.xdata, event.ydata)
                                 self.edgeStarted = True;
-                  elif self.button == "clear":
+                  elif self.button == '':
                     # Dan: clear_arrow allows type change for nodes
                     self.nodeTypeChange(event.xdata, event.ydata)
           #self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onClick))
@@ -197,9 +197,20 @@ class Logic(QMainWindow, Ui_MainWindow):
             self.shouldPlotIssues = not self.shouldPlotIssues
             self.replotImage()
         elif (self.shouldAutomate):
+            self.status_label.setText("Status: Automating...")
+            msg = QMessageBox.warning(self, "Confirm Automation",
+                                        "This process is going to take a while. Do you want to continue? ", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            if msg == QMessageBox.Yes:
+                pass
+
+            elif msg == QMessageBox.No:
+                self.status_label.setText("")
+                return
             self.addAutoNodes(findNodes(self.filename))
             self.shouldAutomate = False
+            self.status_label.setText("Status: Automated")
         else:
+            self.status_label.setText("")
             print("Already Automated")
 
     def addAutoNodes(self, values):
@@ -527,7 +538,6 @@ class Logic(QMainWindow, Ui_MainWindow):
             # delete from nodeWithTypes
             for ntype in self.nodeWithTypes:
                 for i in self.nodeWithTypes[ntype]:
-                    print(i)
                     if self.nodes[del_ind] == i:
                         self.nodeWithTypes[ntype].remove(self.nodes[del_ind])
 
@@ -705,7 +715,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.button = 'node'
         self.buttonType = buttonType
         if buttonType == "clear":
-            self.button = 'clear'
+            self.button = ''
         self.saved = False
         self.updateToolTipDisplay(buttonType)
 
@@ -750,11 +760,15 @@ class Logic(QMainWindow, Ui_MainWindow):
 
             out_file.write("%f\n" % self.pxdist)
             # Write node coords
-            for n_type in self.nodeTypes:
+            for i in range(len(self.nodeTypes)):
+                n_type = self.nodeTypes[i]
                 for x, y in self.nodeWithTypes[n_type][:-1]:
                     out_file.write("%.6f,%.6f,%s," % (x, y, n_type))
                 try:
-                    out_file.write("%.6f,%.6f,%s" % (self.nodeWithTypes[n_type][-1][0], self.nodeWithTypes[n_type][-1][1], n_type))
+                    if (i < len(self.nodeTypes) - 1):
+                        out_file.write("%.6f,%.6f,%s," % (self.nodeWithTypes[n_type][-1][0], self.nodeWithTypes[n_type][-1][1], n_type))
+                    else:
+                        out_file.write("%.6f,%.6f,%s" % (self.nodeWithTypes[n_type][-1][0], self.nodeWithTypes[n_type][-1][1], n_type))
                 except:
                     out_file.write("")
             out_file.write("\n")
@@ -787,7 +801,15 @@ class Logic(QMainWindow, Ui_MainWindow):
 
             # Dan: above code stores edge matrix, but we also need to store edge type,
             # so I append edgeWithTypes in the end to avoid file read conflict
-            out_file.write(str(self.edgeWithTypes))
+            out_file.write(str(self.edgeWithTypes) + "\n")
+            out_file.write(str(self.nodes) + "\n")
+            out_file.write(str(self.edges) + "\n")
+            out_file.write(str(self.edgeCenters) + "\n")
+            out_file.write(str(self.edgeNodes) + "\n")
+            out_file.write(str(self.calibration_point_coords) + "\n")
+            out_file.write(str(self.calibration_points) + "\n")
+
+
 
             out_file.close()
             out_file = open(save_file_name + ".nwas", "ab")
@@ -851,7 +873,15 @@ class Logic(QMainWindow, Ui_MainWindow):
                 # eval is not the safest way, but don't want to import new lib
                 try:
                     self.edgeWithTypes = eval(saved_file.readline().strip())
+                    self.nodes = eval(saved_file.readline().strip())
+                    self.edges = eval(saved_file.readline().strip())
+                    self.edgeCenters = eval(saved_file.readline().strip())
+                    self.edgeNodes = eval(saved_file.readline().strip())
+                    self.calibration_point_coords = eval(saved_file.readline().strip())
+                    self.calibration_points = eval(saved_file.readline().strip())
+
                     print(self.edgeWithTypes)
+                    print(self.nodes)
                 except SyntaxError:
                     # older test file don't have this,so it needs to be handled
                     print("older test file don't have edgeWithTypes saved,so it needs to be handled")
@@ -933,251 +963,3 @@ def main():
     sys.exit(app.exec_())
 
 main()
-    # def setImage(self):
-    #     fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *jpeg *.bmp *.tif)")
-    #     if fileName:
-    #         self.filename = fileName
-    #         image = plt.imread(self.filename)
-    #         gray_arr = np.asarray(image)
-    #         rgb_arr = np.stack((gray_arr, gray_arr, gray_arr), axis=-1)
-    #         imgplot = self.MplWidget.canvas.axes.imshow(rgb_arr)
-    #         self.MplWidget.canvas.draw()
-
-    # def replotImage(self):
-    #     #Clearing the figure and getting rid of the axes labels
-    #     self.MplWidget.canvas.axes.clear()
-    #     self.MplWidget.canvas.axes.axis('off')
-    #     #Plotting the image in greyscale
-    #     image = plt.imread(self.filename)
-    #     gray_arr = np.asarray(image)
-    #     rgb_arr = np.stack((gray_arr, gray_arr, gray_arr), axis=-1)
-    #     imgplot = self.MplWidget.canvas.axes.imshow(rgb_arr)
-    #     #Plotting lines and nodes
-    #     self.plotLines()
-    #     self.plotNodes()
-
-    #     self.MplWidget.canvas.draw()
-
-    #     #Disconnecting event handlers (not quite sure about this)
-    #     #for i in range(len(self.cid)):
-    #     #    self.MplWidget.canvas.mpl_disconnect(self.cid[i])
-
-     # def save_plot(self):
-    #     curr_time = str(dt.datetime.now())
-    #     # QInputDialog.getText("Save Project", "Project name:", QLineEdit.Normal, "")
-    #     # if okPressed:
-    #     save_file_name = ("%s_" % self.filename) if self.filename != '' else "SaveFile"
-    #     for c in curr_time:
-    #         if not c in ['-', ' ', ':', '.']:
-    #             save_file_name += c
-    #         else:
-    #             save_file_name += '_'
-    #     out_file = open(save_file_name + ".nwas", "w+")
-
-    #     # Write node coords
-    #     for x, y in self.nodes[:-1]:
-    #         out_file.write("%f,%f,%s," % (x, y, "STD_NODE"))
-    #     out_file.write("%f,%f,%s\n" % (self.nodes[-1][0], self.nodes[-1][1], "STD_NODE"))
-
-    #     # Write adjacency matrix
-    #     out_file.write("%d\n" % len(self.edges))
-    #     for i in range(len(self.edges)):
-    #         for j in range(len(self.edges[i])):
-    #             out_file.write("%f " % self.edges[i][j])
-    #         out_file.write('\n')
-
-    #     # Write image binary
-    #     out_file.write("%s\n" % self.filename)
-    #     out_file.close()
-    #     out_file = open(save_file_name + ".nwas", "ab")
-    #     with open(self.filename, "rb") as img_file:
-    #         data = img_file.read()
-    #         out_file.write(data)
-    #     out_file.close()
-    #     self.saved = True
-
-    # def open_plot(self):
-    #     fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Save File", "", "NWAS Files (*.nwas)")
-    #     if fileName:
-    #         # We will read this many lines again after reopening the file so that we can read the image file
-    #         lines_read = 0
-    #         with open(fileName, 'r') as saved_file:
-
-    #             # Read the node coords and add them to self.nodes
-    #             nodes = saved_file.readline().strip().split(',')
-    #             lines_read += 1
-    #             for i in range(0, len(nodes), 3):
-    #                 self.nodes.append([float(nodes[i]), float(nodes[i + 1])])
-
-    #             # Read in the number of nodes
-    #             num_nodes = int(saved_file.readline().strip())
-    #             lines_read += 1
-
-    #             for i in range(num_nodes):
-    #                 line = saved_file.readline().strip().split()
-    #                 lines_read += 1
-
-    #                 self.edges.append([float(x) for x in line])
-
-    #             img_file_name = saved_file.readline().strip()
-    #             lines_read += 1
-    #             self.filename = img_file_name
-
-    #         with open(fileName, "rb") as saved_file:
-    #             # For now we'll just try to use the file name
-    #             # for _ in range(lines_read):
-    #             #     x = saved_file.readline()
-    #             #     print(x)
-    #             # img_binary = saved_file.read()
-    #             # temp = open("__temp.tif", "wb+")
-    #             # temp.write(img_binary)
-    #             # temp.close()
-    #             # image = plt.imread("$$temp$$")
-    #             try:
-    #                 image = plt.imread(self.filename)
-    #             except (FileNotFoundError):
-    #                 msg = QMessageBox.critical(self, "Error loading image: File not found",
-    #                                         "Make sure file '%s' is in current directory" % self.filename)
-    #                 return
-    #             gray_arr = np.asarray(image)
-    #             #print(gray_arr)
-    #             rgb_arr = np.stack((gray_arr, gray_arr, gray_arr), axis=-1)
-    #             #print(rgb_arr)
-    #             imgplot = self.MplWidget.canvas.axes.imshow(rgb_arr)
-    #             self.MplWidget.canvas.draw()
-    #             self.replotImage()
-    #     self.saved = True
-
-
-
-    # def addEdge(self):
-    #     if self.filename != '' and len(self.nodes) >= 2:
-    #         self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineStart))
-    #         self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineEnd))
-    #     self.button = 'edge'
-        # if self.filename != '' and len(self.nodes) >= 2:
-        #     self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineStart))
-        #     self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineEnd))
-
-
-    # def addNode(self):
-    #     if self.filename != '':
-    #       self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.addPoint))
-
-
-    # def save_plot(self):
-    #     curr_time = str(dt.datetime.now())
-    #     # QInputDialog.getText("Save Project", "Project name:", QLineEdit.Normal, "")
-    #     # if okPressed:
-    #     #print("Save path is: %s, File name is: %s, Save file location is: %s" % (self.save_loc, self.filename, os.path.join(self.save_loc, self.filename)))
-    #     # save_file_name = os.path.join(self.save_loc, self.filename.split('/')[-1]) if self.filename != '' else os.path.join("%s" % self.save_loc, "SaveFile")
-    #     save_file_name, _ = QFileDialog.getSaveFileName(self,"QFileDialog.getSaveFileName()","", "NWAS Files (*.nwas)", options=options)
-    #     if not save_file_name:
-    #         return
-    #     self.save_loc = save_file_name
-    #     print(save_file_name)
-    #     # for c in curr_time:
-    #     #     if not c in ['-', ' ', ':', '.']:
-    #     #         save_file_name += c
-    #     #     else:
-    #     #         save_file_name += '_'
-    #     out_file = open(save_file_name + ".nwas", "w+")
-
-    #     # Write node coords
-    #     for x, y in self.nodes[:-1]:
-    #         out_file.write("%f,%f,%s," % (x, y, "STD_NODE"))
-    #     out_file.write("%f,%f,%s\n" % (self.nodes[-1][0], self.nodes[-1][1], "STD_NODE"))
-
-    #     # Write adjacency matrix
-    #     out_file.write("%d\n" % len(self.edges))
-    #     for i in range(len(self.edges)):
-    #         for j in range(len(self.edges[i])):
-    #             out_file.write("%f " % self.edges[i][j])
-    #         out_file.write('\n')
-
-    #     # Write image binary
-    #     out_file.write("%s\n" % self.filename)
-    #     out_file.close()
-    #     out_file = open(save_file_name + ".nwas", "ab")
-    #     with open(self.filename, "rb") as img_file:
-    #         data = img_file.read()
-    #         out_file.write(data)
-    #     out_file.close()
-    #     self.saved = True
-
-
-    # def open_plot(self):
-    #     # CRITICAL*** Fix error with loading onto existing image plot
-    #     if self.filename != '':
-    #         if not self.saved:
-    #             msg = QMessageBox.warning(self, "File not saved",
-    #                                         "You are about to leave the current project. Do you want to continue without saving?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-    #             if msg == QMessageBox.No:
-    #                 return
-    #     fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Save File", self.save_loc, "NWAS Files (*.nwas)")
-    #     if fileName:
-    #         self.filename = ''
-
-    #         self.button = "node"
-
-    #         self.nodes = []
-    #         self.edges = []
-    #         self.edgeCenters = []
-    #         self.edgeNodes = []
-
-    #         self.edgeStarted = False;
-    #         self.edgeStart = -1
-    #         self.edgeEnd = -1
-    #         self.pxdist = -1
-
-    #         self.press = False
-    #         self.move = False
-    #         self.saved = False
-    #         # We will read this many lines again after reopening the file so that we can read the image file
-    #         lines_read = 0
-    #         with open(fileName, 'r') as saved_file:
-
-    #             # Read the node coords and add them to self.nodes
-    #             nodes = saved_file.readline().strip().split(',')
-    #             lines_read += 1
-    #             for i in range(0, len(nodes), 3):
-    #                 self.nodes.append([float(nodes[i]), float(nodes[i + 1])])
-
-    #             # Read in the number of nodes
-    #             num_nodes = int(saved_file.readline().strip())
-    #             lines_read += 1
-
-    #             for i in range(num_nodes):
-    #                 line = saved_file.readline().strip().split()
-    #                 lines_read += 1
-
-    #                 self.edges.append([float(x) for x in line])
-
-    #             img_file_name = saved_file.readline().strip()
-    #             lines_read += 1
-    #             self.filename = img_file_name
-
-    #         with open(fileName, "rb") as saved_file:
-    #             # For now we'll just try to use the file name
-    #             # for _ in range(lines_read):
-    #             #     x = saved_file.readline()
-    #             #     print(x)
-    #             # img_binary = saved_file.read()
-    #             # temp = open("__temp.tif", "wb+")
-    #             # temp.write(img_binary)
-    #             # temp.close()
-    #             # image = plt.imread("$$temp$$")
-    #             try:
-    #                 image = plt.imread(self.filename)
-    #             except (FileNotFoundError):
-    #                 msg = QMessageBox.critical(self, "Error loading image: File not found",
-    #                                         "Make sure file '%s' exists" % self.filename)
-    #                 return
-    #             gray_arr = np.asarray(image)
-    #             #print(gray_arr)
-    #             rgb_arr = np.stack((gray_arr, gray_arr, gray_arr), axis=-1)
-    #             #print(rgb_arr)
-    #             imgplot = self.MplWidget.canvas.axes.imshow(rgb_arr)
-    #             self.MplWidget.canvas.draw()
-    #             self.replotImage()
-    #             self.saved = True
