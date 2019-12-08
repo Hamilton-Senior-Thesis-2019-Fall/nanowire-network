@@ -538,7 +538,6 @@ class Logic(QMainWindow, Ui_MainWindow):
             # delete from nodeWithTypes
             for ntype in self.nodeWithTypes:
                 for i in self.nodeWithTypes[ntype]:
-                    print(i)
                     if self.nodes[del_ind] == i:
                         self.nodeWithTypes[ntype].remove(self.nodes[del_ind])
 
@@ -802,7 +801,15 @@ class Logic(QMainWindow, Ui_MainWindow):
 
             # Dan: above code stores edge matrix, but we also need to store edge type,
             # so I append edgeWithTypes in the end to avoid file read conflict
-            out_file.write(str(self.edgeWithTypes))
+            out_file.write(str(self.edgeWithTypes) + "\n")
+            out_file.write(str(self.nodes) + "\n")
+            out_file.write(str(self.edges) + "\n")
+            out_file.write(str(self.edgeCenters) + "\n")
+            out_file.write(str(self.edgeNodes) + "\n")
+            out_file.write(str(self.calibration_point_coords) + "\n")
+            out_file.write(str(self.calibration_points) + "\n")
+
+
 
             out_file.close()
             out_file = open(save_file_name + ".nwas", "ab")
@@ -866,7 +873,15 @@ class Logic(QMainWindow, Ui_MainWindow):
                 # eval is not the safest way, but don't want to import new lib
                 try:
                     self.edgeWithTypes = eval(saved_file.readline().strip())
+                    self.nodes = eval(saved_file.readline().strip())
+                    self.edges = eval(saved_file.readline().strip())
+                    self.edgeCenters = eval(saved_file.readline().strip())
+                    self.edgeNodes = eval(saved_file.readline().strip())
+                    self.calibration_point_coords = eval(saved_file.readline().strip())
+                    self.calibration_points = eval(saved_file.readline().strip())
+
                     print(self.edgeWithTypes)
+                    print(self.nodes)
                 except SyntaxError:
                     # older test file don't have this,so it needs to be handled
                     print("older test file don't have edgeWithTypes saved,so it needs to be handled")
