@@ -7,7 +7,7 @@ Inline-style:
 
 
 ## Installation
-**Clone or download the git repo:**
+**Clone or download the git repo**
 
 **Install dependencies:**
 Navigate inside Nanowire-Network folder to *NanowireNetworkInstall*. Double click file.
