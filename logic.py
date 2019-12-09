@@ -174,10 +174,9 @@ class Logic(QMainWindow, Ui_MainWindow):
                             startNodeTuple = tuple(self.nodes[self.edgeStart])
                             if startNodeTuple not in self.edgeWithTypes[self.buttonType]:
                                 self.edgeWithTypes[self.buttonType][startNodeTuple] = []
-                            for n in self.nodes:
-                                if n[0] - self.nodeRdius <= event.xdata <=  n[0] + self.nodeRdius and \
-                                n[1] - self.nodeRdius <= event.ydata <=  n[1] + self.nodeRdius:
-                                    self.edgeWithTypes[self.buttonType][startNodeTuple].append(n)
+                            min_ind, min_dist = self.findClosestNode(event.xdata, event.ydata)
+                            if startNodeTuple != tuple(self.nodes[min_ind]):
+                                self.edgeWithTypes[self.buttonType][startNodeTuple].append(self.nodes[min_ind])
 
                         if self.buttonType == "celltocell" or self.buttonType == "cellcontact":
                             if self.edgeStarted:
@@ -566,10 +565,12 @@ class Logic(QMainWindow, Ui_MainWindow):
         y_coord = round(y_coord, 6)
         min_ind, min_dist = self.findClosestNode(x_coord, y_coord)
         self.edgeEnd = min_ind
-        print(self.weight())
+        # print(self.weight())
+
         self.edges[self.edgeStart][self.edgeEnd] = self.weight()
         self.edges[self.edgeEnd][self.edgeStart] = self.weight()
         # self.edgeWithTypes[self.buttonType].append([x_coord, y_coord])
+        print(self.edgeWithTypes)
         self.replotImage()
         self.saved = False
 
