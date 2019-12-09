@@ -2,6 +2,9 @@
 Nanowire-Network is a analysis tools to measure characteristics of biologically produced
 nanowire networks that spontaneously form between Shewanella oneidensis bacteria under
 specific growth conditions.
+Inline-style:
+![alt text](https://github.com/Hamilton-Senior-Thesis-2019-Fall/nanowire-network/blob/master/demo.png "demo")
+
 
 ## Installation
 **Clone the git repo:**
