@@ -138,8 +138,15 @@ class Logic(QMainWindow, Ui_MainWindow):
                 self.calibration_point_coords.append((event.xdata, event.ydata))
                 print(self.calibration_point_coords)
                 self.calibration_points.extend(plt.plot(event.x, event.y, color="m"))
+                self.MplWidget.canvas.axes.scatter(event.xdata, event.ydata, 20, "white", zorder=3)
+                self.MplWidget.canvas.draw()
                 if len(self.calibration_points) == 2:
+                    line_x = [self.calibration_point_coords[0][0],self.calibration_point_coords[1][0]]
+                    line_y = [self.calibration_point_coords[0][1],self.calibration_point_coords[1][1]]
+                    self.MplWidget.canvas.axes.add_line(lines.Line2D(line_x,line_y, linewidth=2, color='white'))
+                    self.MplWidget.canvas.draw()
                     self.calibrate_measure()
+                    self.calibrating = False
             else:
             #If control is held down, removing stuff
               if modifiers == QtCore.Qt.ControlModifier:
@@ -840,11 +847,12 @@ class Logic(QMainWindow, Ui_MainWindow):
                 nodes = saved_file.readline().strip().split(',')
                 lines_read += 1
                 for i in range(0, len(nodes), 3):
-                    nx, ny = float(nodes[i]), float(nodes[i + 1])
-                    self.nodes.append([nx, ny])
-                    if not nodes[i + 2] in self.nodeWithTypes:
-                        self.nodeWithTypes[nodes[i + 2]] = []
-                    self.nodeWithTypes[nodes[i + 2]].append([nx, ny])
+                    if (len(str(nodes[i]).strip()) > 0):
+                        nx, ny = float(nodes[i]), float(nodes[i + 1])
+                        self.nodes.append([nx, ny])
+                        if not nodes[i + 2] in self.nodeWithTypes:
+                            self.nodeWithTypes[nodes[i + 2]] = []
+                        self.nodeWithTypes[nodes[i + 2]].append([nx, ny])
 
                 # Read in the number of nodes
                 num_nodes = int(saved_file.readline().strip())
