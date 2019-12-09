@@ -137,8 +137,8 @@ class Logic(QMainWindow, Ui_MainWindow):
             if self.calibrating:
                 self.calibration_point_coords.append((event.xdata, event.ydata))
                 print(self.calibration_point_coords)
-                self.calibration_points.extend(plt.plot(event.x, event.y, color="m"))
-                self.MplWidget.canvas.axes.scatter(event.xdata, event.ydata, 20, "white", zorder=3)
+                self.calibration_points.append(plt.scatter(event.x, event.y, 10, "magenta"))
+                self.MplWidget.canvas.axes.scatter(event.xdata, event.ydata, 20, "magenta", zorder=3)
                 self.MplWidget.canvas.draw()
                 if len(self.calibration_points) == 2:
                     line_x = [self.calibration_point_coords[0][0],self.calibration_point_coords[1][0]]
@@ -166,6 +166,8 @@ class Logic(QMainWindow, Ui_MainWindow):
                           self.edgeStarted = False;
                           self.addPoint(event.xdata, event.ydata)
                   elif self.button == "edge":
+                        if not self.nodes:
+                            return
                         # if modifiers == QtCore.Qt.ShiftModifier:
                         #     self.edgeStarted = False;
                         #     self.addPoint(event.xdata, event.ydata)
@@ -194,6 +196,8 @@ class Logic(QMainWindow, Ui_MainWindow):
                                 self.lineStart(event.xdata, event.ydata)
                                 self.edgeStarted = True;
                   elif self.button == '':
+                    if not self.nodes:
+                        return
                     # Dan: clear_arrow allows type change for nodes
                     self.nodeTypeChange(event.xdata, event.ydata)
           #self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onClick))
@@ -279,6 +283,8 @@ class Logic(QMainWindow, Ui_MainWindow):
             min_dist = self.distance(pt, self.nodes[1])
             min_ind = 1
         else:
+            if not self.nodes:
+                return -1, -1
             min_dist = self.distance(pt, self.nodes[0])
             min_ind = 0
         for i in range(len(self.nodes)):
@@ -388,7 +394,11 @@ class Logic(QMainWindow, Ui_MainWindow):
 
     def convertToGEXF(self):
         date = dt.datetime.now()
-        with open("test_gexf.gexf", "w+") as out_file:
+        save_file_name, _ = QFileDialog.getSaveFileName(self,"QFileDialog.getSaveFileName()","", "GEXF Files (*.gexf)")
+        save_file_name += (".gexf" if save_file_name[-5:] != ".gexf" else "")
+        if not save_file_name:
+            return
+        with open(save_file_name, "w+") as out_file:
             out_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
             out_file.write('<gexf xmlns="http://www.gexf.net/1.2draft"\n' +
             '      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n' +
@@ -478,7 +488,7 @@ class Logic(QMainWindow, Ui_MainWindow):
 
     def get_edge_type(self, i, j):
         for key in self.edgeWithTypes:
-            if self.nodes[j] in self.edgeWithTypes[key]:
+            if tuple(self.nodes[j]) in self.edgeWithTypes[key]:
                 return key
 
     def get_edge_dist(self, i, j):
@@ -820,12 +830,12 @@ class Logic(QMainWindow, Ui_MainWindow):
 
 
             out_file.close()
-            out_file = open(save_file_name + ".nwas", "ab")
-            with open(self.filename, "rb") as img_file:
-                data = img_file.read()
-                out_file.write(data)
+            # out_file = open(save_file_name, "ab")
+            # with open(self.filename, "rb") as img_file:
+            #     data = img_file.read()
+            #     out_file.write(data)
 
-            out_file.close()
+            # out_file.close()
             self.saved = True
 
     def open_plot(self):
