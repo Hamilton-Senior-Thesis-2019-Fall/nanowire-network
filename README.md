@@ -6,8 +6,8 @@ specific growth conditions.
 
 
 ## Installation
-**Clone or download the git repo**
-To download click green clone or download button on this page and then click Download ZIP.
+**Clone or download the git repo:**
+To download click green *Clone or Download* button on this page and then click *Download ZIP*.
 
 **Install dependencies:**
 Navigate inside Nanowire-Network folder to *NanowireNetworkInstall*. Double click file.
