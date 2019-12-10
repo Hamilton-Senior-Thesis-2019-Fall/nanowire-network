@@ -6,7 +6,7 @@ specific growth conditions.
 
 
 ## Installation
-**Python is needed to run this program:**\n
+**Python is needed to run this program:**
 Download from here: *https://www.python.org/downloads/*
 
 **Clone or download the git repo:**
