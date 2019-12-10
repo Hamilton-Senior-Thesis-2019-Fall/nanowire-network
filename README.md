@@ -2,7 +2,7 @@
 Nanowire-Network is an analysis tool to measure characteristics of biologically produced
 nanowire networks that spontaneously form between Shewanella oneidensis bacteria under
 specific growth conditions.
-![alt text](https://github.com/Hamilton-Senior-Thesis-2019-Fall/nanowire-network/blob/master/demo.PNG "demo")
+![alt text](https://github.com/Hamilton-Senior-Thesis-2019-Fall/nanowire-network/blob/master/demo.PNG "demo"
 
 
 ## Installation
@@ -49,3 +49,9 @@ To save navigate to *Export*. Click *Save file*. A window will pop up, choose wh
 To export navigate to *Export*. Click *Export to Gephi* to create a .csv file. Click *Export to Cytoscape* to create a .gexf, which is the recommended choice. These will just create a file with the exported information in the same folder. You can then navigate to this and load it into Gephi. Both file types are recognized by Gephi.
 ### Import from Saved File
 To upload this saved file navigate to *Import*. Click *Upload from saved projects* and select the file. It should load to where you were before.
+
+## Contributors
+Conor Courtney
+Dehao(Dan) Tu
+Thomas Marsh
+Tucker Ward
