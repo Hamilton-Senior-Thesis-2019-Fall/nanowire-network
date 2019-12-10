@@ -647,9 +647,15 @@ background: #d8d8d8
     <property name="title">
      <string>Export</string>
     </property>
+    <widget class="QMenu" name="menuExport_2">
+     <property name="title">
+      <string>Export</string>
+     </property>
+     <addaction name="actionCSV_Gephi"/>
+     <addaction name="actionGEXF"/>
+    </widget>
     <addaction name="actionSave_file"/>
-    <addaction name="actionExport_to_Gephi"/>
-    <addaction name="actionExport_to_Cytoscape"/>
+    <addaction name="menuExport_2"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -677,9 +683,9 @@ background: #d8d8d8
     <string>Save file</string>
    </property>
   </action>
-  <action name="actionExport_to_Gephi">
+  <action name="actionExport_to_csv">
    <property name="text">
-    <string>Export to Gephi</string>
+    <string>Export to .csv</string>
    </property>
   </action>
   <action name="actionExport_to_Cytoscape">
@@ -700,6 +706,16 @@ background: #d8d8d8
   <action name="actionStart">
    <property name="text">
     <string>Start</string>
+   </property>
+  </action>
+  <action name="actionCSV_Gephi">
+   <property name="text">
+    <string>CSV (Gephi)</string>
+   </property>
+  </action>
+  <action name="actionGEXF">
+   <property name="text">
+    <string>GEXF (Cytoscape)</string>
    </property>
   </action>
  </widget>

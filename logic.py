@@ -104,8 +104,8 @@ class Logic(QMainWindow, Ui_MainWindow):
 
     def activateButtons(self):
         self.actionUpload_from_computer.triggered.connect(self.setImage)
-        self.actionExport_to_Gephi.triggered.connect(self.convertToCSV)
-        self.actionExport_to_Cytoscape.triggered.connect(self.convertToGEXF)
+        self.actionCSV_Gephi.triggered.connect(self.convertToCSV)
+        self.actionGEXF.triggered.connect(self.convertToGEXF)
         self.actionSave_file.triggered.connect(self.save_plot)
         self.actionUpload_from_saved_projects.triggered.connect(self.open_plot)
         self.actionColor_select.triggered.connect(self.automateFile)

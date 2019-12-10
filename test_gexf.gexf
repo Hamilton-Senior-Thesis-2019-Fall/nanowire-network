@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:viz="http://www.gexf.net/1.1draft/viz"
+      xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd"
+      version="1.2">
+ <meta lastmodifieddate="19-12-09">
+  <creator>Nanowire Network Analysis</creator>
+  <description>CS410 Hamilton College Senior Project</description>
+  <keywords>cells, schewanella, Hamilton, 410</keywords>
+ </meta>
+ <graph defaultedgetype="undirected">
+  <attributes class="edge">
+   <attribute id="0" title="edgetype" type="string" />
+   <attribute id="1" title="length" type="float" />
+   <attribute id="2" title="currentohms" type="float" />
+  </attributes>
+  <nodes>
+   <node id="A" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="197.084818" y="365.565706" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="B" label="standard" >
+    <viz:color r="42" g="55" b="235" />
+    <viz:position x="221.672754" y="614.518560" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+   <node id="SURFACE" label="surfaceGhost">
+    <viz:color r="0" g="0" b="0" />
+    <viz:position x="0.0" y="0.0" z="0.0" />
+    <viz:shape value="disc" />
+    <viz:size value="0.01"/>
+   </node>
+  </nodes>
+  <edges>
+   <edge id = "0" source="A" target="B" weight="4.000000">
+    <attvalues>
