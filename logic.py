@@ -630,20 +630,23 @@ class Logic(QMainWindow, Ui_MainWindow):
                 try:
                     endpoint1 = self.nodes[self.edgeNodes[del_ind][0]]
                     endpoint2 = self.nodes[self.edgeNodes[del_ind][1]]
-                    # print("1:", endpoint1)
-                    # print("2:", endpoint2)
+                    print("1:", endpoint1)
+                    print("2:", endpoint2)
+                    print("current edgeWithTypes", self.edgeWithTypes)
                 except IndexError:
                     # Dan: prevent index out of bound
                     continue
 
-                if tuple(endpoint1) in self.edgeWithTypes[edgeType]:
+                if tuple(endpoint1) in self.edgeWithTypes[edgeType] and \
+                endpoint2 in self.edgeWithTypes[edgeType][tuple(endpoint1)]:
                     self.edgeWithTypes[edgeType][tuple(endpoint1)].remove(endpoint2)
                     self.edges[self.edgeNodes[del_ind][0]][self.edgeNodes[del_ind][1]] = 0
                     self.edges[self.edgeNodes[del_ind][1]][self.edgeNodes[del_ind][0]] = 0
                     del self.edgeNodes[del_ind]
                     found = True
                     break
-                elif tuple(endpoint2) in self.edgeWithTypes[edgeType]:
+                elif tuple(endpoint2) in self.edgeWithTypes[edgeType] and \
+                endpoint1 in self.edgeWithTypes[edgeType][tuple(endpoint2)]:
                     self.edgeWithTypes[edgeType][tuple(endpoint2)].remove(endpoint1)
                     self.edges[self.edgeNodes[del_ind][0]][self.edgeNodes[del_ind][1]] = 0
                     self.edges[self.edgeNodes[del_ind][1]][self.edgeNodes[del_ind][0]] = 0
