@@ -201,24 +201,55 @@ class Logic(QMainWindow, Ui_MainWindow):
                     # Dan: clear_arrow allows type change for nodes
                     self.nodeTypeChange(event.xdata, event.ydata)
           #self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onClick))
+
+    def removeNodesEdges(self):
+        self.nodeWithTypes = dict()
+        self.edgeWithTypes = dict()
+        self.nodeWithTypes.update((n,[]) for n in self.nodeTypes)
+        self.edgeWithTypes.update((e,dict()) for e in self.edgeTypes)
+        self.nodes = []
+        self.edges = []
+        self.edgeCenters = []
+        self.edgeNodes = []
+        self.calibration_point_coords = []
+        self.calibration_points = []
+        self.edgeStarted = False;
+        self.edgeStart = -1
+        self.edgeEnd = -1
+        self.edgeStartNode = [];
+        self.press = False
+        self.move = False
+        self.saved = True
+        self.calibrating = False
+        self.shouldAutomate = False
+        self.shouldPlotIssues = True
+        self.issues = []
+        self.nodeRdius = 12
+        self.replotImage()
+
     def automateFile(self):
         modifiers = QtWidgets.QApplication.keyboardModifiers()
         if modifiers == QtCore.Qt.ControlModifier:
             self.shouldPlotIssues = not self.shouldPlotIssues
             self.replotImage()
         elif (self.shouldAutomate):
-            self.status_label.setText("Status: Automating...")
-            msg = QMessageBox.warning(self, "Confirm Automation",
-                                        "This process is going to take a while. Do you want to continue? ", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-            if msg == QMessageBox.Yes:
-                pass
-
-            elif msg == QMessageBox.No:
-                self.status_label.setText("")
-                return
-            self.addAutoNodes(findNodes(self.filename))
-            self.shouldAutomate = False
-            self.status_label.setText("Status: Automated")
+            try:
+                self.status_label.setText("Status: Automating...")
+                msg = QMessageBox.warning(self, "Confirm Automation",
+                                            "This process may take some time.If there are any current nodes or edges, they will be erased. Do you want to continue? ", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                if msg == QMessageBox.Yes:
+                    pass
+                elif msg == QMessageBox.No:
+                    self.status_label.setText("")
+                    return
+                self.removeNodesEdges()
+                self.addAutoNodes(findNodes(self.filename))
+                self.shouldAutomate = False
+                self.status_label.setText("Status: Automated")
+            except Exception as e:
+                msg = QMessageBox.warning(self, "Automation Failed",
+                                            "There was an error in the automation due to an unusual image. Please add nodes and edges manually.")
+                self.replotImage()
         else:
             self.status_label.setText("")
             print("Already Automated")
@@ -236,6 +267,8 @@ class Logic(QMainWindow, Ui_MainWindow):
             elif ((yslice.stop - yslice.start) > 30) and ((xslice.stop - xslice.start) > 30):
                 x = (xslice.start + xslice.stop - 1)/2
                 y = (yslice.start + yslice.stop - 1)/2
+                self.buttonType = "standard"
+                # self.updateToolTipDisplay(buttonType)
                 self.addPoint(x, y)
             # print('x: ', x, '  y: ', y, '\n')
 
@@ -705,26 +738,26 @@ class Logic(QMainWindow, Ui_MainWindow):
         if button == "clear":
             text = text + "Tip:\nYou can click on any existing \n" + \
             "node to change their type.\n" + \
-            "Click on elsewhere will not \n" + \
-            "create any new object."
+            "Clicking elsewhere will not \n" + \
+            "create a new object."
         elif button == "standard" or button == "spheroplast" or button == "curved" or button == "filament":
             text = text + "Tip:\nYou can click anywhere \n" + \
             "on the image to create a node\n" + \
-            "indicating a cell of " + button + ".\n"
+            "indicating a" + button + "cell.\n"
         elif button == "celltocell":
             text = text + "Tip:\nYou can click on two nodes \n" + \
             "on the image to create\n" + \
-            "a cell to cell edge. Such edge\n" + \
+            "a cell to cell edge. Such an edge\n" + \
             "has weight based on length."
         elif button == "celltosurface":
-            text = text + "Tip:\nYou can click on a nodes \n" + \
+            text = text + "Tip:\nYou can click on a node \n" + \
             "and anywhere on image to create\n" + \
-            "a cell to surface edge. Such edge\n" + \
+            "a cell to surface edge. Such an edge\n" + \
             "has weight based on length."
         elif button == "cellcontact":
             text = text + "Tip:\nYou can click on two nodes \n" + \
             "on the image to create\n" + \
-            "a cell to cell edge. Such edge\n" + \
+            "a cell to cell edge. Such an edge\n" + \
             "has a constant weight."
 
         self.tooltip_label.setText(text)
