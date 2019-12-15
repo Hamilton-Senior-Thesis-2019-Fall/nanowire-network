@@ -27,6 +27,8 @@ from automation import findNodes
 
 
 class Logic(QMainWindow, Ui_MainWindow):
+    """ This is the class that manages the interface """
+
     def __init__(self, *args, **kwargs):
         self.resetPlot()
         # Note: Initiation sequence is important, attributes need to go first
@@ -87,7 +89,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.saved = True
         self.calibrating = False
 
-        self.shouldAutomate = False
+        self.shouldAutomate = True
         self.shouldPlotIssues = True
         self.issues = []
 
@@ -103,6 +105,8 @@ class Logic(QMainWindow, Ui_MainWindow):
         # {(startingNodex,startingNodey):[list of ending [x,y] coordinates]}
 
     def activateButtons(self):
+
+        # These are the actions in the toolbar across the top of the window
         self.actionUpload_from_computer.triggered.connect(self.setImage)
         self.actionExport_to_CSV.triggered.connect(self.convertToCSV)
         self.actionExport_to_GEXF.triggered.connect(self.convertToGEXF)
@@ -111,12 +115,14 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.actionColor_select.triggered.connect(self.automateFile)
         self.actionCalibrate_Distance.triggered.connect(self.calibrate_measure)
 
+        # These are the actions for the nodes on the vertical toolbar
         self.clear_painter.clicked.connect(lambda:self.addNode('clear'))
         self.node_painter_standard.clicked.connect(lambda:self.addNode('standard'))
         self.node_painter_spheroplast.clicked.connect(lambda:self.addNode('spheroplast'))
         self.node_painter_curved.clicked.connect(lambda:self.addNode('curved'))
         self.node_painter_filament.clicked.connect(lambda:self.addNode('filament'))
 
+        # These are the actions for the edgess on the vertical toolbar
         self.edge_painter_celltocell.clicked.connect(lambda:self.addEdge('celltocell'))
         self.edge_painter_celltosurface.clicked.connect(lambda:self.addEdge('celltosurface'))
         self.edge_painter_cellcontact.clicked.connect(lambda:self.addEdge('cellcontact'))
@@ -135,12 +141,17 @@ class Logic(QMainWindow, Ui_MainWindow):
         # print(self.nodes)
         modifiers = QtWidgets.QApplication.keyboardModifiers()
         if self.filename != '':
+
+            # In calibration mode, no other clicks should work. self.calibrating flag activated by self.calibrate_measure
             if self.calibrating:
+                # Saving points to diplay on the screen to see ends of the calibration range
                 self.calibration_point_coords.append((event.xdata, event.ydata))
                 print(self.calibration_point_coords)
                 self.calibration_points.append(plt.scatter(event.x, event.y, 10, "magenta"))
                 self.MplWidget.canvas.axes.scatter(event.xdata, event.ydata, 20, "magenta", zorder=3)
                 self.MplWidget.canvas.draw()
+
+                # When second calibration point selected re-call self.calibrate_measure to complete calibration process.
                 if len(self.calibration_points) == 2:
                     line_x = [self.calibration_point_coords[0][0],self.calibration_point_coords[1][0]]
                     line_y = [self.calibration_point_coords[0][1],self.calibration_point_coords[1][1]]
@@ -204,25 +215,29 @@ class Logic(QMainWindow, Ui_MainWindow):
           #self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onClick))
     def automateFile(self):
         modifiers = QtWidgets.QApplication.keyboardModifiers()
+
+        # If control held down, this button toggles problem boxes otherwise runs automation
         if modifiers == QtCore.Qt.ControlModifier:
             self.shouldPlotIssues = not self.shouldPlotIssues
             self.replotImage()
-        elif (self.shouldAutomate):
-            self.status_label.setText("Status: Automating...")
-            msg = QMessageBox.warning(self, "Confirm Automation",
-                                        "This process is going to take a while. Do you want to continue? ", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-            if msg == QMessageBox.Yes:
-                pass
-
-            elif msg == QMessageBox.No:
-                self.status_label.setText("")
-                return
-            self.addAutoNodes(findNodes(self.filename))
-            self.shouldAutomate = False
-            self.status_label.setText("Status: Automated")
         else:
-            self.status_label.setText("")
-            print("Already Automated")
+
+            # Automation can only run once on any given image
+            if (self.shouldAutomate):
+                self.status_label.setText("Status: Automating...")
+                msg = QMessageBox.warning(self, "Confirm Automation",
+                                            "This process is going to take a while. Do you want to continue? ", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                if msg == QMessageBox.No:
+                    self.status_label.setText("")
+                    return
+                self.addAutoNodes(findNodes(self.filename))
+                self.shouldAutomate = False
+                self.status_label.setText("Status: Automated")
+            else:
+                msg = QMessageBox.warning(self, "Already automated",
+                                            "Automation has already run on this image. Exiting automation process.")
+                self.status_label.setText("Status: Automated")
+                print("Already Automated")
 
     def addAutoNodes(self, values):
         list = values[0]
@@ -241,8 +256,11 @@ class Logic(QMainWindow, Ui_MainWindow):
             # print('x: ', x, '  y: ', y, '\n')
 
     def onKey(self, event):
+        ''' Pressing the control key provides the option to delete objects'''
         if event.key == 'control':
             self.replotImage()
+
+            # Draw a red dot in the middle of edges. To delete click these
             x_coords = [i[0] for i in self.edgeCenters]
             y_coords = [i[1] for i in self.edgeCenters]
             self.MplWidget.canvas.axes.scatter(x_coords, y_coords, 12, 'red', zorder=3)
@@ -257,17 +275,23 @@ class Logic(QMainWindow, Ui_MainWindow):
                          (position1[1] - position2[1]) ** 2)
 
     def midpoint(self, position1, position2):
+        """ Finds the midpoint between two points """
         return [(position1[0] + position2[0]) / 2, (position1[1] + position2[1]) / 2]
 
     def nodeTypeChange(self, x_coord, y_coord):
+        """ This function allows you to change the type of a node """
         node_ind, node_dist = self.findClosestNode(x_coord, y_coord)
         currNode = self.nodes[node_ind]
         nodeType = ''
+
+        # Find selected node and remove it from its current list
         for type in self.nodeWithTypes:
             if currNode in self.nodeWithTypes[type]:
                 nodeType = type
                 self.nodeWithTypes[type].remove(currNode)
                 break
+
+        # If node found add it to the next type's list
         if nodeType != '':
             nextTypeInd = (self.nodeTypes.index(nodeType) + 1) % len(self.nodeTypes)
             self.nodeWithTypes[self.nodeTypes[nextTypeInd]].append(currNode)
@@ -279,6 +303,7 @@ class Logic(QMainWindow, Ui_MainWindow):
 
 
     def findClosestNode(self, x_coord, y_coord):
+        """ Find the closest node to a selected point """
         pt = [x_coord, y_coord]
         if self.edgeStarted and self.edgeStart == 0:
             min_dist = self.distance(pt, self.nodes[1])
@@ -296,6 +321,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         return min_ind, min_dist
 
     def findClosestEdge(self, x_coord, y_coord):
+        """ Find the closest edge to a selected point """
         pt = [x_coord, y_coord]
         if not self.edgeCenters:
             return -1, 0
@@ -309,6 +335,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         return min_ind, min_dist
 
     def plotNodes(self):
+        """ Plot nodes on the canvas """
         for type in self.nodeWithTypes:
             for n in self.nodeWithTypes[type]:
                 x_coords,y_coords = n
@@ -316,6 +343,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.updateCounterDisplay()
 
     def plotLines(self):
+        """ Plot edges on the canvas """
         self.edgeCenters = []
         self.edgeNodes = []
         for r in range(len(self.edges)):
@@ -336,6 +364,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                 self.MplWidget.canvas.axes.add_line(lines.Line2D(line_x, line_y, linewidth=2, color='orange'))
 
     def setImage(self):
+        """ Sets background of the Matplotlib canvas to a selected image """
         if not self.saved:
             msg = QMessageBox.warning(self, "File not saved",
                                         "You are about to leave the current project. Do you want to continue without saving?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
@@ -343,6 +372,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                 return
         fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Image", "", "Image Files (*.png *.jpg *jpeg *.bmp *.tif)")
         if fileName:
+            self.shouldAutomate = True
             self.resetPlot()
             self.resetCounterDisplay();
 
@@ -352,9 +382,9 @@ class Logic(QMainWindow, Ui_MainWindow):
             imgplot = self.MplWidget.canvas.axes.imshow(image, cmap = plt.cm.gist_gray)
             self.MplWidget.canvas.draw()
             #self.calibrate_measure()
-            self.shouldAutomate = True
 
     def convertToCSV(self):
+        """ Outputs the adjacency matrix of file to a .csv file """
         if self.filename == '':
             f = open('output.csv', 'w+')
         else:
@@ -394,40 +424,44 @@ class Logic(QMainWindow, Ui_MainWindow):
         f.close()
 
     def convertToGEXF(self):
+        """ Outputs graph as a .gexf file """
         date = dt.datetime.now()
         save_file_name, _ = QFileDialog.getSaveFileName(self,"QFileDialog.getSaveFileName()","", "GEXF Files (*.gexf)")
         save_file_name += (".gexf" if save_file_name[-5:] != ".gexf" else "")
         if not save_file_name:
             return
+
+
         with open(save_file_name, "w+") as out_file:
+            # output boilerplate XML
             out_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
             out_file.write('<gexf xmlns="http://www.gexf.net/1.2draft"\n' +
             '      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n' +
             '      xmlns:viz="http://www.gexf.net/1.1draft/viz"\n' +
             '      xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd"\n'+
             '      version="1.2">\n')
-            # out_file.write("<gexf xmlns=\"http://www.gexf.net/1.2draft\"\n")
-            # out_file.write("\t  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n")
-            # out_file.write("\t  xsi:schemaLocation=\"http://www.gexf.net/1.2draft\"\n")
-            # out_file.write("\t\t\t\t\t\t \"http://www.gefx.net/1.2draft/gexf.xsd\"\n")
-            # out_file.write("\t  version=\"1.2\">\n")
-            out_file.write(" <meta lastmodifieddate=\"%s\">\n" % dt.datetime.strftime(date, "%y-%m-%d"))
-            out_file.write("  <creator>Nanowire Network Analysis</creator>\n")
-            out_file.write("  <description>CS410 Hamilton College Senior Project</description>\n")
+            out_file.write(" <meta lastmodifieddate=\"%s\">\n" % dt.datetime.strftime(date, "%m-%d-%y"))
+            out_file.write("  <creator>Nanowire Network Analysis Tool</creator>\n")
+            out_file.write("  <description>CS410 Hamilton College Senior Project generated from: %s</description>\n" % self.save_loc)
             out_file.write("  <keywords>cells, schewanella, Hamilton, 410</keywords>\n")
             out_file.write(" </meta>\n")
+
+            # Output graph settings
+            # Edge type: Undirected
+            # Edge Attributes: edgetype, length, conductivity
             out_file.write(" <graph defaultedgetype=\"undirected\">\n")
-            # out_file.write("  <attributes class=\"node\">\n")
-            # out_file.write("   <attribute id=\"0\" title=\"nodetype\" type=\"string\"/>\n")
-            # out_file.write("  </attributes>\n")
             out_file.write("  <attributes class=\"edge\">\n")
             out_file.write("   <attribute id=\"0\" title=\"edgetype\" type=\"string\" />\n")
             out_file.write("   <attribute id=\"1\" title=\"length\" type=\"float\" />\n")
             out_file.write("   <attribute id=\"2\" title=\"conductivity\" type=\"float\" />\n")
             out_file.write("  </attributes>\n")
+
+            # Output nodes
             out_file.write("  <nodes>\n")
             self.write_nodes_gexf(out_file)
             out_file.write("  </nodes>\n")
+
+            # Outpus edges
             out_file.write("  <edges>\n")
             self.write_edges_gexf(out_file)
             out_file.write("  </edges>\n")
@@ -435,6 +469,23 @@ class Logic(QMainWindow, Ui_MainWindow):
             out_file.write("</gexf>")
 
     def write_nodes_gexf(self, out_file):
+        """ Helper function to output nodes to gexf file. Called by convertToGEXF
+            Current visualization settings:
+                Color:
+                    standard - r:42, g:55, b:235
+                    spheroplast - r:255, g:255, b:0
+                    curved - r:41, g:235, b:3
+                    filament - r:211, g:3, b:235
+                Shape:
+                    standard - disc
+                    spheroplast - square
+                    curved - triangle
+                    filament - diamond
+                Location:
+                    same as location in tool
+                Size:
+                    10
+        """
         viz_color_shape = {'standard' : (42, 55, 235, "disc"), 'spheroplast':(255, 255, 0, "square"),
                            'curved': (41, 235, 3, "triangle"), 'filament': (211, 3, 235, "diamond")}
         count = 0
@@ -445,17 +496,26 @@ class Logic(QMainWindow, Ui_MainWindow):
                 out_file.write('    <viz:color r="%d" g="%d" b="%d" />\n' % (r, g, b))
                 out_file.write('    <viz:position x="%f" y="%f" z="0.0" />\n' % (elt[0], elt[1]))
                 out_file.write('    <viz:shape value="%s" />\n' % shape)
-                out_file.write('    <viz:size value="0.01"/>\n')
+                out_file.write('    <viz:size value="10"/>\n')
                 out_file.write("   </node>\n")
                 count += 1
         out_file.write("   <node id=\"SURFACE\" label=\"surfaceGhost\">\n")
-        out_file.write('    <viz:color r="0" g="0" b="0" />\n')
+        out_file.write('    <viz:color r="135" g="135" b="135" />\n')
         out_file.write('    <viz:position x="0.0" y="0.0" z="0.0" />\n')
         out_file.write('    <viz:shape value="disc" />\n')
         out_file.write('    <viz:size value="0.01"/>\n')
         out_file.write("   </node>\n")
 
     def write_edges_gexf(self, out_file):
+        """ Helper function to output edges to gexf file. Called by convertToGEXF
+            Current visualization settings:
+                Color:
+                    r:255, g:0, b:0
+                Shape:
+                    solid
+                Thickness:
+                    5
+        """
         count = 0
         print("Here are all the nodes", self.nodes)
         for i in range(len(self.edges)):
@@ -468,7 +528,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                     out_file.write("     <attvalue for=\"2\" value=\"%f\" />\n" % self.get_edge_ohms(i, j))
                     out_file.write("    </attvalues>\n")
                     out_file.write('    <viz:color r="255" g="0" b="0" />\n')
-                    out_file.write('    <viz:thickness value="0.05" />\n')
+                    out_file.write('    <viz:thickness value="5" />\n')
                     out_file.write('    <viz:shape value="solid" />\n')
                     out_file.write("   </edge>\n")
                     count += 1
@@ -488,11 +548,13 @@ class Logic(QMainWindow, Ui_MainWindow):
                 count += 1
 
     def get_edge_type(self, i, j):
+        """Get type of edge"""
         for key in self.edgeWithTypes:
             if tuple(self.nodes[j]) in self.edgeWithTypes[key]:
                 return key
 
     def get_edge_dist(self, i, j):
+        """ Return distance of an edge. Takes indices in self.nodes as parameters """
         return self.distance(self.nodes[i], self.nodes[j])
 
     def get_edge_ohms(self, i, j):
@@ -512,6 +574,11 @@ class Logic(QMainWindow, Ui_MainWindow):
             self.plotIssues()
         self.MplWidget.canvas.draw()
         self.updateCounterDisplay()
+        if (self.shouldAutomate):
+            self.status_label.setText("Status: Not Automated")
+        else:
+
+            self.status_label.setText("Status: Automated")
 
 
         #Disconnecting event handlers (not quite sure about this)
@@ -519,12 +586,15 @@ class Logic(QMainWindow, Ui_MainWindow):
         #    self.MplWidget.canvas.mpl_disconnect(self.cid[i])
 
     def plotIssues(self):
+        """ Plot rectangles around problem areas after automation """
         for issue in self.issues:
             rect = Rectangle((issue[0],issue[1]),issue[2],issue[3],linewidth=1,edgecolor='g',facecolor='none')
             self.MplWidget.canvas.axes.add_patch(rect)
 
 
     def addPoint(self, x_coord, y_coord):
+        """ Add node to adjacency matrix """
+
         #Add more rows/col to edges adj matrix
         x_coord = round(x_coord, 6)
         y_coord = round(y_coord, 6)
@@ -550,6 +620,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             self.saved = False
 
     def removePoint(self, x_coord, y_coord):
+        """ Remove node from adjacency matrix """
         if len(self.nodes) > 0:
             del_ind, del_dist = self.findClosestNode(x_coord, y_coord)
             # delete from nodeWithTypes
@@ -565,6 +636,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             self.saved = False
 
     def lineStart(self, x_coord, y_coord):
+        """ Save where the line starts """
         x_coord = round(x_coord, 6)
         y_coord = round(y_coord, 6)
         min_ind, min_dist = self.findClosestNode(x_coord, y_coord)
@@ -572,6 +644,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.edgeStartNode = [x_coord, y_coord]
 
     def lineEnd(self, x_coord, y_coord):
+        """ At the end of the line add edge to matrix """
         x_coord = round(x_coord, 6)
         y_coord = round(y_coord, 6)
         min_ind, min_dist = self.findClosestNode(x_coord, y_coord)
@@ -586,6 +659,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.saved = False
 
     def removeLine(self, x_coord, y_coord):
+        """ Remove an edge from the matrix """
         x_coord = round(x_coord, 6)
         y_coord = round(y_coord, 6)
         del_ind, dist = self.findClosestEdge(x_coord, y_coord)
@@ -648,6 +722,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.saved = False
 
     def removeNearest(self, x_coord, y_coord):
+        """ Remove nearesr edge or node """
         x_coord = round(x_coord, 6)
         y_coord = round(y_coord, 6)
         ind1, node_dist = self.findClosestNode(x_coord, y_coord)
@@ -659,19 +734,23 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.saved = False
 
     def onpress(self, event):
+        """ Save that mouse is clicked """
         self.press = True
 
     def onmove(self, event):
+        """ Save when mouse is moved"""
         if self.press:
             self.move = True
 
     def onrelease(self, event):
+        """ Called when a click occurs. Calls onClick which handles the logic of a click"""
         if self.press and not self.move:
             self.onClick(event)
         self.press = False
         self.move = False
 
     def resetCounterDisplay(self):
+        """Set counter text to zeros """
         counterDisplayText = "Node Counters:\n\n"
         for n in self.nodeTypes:
             self.nodeWithTypes[n] = []
@@ -683,6 +762,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.counter_label.setText(counterDisplayText)
 
     def updateCounterDisplay(self):
+        """Update counter text when things are selected """
         counterDisplayText = "Node Counters:\n\n"
         for n in self.nodeTypes:
             counterDisplayText += n + ": " + str(len(self.nodeWithTypes[n])) +  "\n"
@@ -702,6 +782,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.counter_label.setText(counterDisplayText)
 
     def updateToolTipDisplay(self, button):
+        """Update tip text that tells how to use selected tool"""
         text = 'Current Button Type: ' + button + "\n\n"
         if button == "clear":
             text = text + "Tip:\nYou can click on any existing \n" + \
@@ -748,17 +829,19 @@ class Logic(QMainWindow, Ui_MainWindow):
         #     self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.lineEnd))
 
     def weight(self, a_start=None, an_end=None):
+        """ Our weighting function. Returns the distance in microns"""
         if a_start and an_end:
             print("Start/end", a_start, an_end)
-            return self.distance(a_start, an_end)
+            return self.distance(a_start, an_end) * self.pxdist
         if self.button == "celltocell":
-            return .0000001
+            return self.pxdist
         x1, y1 = self.nodes[self.edgeStart]
         x2, y2 = self.nodes[self.edgeEnd]
         dist = ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** .5
         return self.pxdist * dist
 
     def save_plot(self):
+        """ This function creates a save file for user to pick up their project where they left off """
         curr_time = str(dt.datetime.now())
         # QInputDialog.getText("Save Project", "Project name:", QLineEdit.Normal, "")
         # if okPressed:
@@ -840,7 +923,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             self.saved = True
 
     def open_plot(self):
-        # CRITICAL*** Fix error with loading onto existing image plot
+        """ Opens a .nwas file and restores session """
         if self.filename != '':
             if not self.saved:
                 msg = QMessageBox.warning(self, "File not saved",
@@ -851,6 +934,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         fileName, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select Save File", "","NWAS Files (*.nwas)")
         if fileName:
             self.resetPlot()
+            self.save_loc = fileName
             # We will read this many lines again after reopening the file so that we can read the image file
             lines_read = 0
             with open(fileName, 'r') as saved_file:
@@ -935,6 +1019,9 @@ class Logic(QMainWindow, Ui_MainWindow):
                 self.saved = True
 
     def calibrate_measure(self, args=[]):
+        """ This function serves two distinct purposes depending on when it is called.
+            if it is called while not currently calibrating then it starts calibration mode
+            otherwise it calculates a length per pixel in microns """
         if not self.calibrating:
             self.pxdist = 0.0
             msg = QMessageBox.information(self, "Measure calibration",
@@ -953,19 +1040,14 @@ class Logic(QMainWindow, Ui_MainWindow):
                 print(self.pxdist)
                 self.calibrating = False
 
-    def automation_button_functionality(self):
-        msg = QMessageBox.warning(self, "File overwrite",
-                                                "This action overwrites current project. Any unsaved changes will be lost. Continue?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if msg == QMessageBox.Yes:
-            # automation.functon()
-            pass
-
     def get_int(self):
+        """ Get an int value from a dialog box """
         i, okPressed = QInputDialog.getInt(self, "Set distance",u"Distance (\u03bcm):", 10, 0, 100, 1)
         return i if okPressed else None
 
 
 def getNodeLetter(num):
+    """ Converts a number to a letter A-Z, AA-ZZ, ... """
     nodeLetter = ""
     num += 1
     while num > 0:
