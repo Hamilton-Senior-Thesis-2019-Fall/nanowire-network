@@ -213,6 +213,32 @@ class Logic(QMainWindow, Ui_MainWindow):
                     # Dan: clear_arrow allows type change for nodes
                     self.nodeTypeChange(event.xdata, event.ydata)
           #self.cid.append(self.MplWidget.canvas.mpl_connect('button_press_event', self.onClick))
+
+    def removeNodesEdges(self):
+        self.nodeWithTypes = dict()
+        self.edgeWithTypes = dict()
+        self.nodeWithTypes.update((n,[]) for n in self.nodeTypes)
+        self.edgeWithTypes.update((e,dict()) for e in self.edgeTypes)
+        self.nodes = []
+        self.edges = []
+        self.edgeCenters = []
+        self.edgeNodes = []
+        self.calibration_point_coords = []
+        self.calibration_points = []
+        self.edgeStarted = False;
+        self.edgeStart = -1
+        self.edgeEnd = -1
+        self.edgeStartNode = [];
+        self.press = False
+        self.move = False
+        self.saved = True
+        self.calibrating = False
+        self.shouldAutomate = False
+        self.shouldPlotIssues = True
+        self.issues = []
+        self.nodeRdius = 12
+        self.replotImage()
+
     def automateFile(self):
         modifiers = QtWidgets.QApplication.keyboardModifiers()
 
@@ -252,6 +278,8 @@ class Logic(QMainWindow, Ui_MainWindow):
             elif ((yslice.stop - yslice.start) > 30) and ((xslice.stop - xslice.start) > 30):
                 x = (xslice.start + xslice.stop - 1)/2
                 y = (yslice.start + yslice.stop - 1)/2
+                self.buttonType = "standard"
+                # self.updateToolTipDisplay(buttonType)
                 self.addPoint(x, y)
             # print('x: ', x, '  y: ', y, '\n')
 
@@ -672,20 +700,23 @@ class Logic(QMainWindow, Ui_MainWindow):
                 try:
                     endpoint1 = self.nodes[self.edgeNodes[del_ind][0]]
                     endpoint2 = self.nodes[self.edgeNodes[del_ind][1]]
-                    # print("1:", endpoint1)
-                    # print("2:", endpoint2)
+                    print("1:", endpoint1)
+                    print("2:", endpoint2)
+                    print("current edgeWithTypes", self.edgeWithTypes)
                 except IndexError:
                     # Dan: prevent index out of bound
                     continue
 
-                if tuple(endpoint1) in self.edgeWithTypes[edgeType]:
+                if tuple(endpoint1) in self.edgeWithTypes[edgeType] and \
+                endpoint2 in self.edgeWithTypes[edgeType][tuple(endpoint1)]:
                     self.edgeWithTypes[edgeType][tuple(endpoint1)].remove(endpoint2)
                     self.edges[self.edgeNodes[del_ind][0]][self.edgeNodes[del_ind][1]] = 0
                     self.edges[self.edgeNodes[del_ind][1]][self.edgeNodes[del_ind][0]] = 0
                     del self.edgeNodes[del_ind]
                     found = True
                     break
-                elif tuple(endpoint2) in self.edgeWithTypes[edgeType]:
+                elif tuple(endpoint2) in self.edgeWithTypes[edgeType] and \
+                endpoint1 in self.edgeWithTypes[edgeType][tuple(endpoint2)]:
                     self.edgeWithTypes[edgeType][tuple(endpoint2)].remove(endpoint1)
                     self.edges[self.edgeNodes[del_ind][0]][self.edgeNodes[del_ind][1]] = 0
                     self.edges[self.edgeNodes[del_ind][1]][self.edgeNodes[del_ind][0]] = 0
@@ -787,26 +818,26 @@ class Logic(QMainWindow, Ui_MainWindow):
         if button == "clear":
             text = text + "Tip:\nYou can click on any existing \n" + \
             "node to change their type.\n" + \
-            "Click on elsewhere will not \n" + \
-            "create any new object."
+            "Clicking elsewhere will not \n" + \
+            "create a new object."
         elif button == "standard" or button == "spheroplast" or button == "curved" or button == "filament":
             text = text + "Tip:\nYou can click anywhere \n" + \
             "on the image to create a node\n" + \
-            "indicating a cell of " + button + ".\n"
+            "indicating a" + button + "cell.\n"
         elif button == "celltocell":
             text = text + "Tip:\nYou can click on two nodes \n" + \
             "on the image to create\n" + \
-            "a cell to cell edge. Such edge\n" + \
+            "a cell to cell edge. Such an edge\n" + \
             "has weight based on length."
         elif button == "celltosurface":
-            text = text + "Tip:\nYou can click on a nodes \n" + \
+            text = text + "Tip:\nYou can click on a node \n" + \
             "and anywhere on image to create\n" + \
-            "a cell to surface edge. Such edge\n" + \
+            "a cell to surface edge. Such an edge\n" + \
             "has weight based on length."
         elif button == "cellcontact":
             text = text + "Tip:\nYou can click on two nodes \n" + \
             "on the image to create\n" + \
-            "a cell to cell edge. Such edge\n" + \
+            "a cell to cell edge. Such an edge\n" + \
             "has a constant weight."
 
         self.tooltip_label.setText(text)
