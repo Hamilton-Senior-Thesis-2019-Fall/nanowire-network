@@ -648,8 +648,8 @@ background: #d8d8d8
      <string>Export</string>
     </property>
     <addaction name="actionSave_file"/>
-    <addaction name="actionExport_to_Gephi"/>
-    <addaction name="actionExport_to_Cytoscape"/>
+    <addaction name="actionExport_to_CSV"/>
+    <addaction name="actionExport_to_GEXF"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -657,9 +657,16 @@ background: #d8d8d8
     </property>
     <addaction name="actionColor_select"/>
    </widget>
+   <widget class="QMenu" name="menuSettings_2">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionCalibrate_Distance"/>
+   </widget>
    <addaction name="menuImport"/>
    <addaction name="menuExport"/>
    <addaction name="menuSettings"/>
+   <addaction name="menuSettings_2"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionUpload_from_computer">
@@ -677,14 +684,14 @@ background: #d8d8d8
     <string>Save file</string>
    </property>
   </action>
-  <action name="actionExport_to_Gephi">
+  <action name="actionExport_to_CSV">
    <property name="text">
-    <string>Export to Gephi</string>
+    <string>Export as .CSV</string>
    </property>
   </action>
-  <action name="actionExport_to_Cytoscape">
+  <action name="actionExport_to_GEXF">
    <property name="text">
-    <string>Export to Cytoscape</string>
+    <string>Export as .GEXF</string>
    </property>
   </action>
   <action name="actionColor_select">
@@ -700,6 +707,11 @@ background: #d8d8d8
   <action name="actionStart">
    <property name="text">
     <string>Start</string>
+   </property>
+  </action>
+  <action name="actionCalibrate_Distance">
+   <property name="text">
+    <string>Calibrate Distance</string>
    </property>
   </action>
  </widget>

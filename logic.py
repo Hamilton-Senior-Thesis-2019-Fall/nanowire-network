@@ -104,11 +104,12 @@ class Logic(QMainWindow, Ui_MainWindow):
 
     def activateButtons(self):
         self.actionUpload_from_computer.triggered.connect(self.setImage)
-        self.actionExport_to_Gephi.triggered.connect(self.convertToCSV)
-        self.actionExport_to_Cytoscape.triggered.connect(self.convertToGEXF)
+        self.actionExport_to_CSV.triggered.connect(self.convertToCSV)
+        self.actionExport_to_GEXF.triggered.connect(self.convertToGEXF)
         self.actionSave_file.triggered.connect(self.save_plot)
         self.actionUpload_from_saved_projects.triggered.connect(self.open_plot)
         self.actionColor_select.triggered.connect(self.automateFile)
+        self.actionCalibrate_Distance.triggered.connect(self.calibrate_measure)
 
         self.clear_painter.clicked.connect(lambda:self.addNode('clear'))
         self.node_painter_standard.clicked.connect(lambda:self.addNode('standard'))
@@ -350,7 +351,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             image = plt.imread(self.filename)
             imgplot = self.MplWidget.canvas.axes.imshow(image, cmap = plt.cm.gist_gray)
             self.MplWidget.canvas.draw()
-            self.calibrate_measure()
+            #self.calibrate_measure()
             self.shouldAutomate = True
 
     def convertToCSV(self):
@@ -422,7 +423,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             out_file.write("  <attributes class=\"edge\">\n")
             out_file.write("   <attribute id=\"0\" title=\"edgetype\" type=\"string\" />\n")
             out_file.write("   <attribute id=\"1\" title=\"length\" type=\"float\" />\n")
-            out_file.write("   <attribute id=\"2\" title=\"currentohms\" type=\"float\" />\n")
+            out_file.write("   <attribute id=\"2\" title=\"conductivity\" type=\"float\" />\n")
             out_file.write("  </attributes>\n")
             out_file.write("  <nodes>\n")
             self.write_nodes_gexf(out_file)

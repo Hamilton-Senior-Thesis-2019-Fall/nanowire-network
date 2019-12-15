@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\Lavimoe\Desktop\cs2019F\nanowire-network\mockup.ui'
+# Form implementation generated from reading ui file 'mockup.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -315,6 +315,8 @@ class Ui_MainWindow(object):
         self.menuExport.setObjectName("menuExport")
         self.menuSettings = QtWidgets.QMenu(self.menubar)
         self.menuSettings.setObjectName("menuSettings")
+        self.menuSettings_2 = QtWidgets.QMenu(self.menubar)
+        self.menuSettings_2.setObjectName("menuSettings_2")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -325,25 +327,29 @@ class Ui_MainWindow(object):
         self.actionUpload_from_saved_projects.setObjectName("actionUpload_from_saved_projects")
         self.actionSave_file = QtWidgets.QAction(MainWindow)
         self.actionSave_file.setObjectName("actionSave_file")
-        self.actionExport_to_Gephi = QtWidgets.QAction(MainWindow)
-        self.actionExport_to_Gephi.setObjectName("actionExport_to_Gephi")
-        self.actionExport_to_Cytoscape = QtWidgets.QAction(MainWindow)
-        self.actionExport_to_Cytoscape.setObjectName("actionExport_to_Cytoscape")
+        self.actionExport_to_CSV = QtWidgets.QAction(MainWindow)
+        self.actionExport_to_CSV.setObjectName("actionExport_to_CSV")
+        self.actionExport_to_GEXF = QtWidgets.QAction(MainWindow)
+        self.actionExport_to_GEXF.setObjectName("actionExport_to_GEXF")
         self.actionColor_select = QtWidgets.QAction(MainWindow)
         self.actionColor_select.setObjectName("actionColor_select")
         self.actionAutomation = QtWidgets.QAction(MainWindow)
         self.actionAutomation.setObjectName("actionAutomation")
         self.actionStart = QtWidgets.QAction(MainWindow)
         self.actionStart.setObjectName("actionStart")
+        self.actionCalibrate_Distance = QtWidgets.QAction(MainWindow)
+        self.actionCalibrate_Distance.setObjectName("actionCalibrate_Distance")
         self.menuImport.addAction(self.actionUpload_from_computer)
         self.menuImport.addAction(self.actionUpload_from_saved_projects)
         self.menuExport.addAction(self.actionSave_file)
-        self.menuExport.addAction(self.actionExport_to_Gephi)
-        self.menuExport.addAction(self.actionExport_to_Cytoscape)
+        self.menuExport.addAction(self.actionExport_to_CSV)
+        self.menuExport.addAction(self.actionExport_to_GEXF)
         self.menuSettings.addAction(self.actionColor_select)
+        self.menuSettings_2.addAction(self.actionCalibrate_Distance)
         self.menubar.addAction(self.menuImport.menuAction())
         self.menubar.addAction(self.menuExport.menuAction())
         self.menubar.addAction(self.menuSettings.menuAction())
+        self.menubar.addAction(self.menuSettings_2.menuAction())
 
         self.retranslateUi(MainWindow)
         self.tabWidget_info_layers.setCurrentIndex(0)
@@ -359,22 +365,14 @@ class Ui_MainWindow(object):
         self.menuImport.setTitle(_translate("MainWindow", "Import"))
         self.menuExport.setTitle(_translate("MainWindow", "Export"))
         self.menuSettings.setTitle(_translate("MainWindow", "Automation"))
+        self.menuSettings_2.setTitle(_translate("MainWindow", "Settings"))
         self.actionUpload_from_computer.setText(_translate("MainWindow", "Upload from computer"))
         self.actionUpload_from_saved_projects.setText(_translate("MainWindow", "Upload from saved projects"))
         self.actionSave_file.setText(_translate("MainWindow", "Save file"))
-        self.actionExport_to_Gephi.setText(_translate("MainWindow", "Export to Gephi"))
-        self.actionExport_to_Cytoscape.setText(_translate("MainWindow", "Export to Cytoscape"))
+        self.actionExport_to_CSV.setText(_translate("MainWindow", "Export as .CSV"))
+        self.actionExport_to_GEXF.setText(_translate("MainWindow", "Export as .GEXF"))
         self.actionColor_select.setText(_translate("MainWindow", "Activate"))
         self.actionAutomation.setText(_translate("MainWindow", "Automation"))
         self.actionStart.setText(_translate("MainWindow", "Start"))
+        self.actionCalibrate_Distance.setText(_translate("MainWindow", "Calibrate Distance"))
 from mplwidget import MplWidget
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
